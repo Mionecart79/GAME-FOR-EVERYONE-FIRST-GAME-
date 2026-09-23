@@ -1,0 +1,2300 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Kawaii Helix Jump - Tower of Hell Edition</title>
+  <!-- Google Fonts: Outfit & Fredoka for playful kawaii style -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    :root {
+      --font-main: 'Fredoka', 'Outfit', sans-serif;
+      --font-display: 'Outfit', sans-serif;
+      --color-start: #22c55e;
+      --color-start-hover: #6b7280;
+      --color-leaderboard: #ef4444;
+      --color-leaderboard-hover: #6b7280;
+      --color-settings: #ffffff;
+      --color-dark: #111827;
+      --color-card-bg: rgba(17, 24, 39, 0.85);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0f172a;
+      font-family: var(--font-main);
+      color: #fff;
+    }
+
+    #canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* UI Overlay Layer */
+    .ui-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .interactive {
+      pointer-events: auto;
+    }
+
+    /* Screens & Modals */
+    .screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 20;
+    }
+
+    .hidden {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: scale(0.96);
+    }
+
+    /* Glassmorphism Card Box */
+    .glass-card {
+      background: rgba(15, 23, 42, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      border-radius: 28px;
+      padding: 32px 28px;
+      text-align: center;
+      max-width: 440px;
+      width: 90%;
+      animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.85); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .game-logo {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, #4ade80, #38bdf8, #f43f5e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+    }
+
+    .game-subtitle {
+      font-size: 1.05rem;
+      color: #94a3b8;
+      margin-bottom: 28px;
+      font-weight: 600;
+    }
+
+    /* Menu Buttons Styles strictly matching prompt */
+    .menu-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .btn {
+      font-family: var(--font-main);
+      font-size: 1.25rem;
+      font-weight: 700;
+      padding: 16px 28px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      position: relative;
+      outline: none;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      transition: background-color 0.22s ease, transform 0.15s ease, box-shadow 0.22s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    /* 1. START BUTTON: Green, turns grey on hover */
+    .btn-start {
+      background-color: var(--color-start);
+      color: #ffffff;
+    }
+    .btn-start:hover {
+      background-color: var(--color-start-hover) !important;
+      color: #ffffff;
+      box-shadow: 0 8px 28px rgba(107, 114, 128, 0.4);
+    }
+
+    /* 2. LEADERBOARD BUTTON: Red, turns grey on hover */
+    .btn-leaderboard {
+      background-color: var(--color-leaderboard);
+      color: #ffffff;
+    }
+    .btn-leaderboard:hover {
+      background-color: var(--color-leaderboard-hover) !important;
+      color: #ffffff;
+      box-shadow: 0 8px 28px rgba(107, 114, 128, 0.4);
+    }
+
+    .btn-leaderboard.locked {
+      opacity: 0.85;
+      position: relative;
+    }
+
+    .lock-badge {
+      background: rgba(0,0,0,0.35);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      margin-left: auto;
+    }
+
+    /* 3. SETTINGS BUTTON: White, DOES NOT CHANGE COLOR ON HOVER */
+    .btn-settings {
+      background-color: var(--color-settings) !important;
+      color: #1f2937;
+    }
+    .btn-settings:hover {
+      background-color: var(--color-settings) !important; /* STRICTLY NO COLOR CHANGE */
+      color: #1f2937 !important;
+      transform: scale(1.02);
+      box-shadow: 0 8px 28px rgba(255, 255, 255, 0.4);
+    }
+
+    /* Ball Customization Screen */
+    .custom-section {
+      margin-bottom: 22px;
+      text-align: left;
+    }
+
+    .custom-label {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-bottom: 8px;
+      display: block;
+      letter-spacing: 0.5px;
+    }
+
+    .name-input {
+      width: 100%;
+      background: rgba(30, 41, 59, 0.8);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 14px 18px;
+      font-family: var(--font-main);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .name-input:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
+    }
+
+    .preview-ball-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 16px 0 20px;
+    }
+
+    .preview-canvas-holder {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.25), transparent);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 3px solid rgba(255,255,255,0.3);
+      position: relative;
+      animation: floatBall 2.5s ease-in-out infinite;
+    }
+
+    @keyframes floatBall {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    #preview-face-canvas {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+
+    .color-picker-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .color-swatches {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .color-swatch {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid rgba(255,255,255,0.4);
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .color-swatch:hover {
+      transform: scale(1.15);
+      border-color: #fff;
+    }
+
+    .native-color-picker {
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      background: transparent;
+    }
+    .native-color-picker::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+    .native-color-picker::-webkit-color-swatch {
+      border: 2px solid #fff;
+      border-radius: 12px;
+    }
+
+    /* Face Expression Selector */
+    .face-options {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 6px;
+    }
+    .face-btn {
+      flex: 1;
+      padding: 8px 6px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      font-size: 0.9rem;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.15s;
+    }
+    .face-btn.active {
+      background: #38bdf8;
+      border-color: #38bdf8;
+      color: #0f172a;
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
+    }
+
+    /* HUD Top Right Score */
+    .hud-top-right {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      z-index: 15;
+      pointer-events: none;
+    }
+
+    .score-card {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 10px 20px;
+      text-align: right;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+
+    .score-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #94a3b8;
+      font-weight: 700;
+    }
+
+    .score-value {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 900;
+      line-height: 1;
+      color: #38bdf8;
+      text-shadow: 0 2px 10px rgba(56, 189, 248, 0.5);
+      transition: transform 0.15s ease;
+    }
+
+    .score-value.pop {
+      transform: scale(1.25);
+      color: #facc15;
+    }
+
+    .high-score-small {
+      font-size: 0.85rem;
+      color: #facc15;
+      font-weight: 700;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .combo-badge {
+      margin-top: 8px;
+      background: linear-gradient(135deg, #f43f5e, #f97316);
+      color: #fff;
+      font-weight: 900;
+      font-size: 0.95rem;
+      padding: 4px 14px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 14px rgba(244, 63, 94, 0.5);
+      animation: pulseCombo 0.6s infinite alternate;
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: all 0.2s ease;
+    }
+    .combo-badge.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @keyframes pulseCombo {
+      from { transform: scale(1); }
+      to { transform: scale(1.1); }
+    }
+
+    /* HUD Top Left: Pause & Level info */
+    .hud-top-left {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      z-index: 15;
+    }
+
+    .icon-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+    }
+    .icon-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.08);
+    }
+
+    /* ========================================================
+       TOWER OF HELL (ROBLOX) STYLE VERTICAL PROGRESS BAR
+       ======================================================== */
+    .toh-progress-container {
+      position: absolute;
+      left: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 60vh;
+      max-height: 480px;
+      width: 26px;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border-radius: 30px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 10px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 6px 3px;
+      z-index: 15;
+      pointer-events: none;
+    }
+
+    .toh-track {
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      left: 50%;
+      width: 8px;
+      transform: translateX(-50%);
+      background: linear-gradient(to bottom, 
+        #22c55e 0%,    /* Start Green */
+        #eab308 25%,   /* Yellow */
+        #f97316 50%,   /* Orange */
+        #ef4444 75%,   /* Red */
+        #a855f7 100%   /* Deep Violet */
+      );
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.5);
+    }
+
+    .toh-segments {
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .toh-marker {
+      width: 100%;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    /* Player Avatar Icon moving on the bar */
+    .toh-player-indicator {
+      position: absolute;
+      left: 50%;
+      top: 0%; /* Moves 0% to 100% */
+      transform: translate(-50%, -50%);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #38bdf8;
+      border: 2.5px solid #ffffff;
+      box-shadow: 0 0 16px #38bdf8, 0 4px 10px rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: top 0.25s ease-out;
+      z-index: 18;
+    }
+
+    .toh-player-mini-face {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+    }
+
+    .toh-level-tag {
+      position: absolute;
+      left: 42px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      white-space: nowrap;
+      color: #38bdf8;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    .toh-header-label {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: #94a3b8;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .toh-bottom-label {
+      position: absolute;
+      bottom: -28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.7rem;
+      font-weight: 900;
+      color: #ef4444;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* Leaderboard Modal */
+    .leaderboard-table-wrap {
+      max-height: 280px;
+      overflow-y: auto;
+      margin: 18px 0 24px;
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .leaderboard-table-wrap::-webkit-scrollbar {
+      width: 6px;
+    }
+    .leaderboard-table-wrap::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 3px;
+    }
+
+    .lb-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .lb-table th {
+      padding: 12px 14px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #94a3b8;
+      background: rgba(0, 0, 0, 0.3);
+      position: sticky;
+      top: 0;
+    }
+
+    .lb-table td {
+      padding: 12px 14px;
+      font-size: 0.95rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-weight: 600;
+    }
+
+    .lb-rank-1 { color: #facc15; font-weight: 800; }
+    .lb-rank-2 { color: #cbd5e1; font-weight: 800; }
+    .lb-rank-3 { color: #d97706; font-weight: 800; }
+
+    .lb-badge {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      text-align: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      font-size: 0.8rem;
+    }
+
+    /* Toast Notification for Locked Leaderboard */
+    .toast-notice {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(50px);
+      background: rgba(239, 68, 68, 0.92);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 14px 24px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 100;
+      text-align: center;
+      max-width: 90%;
+    }
+    .toast-notice.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Settings rows */
+    .setting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .setting-label {
+      font-weight: 600;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 28px;
+    }
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 34px;
+      transition: .3s;
+    }
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      border-radius: 50%;
+      transition: .3s;
+    }
+    input:checked + .toggle-slider {
+      background-color: #22c55e;
+    }
+    input:checked + .toggle-slider:before {
+      transform: translateX(22px);
+    }
+
+    /* Range slider */
+    .range-slider {
+      width: 130px;
+      accent-color: #38bdf8;
+      cursor: pointer;
+    }
+
+    /* Game controls hint */
+    .controls-hint {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(8px);
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.5s;
+    }
+
+    /* Difficulty theme transition alert banner */
+    .stage-up-banner {
+      position: absolute;
+      top: 28%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.95), rgba(249, 115, 22, 0.95));
+      border: 2px solid #fff;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-size: 1.3rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      box-shadow: 0 10px 40px rgba(239, 68, 68, 0.6);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 25;
+    }
+    .stage-up-banner.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Three.js Canvas Container -->
+  <div id="canvas-container"></div>
+
+  <!-- In-Game UI Layer -->
+  <div class="ui-layer" id="game-hud" style="display: none;">
+    <!-- Top Left: Pause & Stage -->
+    <div class="hud-top-left interactive">
+      <button class="icon-btn" id="btn-pause-game" title="Pause Game">⏸️</button>
+      <div style="background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); padding: 8px 16px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.15);">
+        <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; display: block;">Tahap</span>
+        <span id="hud-stage-name" style="font-weight: 900; font-size: 1.1rem; color: #4ade80;">1 - Mudah</span>
+      </div>
+    </div>
+
+    <!-- Top Right: Score & Highscore -->
+    <div class="hud-top-right">
+      <div class="score-card">
+        <div class="score-label">Skor</div>
+        <div class="score-value" id="hud-score">0</div>
+        <div class="high-score-small">👑 Rekor: <span id="hud-high-score">0</span></div>
+      </div>
+      <div class="combo-badge" id="hud-combo-badge">🔥 COMBO x3!</div>
+    </div>
+
+    <!-- Tower of Hell (Roblox) Style Progress Bar -->
+    <div class="toh-progress-container" id="toh-bar">
+      <div class="toh-header-label">START</div>
+      <div class="toh-track"></div>
+      <div class="toh-segments">
+        <div class="toh-marker"></div>
+        <div class="toh-marker"></div>
+        <div class="toh-marker"></div>
+        <div class="toh-marker"></div>
+        <div class="toh-marker"></div>
+      </div>
+      <!-- Moving Player Avatar Indicator -->
+      <div class="toh-player-indicator" id="toh-indicator">
+        <canvas class="toh-player-mini-face" id="toh-mini-face"></canvas>
+        <div class="toh-level-tag" id="toh-tag">Lantai 1</div>
+      </div>
+      <div class="toh-bottom-label">HELL 🔥</div>
+    </div>
+
+    <!-- Controls hint -->
+    <div class="controls-hint" id="controls-hint">
+      <span>🖱️ Drag Mouse / ⬅️ ➡️ Panah / A-D untuk Memutar Tower</span>
+    </div>
+
+    <!-- Stage Difficulty Banner -->
+    <div class="stage-up-banner" id="stage-banner">⚠️ AWAS: TINGKAT SULIT! ⚠️</div>
+  </div>
+
+  <!-- 1. MAIN MENU SCREEN -->
+  <div class="screen interactive" id="screen-main-menu">
+    <div class="glass-card">
+      <div class="game-logo">HELIX JUMP</div>
+      <div class="game-subtitle">Kawaii Tower of Hell Edition</div>
+
+      <div class="menu-buttons">
+        <!-- START: Green, hover grey -->
+        <button class="btn btn-start" id="btn-menu-start">
+          <span>🚀</span>
+          <span>START GAME</span>
+        </button>
+
+        <!-- LEADERBOARD: Red, hover grey, locked if played < 1 -->
+        <button class="btn btn-leaderboard" id="btn-menu-leaderboard">
+          <span>🏆</span>
+          <span>LEADERBOARD</span>
+          <span class="lock-badge" id="badge-lb-lock">🔒</span>
+        </button>
+
+        <!-- SETTINGS: White, DOES NOT CHANGE COLOR ON HOVER -->
+        <button class="btn btn-settings" id="btn-menu-settings">
+          <span>⚙️</span>
+          <span>SETTINGS</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. BALL CUSTOMIZATION MODAL (After clicking Start) -->
+  <div class="screen hidden interactive" id="screen-customize">
+    <div class="glass-card">
+      <h2 style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; margin-bottom: 4px;">KUSTOMISASI BOLA</h2>
+      <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 18px;">Beri nama dan rias muka imut bolamu!</p>
+
+      <!-- Ball Preview with cute face -->
+      <div class="preview-ball-wrapper">
+        <div class="preview-canvas-holder" id="preview-holder">
+          <canvas id="preview-face-canvas" width="160" height="160"></canvas>
+        </div>
+      </div>
+
+      <!-- Player Name Input -->
+      <div class="custom-section">
+        <label class="custom-label" for="input-player-name">Nama Pemain / Bola:</label>
+        <input type="text" id="input-player-name" class="name-input" maxlength="15" placeholder="Contoh: Boli Imut" value="Si Bolil">
+      </div>
+
+      <!-- Free Color Picker -->
+      <div class="custom-section">
+        <label class="custom-label">Warna Bola (Bebas Dipilih):</label>
+        <div class="color-picker-row">
+          <input type="color" id="input-ball-color" class="native-color-picker" value="#38bdf8" title="Pilih Warna Apapun">
+          <span style="font-size: 0.85rem; color: #94a3b8;">Klik kotak untuk palet warna bebas</span>
+        </div>
+        <div class="color-swatches">
+          <div class="color-swatch" style="background: #38bdf8;" data-color="#38bdf8"></div>
+          <div class="color-swatch" style="background: #f43f5e;" data-color="#f43f5e"></div>
+          <div class="color-swatch" style="background: #22c55e;" data-color="#22c55e"></div>
+          <div class="color-swatch" style="background: #eab308;" data-color="#eab308"></div>
+          <div class="color-swatch" style="background: #a855f7;" data-color="#a855f7"></div>
+          <div class="color-swatch" style="background: #ec4899;" data-color="#ec4899"></div>
+          <div class="color-swatch" style="background: #f97316;" data-color="#f97316"></div>
+          <div class="color-swatch" style="background: #14b8a6;" data-color="#14b8a6"></div>
+        </div>
+      </div>
+
+      <!-- Expression Selector -->
+      <div class="custom-section">
+        <label class="custom-label">Ekspresi Muka Lucu:</label>
+        <div class="face-options">
+          <button class="face-btn active" data-face="happy">😄 Senyum</button>
+          <button class="face-btn" data-face="uwu">🥺 UwU</button>
+          <button class="face-btn" data-face="wink">😉 Kedip</button>
+          <button class="face-btn" data-face="derp">😜 Melet</button>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div style="display: flex; gap: 12px; margin-top: 24px;">
+        <button class="btn" style="flex: 1; background: rgba(255,255,255,0.15); color: #fff;" id="btn-cancel-custom">Kembali</button>
+        <button class="btn btn-start" style="flex: 2;" id="btn-start-play">
+          <span>🎮</span>
+          <span>MAIN SEKARANG!</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. LEADERBOARD SCREEN -->
+  <div class="screen hidden interactive" id="screen-leaderboard">
+    <div class="glass-card" style="max-width: 480px;">
+      <h2 style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: #facc15; display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <span>🏆</span> LEADERBOARD
+      </h2>
+      <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 4px;">Peringkat Skor Tertinggi Helix Jump</p>
+
+      <div class="leaderboard-table-wrap">
+        <table class="lb-table">
+          <thead>
+            <tr>
+              <th style="width: 50px;">Rank</th>
+              <th>Nama Pemain</th>
+              <th style="text-align: right;">Skor</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-tbody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+
+      <button class="btn" style="width: 100%; background: #38bdf8; color: #0f172a;" id="btn-close-leaderboard">Tutup</button>
+    </div>
+  </div>
+
+  <!-- 4. SETTINGS MODAL -->
+  <div class="screen hidden interactive" id="screen-settings">
+    <div class="glass-card">
+      <h2 style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">PENGATURAN</h2>
+
+      <div class="setting-row">
+        <span class="setting-label"><span>🔊</span> Efek Suara (SFX)</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="toggle-sfx" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <span class="setting-label"><span>🎵</span> Musik Santai</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="toggle-bgm" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <span class="setting-label"><span>✨</span> Partikel Cat & Efek</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="toggle-particles" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <span class="setting-label"><span>🔄</span> Sensitivitas Putar</span>
+        <input type="range" min="1" max="10" value="5" class="range-slider" id="slider-sensitivity">
+      </div>
+
+      <button class="btn" style="width: 100%; margin-top: 24px; background: #ffffff; color: #0f172a;" id="btn-close-settings">Selesai</button>
+    </div>
+  </div>
+
+  <!-- 5. PAUSE MODAL -->
+  <div class="screen hidden interactive" id="screen-pause">
+    <div class="glass-card">
+      <h2 style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 900; margin-bottom: 20px; color: #38bdf8;">GAME DI-PAUSE</h2>
+
+      <div class="menu-buttons">
+        <button class="btn" style="background: #22c55e; color: #fff;" id="btn-pause-resume">▶️ Lanjut Main</button>
+        <button class="btn" style="background: #f59e0b; color: #fff;" id="btn-pause-restart">🔄 Ulangi Game</button>
+        <button class="btn" style="background: #3b82f6; color: #fff;" id="btn-pause-menu">🏠 Menu Utama</button>
+        <button class="btn" style="background: #ef4444; color: #fff;" id="btn-pause-quit">🚪 Keluar (Quit Game)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. GAME OVER MODAL -->
+  <div class="screen hidden interactive" id="screen-game-over">
+    <div class="glass-card">
+      <div style="font-size: 3.5rem; margin-bottom: 8px;">💥</div>
+      <h2 style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 900; color: #ef4444; margin-bottom: 6px;">GAME OVER!</h2>
+      <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 18px;" id="game-over-subtitle">Bolamu terkena rintangan merah!</p>
+
+      <div style="background: rgba(0,0,0,0.3); border-radius: 18px; padding: 16px; margin-bottom: 20px; display: flex; justify-content: space-around;">
+        <div>
+          <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase;">Skor Akhir</div>
+          <div style="font-size: 2rem; font-weight: 900; color: #38bdf8;" id="go-final-score">0</div>
+        </div>
+        <div style="border-right: 1px solid rgba(255,255,255,0.1);"></div>
+        <div>
+          <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase;">Lantai Terjauh</div>
+          <div style="font-size: 2rem; font-weight: 900; color: #facc15;" id="go-final-level">1</div>
+        </div>
+      </div>
+
+      <div class="menu-buttons">
+        <button class="btn btn-start" id="btn-go-restart">🔄 Main Lagi</button>
+        <button class="btn" style="background: #ef4444; color: #fff;" id="btn-go-leaderboard">🏆 Lihat Leaderboard</button>
+        <button class="btn" style="background: rgba(255,255,255,0.2); color: #fff;" id="btn-go-menu">🏠 Menu Utama</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification (for locked leaderboard) -->
+  <div class="toast-notice" id="toast-notice">
+    🔒 Mainkan setidaknya 1 kali untuk membuka Leaderboard!
+  </div>
+
+  <!-- Game Logic Script -->
+  <script>
+    /* ========================================================
+       STATE & STORAGE CONFIGURATION
+       ======================================================== */
+    const STORAGE_KEY_GAMES = 'helix_jump_games_played_v1';
+    const STORAGE_KEY_LB = 'helix_jump_leaderboard_v1';
+    const STORAGE_KEY_HIGH = 'helix_jump_highscore_v1';
+    const STORAGE_KEY_PLAYER = 'helix_jump_player_data_v1';
+
+    let gamesPlayed = parseInt(localStorage.getItem(STORAGE_KEY_GAMES) || '0', 10);
+    let highScore = parseInt(localStorage.getItem(STORAGE_KEY_HIGH) || '0', 10);
+
+    let playerData = {
+      name: 'Si Bolil',
+      color: '#38bdf8',
+      face: 'happy'
+    };
+
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY_PLAYER);
+      if (saved) playerData = Object.assign(playerData, JSON.parse(saved));
+    } catch(e) {}
+
+    let settings = {
+      sfx: true,
+      bgm: true,
+      particles: true,
+      sensitivity: 5
+    };
+
+    // Default mock leaderboard data if none
+    function getLeaderboard() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_LB);
+        if (raw) return JSON.parse(raw);
+      } catch(e) {}
+      return [
+        { name: "ProJumper", score: 450 },
+        { name: "HelixKing", score: 320 },
+        { name: "TowerMaster", score: 260 },
+        { name: "RobloxFan99", score: 180 },
+        { name: "BouncingCat", score: 110 }
+      ];
+    }
+
+    function saveLeaderboardScore(name, score) {
+      if (score <= 0) return;
+      let lb = getLeaderboard();
+      lb.push({ name: name.trim() || 'Pemain Anonim', score: score });
+      lb.sort((a, b) => b.score - a.score);
+      lb = lb.slice(0, 15); // keep top 15
+      localStorage.setItem(STORAGE_KEY_LB, JSON.stringify(lb));
+    }
+
+    function recordGameFinished() {
+      gamesPlayed++;
+      localStorage.setItem(STORAGE_KEY_GAMES, gamesPlayed.toString());
+      updateLeaderboardLockState();
+    }
+
+    function updateLeaderboardLockState() {
+      const lockBadge = document.getElementById('badge-lb-lock');
+      const btnLb = document.getElementById('btn-menu-leaderboard');
+      if (gamesPlayed < 1) {
+        lockBadge.style.display = 'inline-block';
+        btnLb.classList.add('locked');
+      } else {
+        lockBadge.style.display = 'none';
+        btnLb.classList.remove('locked');
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast-notice');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2600);
+    }
+
+    /* ========================================================
+       SYNTHESIZED AUDIO ENGINE (Web Audio API - No 404s!)
+       ======================================================== */
+    let audioCtx = null;
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playSound(type) {
+      if (!settings.sfx) return;
+      try {
+        initAudio();
+        if (!audioCtx) return;
+
+        const now = audioCtx.currentTime;
+
+        if (type === 'bounce') {
+          // Playful boing sound
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(280, now);
+          osc.frequency.exponentialRampToValueAtTime(140, now + 0.12);
+
+          gain.gain.setValueAtTime(0.25, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.13);
+        } else if (type === 'pass') {
+          // Swoosh level pass
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(420, now);
+          osc.frequency.exponentialRampToValueAtTime(860, now + 0.15);
+
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.16);
+        } else if (type === 'smash') {
+          // Heavy super combo smash
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(180, now);
+          osc.frequency.exponentialRampToValueAtTime(40, now + 0.25);
+
+          gain.gain.setValueAtTime(0.35, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.26);
+        } else if (type === 'gameover') {
+          // Sad descending tone
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(320, now);
+          osc.frequency.exponentialRampToValueAtTime(80, now + 0.5);
+
+          gain.gain.setValueAtTime(0.3, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.52);
+        } else if (type === 'click') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(600, now);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.04);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.05);
+        }
+      } catch(e) {}
+    }
+
+    // Procedural cute ambient BGM
+    let bgmInterval = null;
+    const bgmNotes = [261.63, 329.63, 392.00, 523.25, 440.00, 392.00, 329.63, 293.66];
+    let noteIdx = 0;
+    function startBgm() {
+      if (bgmInterval || !settings.bgm) return;
+      bgmInterval = setInterval(() => {
+        if (!settings.bgm || !audioCtx || gamePaused || currentScreen !== 'game') return;
+        try {
+          const now = audioCtx.currentTime;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(bgmNotes[noteIdx % bgmNotes.length] * 0.75, now);
+          gain.gain.setValueAtTime(0.035, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.5);
+          noteIdx++;
+        } catch(e) {}
+      }, 550);
+    }
+    function stopBgm() {
+      if (bgmInterval) {
+        clearInterval(bgmInterval);
+        bgmInterval = null;
+      }
+    }
+
+    /* ========================================================
+       CUTE KAWAII FACE GENERATOR (2D Canvas Texture for 3D Ball)
+       ======================================================== */
+    function drawCuteFace(canvas, ballColor, expression = 'happy', isBlinking = false, isDizzy = false) {
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      const cx = w / 2;
+      const cy = h / 2;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // 1. Base Ball Color
+      ctx.fillStyle = ballColor;
+      ctx.beginPath();
+      ctx.arc(cx, cy, w * 0.48, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Top soft lighting highlight
+      const grad = ctx.createRadialGradient(cx - w * 0.15, cy - h * 0.15, 5, cx, cy, w * 0.48);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 0.45)');
+      grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.05)');
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0.25)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(cx, cy, w * 0.48, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 2. Cute Rosy Cheek Blushes
+      ctx.fillStyle = 'rgba(255, 107, 129, 0.55)';
+      ctx.beginPath();
+      ctx.ellipse(cx - w * 0.26, cy + h * 0.07, w * 0.08, h * 0.05, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.ellipse(cx + w * 0.26, cy + h * 0.07, w * 0.08, h * 0.05, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 3. Eyes
+      const eyeY = cy - h * 0.04;
+      const eyeLeftX = cx - w * 0.18;
+      const eyeRightX = cx + w * 0.18;
+
+      if (isDizzy) {
+        // Dizzy X_X eyes for Game Over
+        ctx.strokeStyle = '#1e293b';
+        ctx.lineWidth = w * 0.04;
+        ctx.lineCap = 'round';
+        const d = w * 0.06;
+        // Left X
+        ctx.beginPath();
+        ctx.moveTo(eyeLeftX - d, eyeY - d); ctx.lineTo(eyeLeftX + d, eyeY + d);
+        ctx.moveTo(eyeLeftX + d, eyeY - d); ctx.lineTo(eyeLeftX - d, eyeY + d);
+        ctx.stroke();
+        // Right X
+        ctx.beginPath();
+        ctx.moveTo(eyeRightX - d, eyeY - d); ctx.lineTo(eyeRightX + d, eyeY + d);
+        ctx.moveTo(eyeRightX + d, eyeY - d); ctx.lineTo(eyeRightX - d, eyeY + d);
+        ctx.stroke();
+
+        // Dizzy mouth
+        ctx.beginPath();
+        ctx.arc(cx, cy + h * 0.18, w * 0.08, 0, Math.PI * 2);
+        ctx.fillStyle = '#1e293b';
+        ctx.fill();
+        return;
+      }
+
+      if (isBlinking) {
+        // Closed happy curved line eyes
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = w * 0.035;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.arc(eyeLeftX, eyeY + 4, w * 0.07, Math.PI * 1.1, Math.PI * 1.9);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(eyeRightX, eyeY + 4, w * 0.07, Math.PI * 1.1, Math.PI * 1.9);
+        ctx.stroke();
+      } else if (expression === 'wink') {
+        // Left eye open, Right eye winking line
+        drawBigAnimeEye(ctx, eyeLeftX, eyeY, w * 0.08);
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = w * 0.04;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.arc(eyeRightX, eyeY + 2, w * 0.07, Math.PI * 1.1, Math.PI * 1.9);
+        ctx.stroke();
+      } else if (expression === 'uwu') {
+        // > < or closed ^ ^ kawaii lines
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = w * 0.038;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.arc(eyeLeftX, eyeY + 3, w * 0.075, Math.PI * 1.15, Math.PI * 1.85);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(eyeRightX, eyeY + 3, w * 0.075, Math.PI * 1.15, Math.PI * 1.85);
+        ctx.stroke();
+      } else {
+        // Happy Anime Big Sparkle Eyes
+        drawBigAnimeEye(ctx, eyeLeftX, eyeY, w * 0.085);
+        drawBigAnimeEye(ctx, eyeRightX, eyeY, w * 0.085);
+      }
+
+      // 4. Mouth
+      const mouthY = cy + h * 0.12;
+      ctx.lineWidth = w * 0.032;
+      ctx.strokeStyle = '#0f172a';
+      ctx.fillStyle = '#f43f5e';
+      ctx.lineCap = 'round';
+
+      if (expression === 'derp') {
+        // Tongue sticking out!
+        ctx.beginPath();
+        ctx.arc(cx, mouthY, w * 0.09, 0, Math.PI);
+        ctx.stroke();
+        // Tongue
+        ctx.beginPath();
+        ctx.arc(cx + w * 0.03, mouthY + h * 0.05, w * 0.05, 0, Math.PI);
+        ctx.fillStyle = '#ff6b81';
+        ctx.fill();
+        ctx.stroke();
+      } else if (expression === 'uwu') {
+        // :3 cat curve mouth
+        ctx.beginPath();
+        ctx.arc(cx - w * 0.04, mouthY, w * 0.045, 0, Math.PI);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(cx + w * 0.04, mouthY, w * 0.045, 0, Math.PI);
+        ctx.stroke();
+      } else {
+        // Big happy open smile
+        ctx.beginPath();
+        ctx.arc(cx, mouthY - 2, w * 0.085, 0.1 * Math.PI, 0.9 * Math.PI, false);
+        ctx.lineTo(cx, mouthY - 2);
+        ctx.fillStyle = '#ff6b81';
+        ctx.fill();
+        ctx.stroke();
+      }
+    }
+
+    function drawBigAnimeEye(ctx, x, y, r) {
+      // Dark eye base
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.ellipse(x, y, r * 0.9, r * 1.15, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Big bright sparkle
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(x - r * 0.3, y - r * 0.35, r * 0.42, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Small secondary sparkle
+      ctx.beginPath();
+      ctx.arc(x + r * 0.3, y + r * 0.35, r * 0.22, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Interactive Preview updating
+    const previewCanvas = document.getElementById('preview-face-canvas');
+    const miniFaceCanvas = document.getElementById('toh-mini-face');
+    function updateBallPreview() {
+      drawCuteFace(previewCanvas, playerData.color, playerData.face, false);
+      if (miniFaceCanvas) {
+        miniFaceCanvas.width = 48;
+        miniFaceCanvas.height = 48;
+        drawCuteFace(miniFaceCanvas, playerData.color, playerData.face, false);
+      }
+      document.getElementById('input-ball-color').value = playerData.color;
+      document.getElementById('toh-indicator').style.backgroundColor = playerData.color;
+    }
+
+    /* ========================================================
+       SCREEN & NAVIGATION CONTROLLER
+       ======================================================== */
+    let currentScreen = 'main-menu';
+    const screenMainMenu = document.getElementById('screen-main-menu');
+    const screenCustomize = document.getElementById('screen-customize');
+    const screenLeaderboard = document.getElementById('screen-leaderboard');
+    const screenSettings = document.getElementById('screen-settings');
+    const screenPause = document.getElementById('screen-pause');
+    const screenGameOver = document.getElementById('screen-game-over');
+    const gameHud = document.getElementById('game-hud');
+
+    function showScreen(screenId) {
+      [screenMainMenu, screenCustomize, screenLeaderboard, screenSettings, screenPause, screenGameOver].forEach(s => {
+        s.classList.add('hidden');
+      });
+
+      if (screenId === 'game') {
+        gameHud.style.display = 'block';
+        currentScreen = 'game';
+        startBgm();
+      } else {
+        currentScreen = screenId;
+        const target = document.getElementById(`screen-${screenId}`);
+        if (target) target.classList.remove('hidden');
+        if (screenId !== 'pause') {
+          // If in menu screens, hide HUD
+          gameHud.style.display = 'none';
+        }
+      }
+    }
+
+    // Setup Menu Buttons
+    document.getElementById('btn-menu-start').addEventListener('click', () => {
+      playSound('click');
+      updateBallPreview();
+      showScreen('customize');
+    });
+
+    document.getElementById('btn-menu-leaderboard').addEventListener('click', () => {
+      playSound('click');
+      // Rule: must play at least 1 game to open leaderboard!
+      if (gamesPlayed < 1) {
+        showToast("🔒 Mainkan setidaknya 1 kali untuk membuka Leaderboard!");
+        return;
+      }
+      populateLeaderboardUI();
+      showScreen('leaderboard');
+    });
+
+    document.getElementById('btn-menu-settings').addEventListener('click', () => {
+      playSound('click');
+      showScreen('settings');
+    });
+
+    document.getElementById('btn-cancel-custom').addEventListener('click', () => {
+      playSound('click');
+      showScreen('main-menu');
+    });
+
+    document.getElementById('btn-start-play').addEventListener('click', () => {
+      playSound('click');
+      const nameVal = document.getElementById('input-player-name').value.trim();
+      playerData.name = nameVal || 'Si Bolil';
+      localStorage.setItem(STORAGE_KEY_PLAYER, JSON.stringify(playerData));
+      updateBall3DTexture();
+      startNewGame();
+    });
+
+    document.getElementById('btn-close-leaderboard').addEventListener('click', () => {
+      playSound('click');
+      showScreen('main-menu');
+    });
+
+    document.getElementById('btn-close-settings').addEventListener('click', () => {
+      playSound('click');
+      showScreen('main-menu');
+    });
+
+    // Customization inputs
+    document.getElementById('input-ball-color').addEventListener('input', (e) => {
+      playerData.color = e.target.value;
+      updateBallPreview();
+    });
+
+    document.querySelectorAll('.color-swatch').forEach(swatch => {
+      swatch.addEventListener('click', () => {
+        playSound('click');
+        playerData.color = swatch.dataset.color;
+        updateBallPreview();
+      });
+    });
+
+    document.querySelectorAll('.face-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        playSound('click');
+        document.querySelectorAll('.face-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        playerData.face = btn.dataset.face;
+        updateBallPreview();
+      });
+    });
+
+    // Settings inputs
+    document.getElementById('toggle-sfx').addEventListener('change', (e) => {
+      settings.sfx = e.target.checked;
+    });
+    document.getElementById('toggle-bgm').addEventListener('change', (e) => {
+      settings.bgm = e.target.checked;
+      if (!settings.bgm) stopBgm();
+      else if (currentScreen === 'game') startBgm();
+    });
+    document.getElementById('toggle-particles').addEventListener('change', (e) => {
+      settings.particles = e.target.checked;
+    });
+    document.getElementById('slider-sensitivity').addEventListener('input', (e) => {
+      settings.sensitivity = parseInt(e.target.value, 10);
+    });
+
+    // Pause & Game Over Controls
+    let gamePaused = false;
+    document.getElementById('btn-pause-game').addEventListener('click', () => {
+      playSound('click');
+      pauseGame(true);
+    });
+    document.getElementById('btn-pause-resume').addEventListener('click', () => {
+      playSound('click');
+      pauseGame(false);
+    });
+    document.getElementById('btn-pause-restart').addEventListener('click', () => {
+      playSound('click');
+      pauseGame(false);
+      startNewGame();
+    });
+    document.getElementById('btn-pause-menu').addEventListener('click', () => {
+      playSound('click');
+      pauseGame(false);
+      showScreen('main-menu');
+    });
+    document.getElementById('btn-pause-quit').addEventListener('click', () => {
+      playSound('click');
+      pauseGame(false);
+      showScreen('main-menu');
+    });
+
+    document.getElementById('btn-go-restart').addEventListener('click', () => {
+      playSound('click');
+      startNewGame();
+    });
+    document.getElementById('btn-go-leaderboard').addEventListener('click', () => {
+      playSound('click');
+      populateLeaderboardUI();
+      showScreen('leaderboard');
+    });
+    document.getElementById('btn-go-menu').addEventListener('click', () => {
+      playSound('click');
+      showScreen('main-menu');
+    });
+
+    function pauseGame(paused) {
+      gamePaused = paused;
+      if (paused) {
+        showScreen('pause');
+      } else {
+        showScreen('game');
+      }
+    }
+
+    function populateLeaderboardUI() {
+      const tbody = document.getElementById('leaderboard-tbody');
+      tbody.innerHTML = '';
+      const list = getLeaderboard();
+      list.forEach((item, index) => {
+        const rank = index + 1;
+        const tr = document.createElement('tr');
+        let rankClass = '';
+        let rankBadge = rank;
+        if (rank === 1) { rankClass = 'lb-rank-1'; rankBadge = '🥇 1'; }
+        else if (rank === 2) { rankClass = 'lb-rank-2'; rankBadge = '🥈 2'; }
+        else if (rank === 3) { rankClass = 'lb-rank-3'; rankBadge = '🥉 3'; }
+
+        tr.innerHTML = `
+          <td class="${rankClass}"><span class="lb-badge">${rankBadge}</span></td>
+          <td style="font-weight: 700;">${item.name}</td>
+          <td style="text-align: right; color: #38bdf8; font-weight: 800;">${item.score}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    /* ========================================================
+       THREE.JS 3D HELIX JUMP GAME ENGINE
+       ======================================================== */
+    const container = document.getElementById('canvas-container');
+    let scene, camera, renderer;
+    let towerGroup, centralPole;
+    let ballMesh;
+    let ballCanvas, ballTexture;
+    let particles = [];
+    let splashDecals = [];
+
+    // Game Physics & Loop Variables
+    const SLICES_PER_RING = 12;
+    const RING_DISTANCE = 4.2;
+    const POLE_RADIUS = 0.9;
+    const RING_OUTER_RADIUS = 3.6;
+    const RING_HEIGHT = 0.45;
+    const GRAVITY = -32.0;
+    const BOUNCE_VELOCITY = 13.0;
+
+    let ballY = 0;
+    let ballVY = 0;
+    let ballRadius = 0.38;
+    let currentLevelPassed = 0;
+    let score = 0;
+    let comboStreak = 0;
+    let isSuperSmash = false;
+    let towerRotation = 0;
+    let targetTowerRotation = 0;
+
+    let activeRings = [];
+    let nextRingIndex = 0;
+    let currentRingIndexPassed = 0;
+    let isGameOver = false;
+
+    // Blink timer for cute face
+    let blinkTimer = 0;
+    let isBlinking = false;
+
+    // Difficulty and Theme Color Stages
+    // Green (Easy) -> Yellow (Medium) -> Orange (Hard) -> Red (Hell) -> Violet (Extreme)
+    const DIFFICULTY_STAGES = [
+      { depth: 0, name: "1 - Mudah", color: 0x22c55e, hex: "#22c55e", dangerCount: 1, gapCount: 2 },
+      { depth: 5, name: "2 - Sedang", color: 0xeab308, hex: "#eab308", dangerCount: 2, gapCount: 2 },
+      { depth: 12, name: "3 - Bahaya", color: 0xf97316, hex: "#f97316", dangerCount: 3, gapCount: 1 },
+      { depth: 22, name: "4 - Api Neraka", color: 0xef4444, hex: "#ef4444", dangerCount: 4, gapCount: 1 },
+      { depth: 35, name: "5 - Ekstrem Hell", color: 0xa855f7, hex: "#a855f7", dangerCount: 5, gapCount: 1 }
+    ];
+
+    function getCurrentStage(level) {
+      let stage = DIFFICULTY_STAGES[0];
+      for (let i = 0; i < DIFFICULTY_STAGES.length; i++) {
+        if (level >= DIFFICULTY_STAGES[i].depth) {
+          stage = DIFFICULTY_STAGES[i];
+        }
+      }
+      return stage;
+    }
+
+    function init3D() {
+      // Scene
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x0c1322);
+      scene.fog = new THREE.FogExp2(0x0c1322, 0.022);
+
+      // Camera
+      camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+      camera.position.set(0, 4.0, 9.8);
+      camera.lookAt(0, 0, 0);
+
+      // Renderer
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      container.appendChild(renderer.domElement);
+
+      // Lighting
+      const hemiLight = new THREE.HemisphereLight(0xffffff, 0x1e293b, 0.85);
+      scene.add(hemiLight);
+
+      const dirLight = new THREE.DirectionalLight(0xffffff, 0.95);
+      dirLight.position.set(6, 15, 10);
+      dirLight.castShadow = true;
+      dirLight.shadow.mapSize.width = 1024;
+      dirLight.shadow.mapSize.height = 1024;
+      scene.add(dirLight);
+
+      const pointLight = new THREE.PointLight(0x38bdf8, 0.7, 15);
+      pointLight.position.set(-4, 4, 4);
+      scene.add(pointLight);
+
+      // Tower Group
+      towerGroup = new THREE.Group();
+      scene.add(towerGroup);
+
+      // Central Pole
+      const poleGeo = new THREE.CylinderGeometry(POLE_RADIUS, POLE_RADIUS, 200, 32);
+      const poleMat = new THREE.MeshStandardMaterial({
+        color: 0x1e293b,
+        roughness: 0.35,
+        metalness: 0.45
+      });
+      centralPole = new THREE.Mesh(poleGeo, poleMat);
+      centralPole.position.y = -70;
+      towerGroup.add(centralPole);
+
+      // Cute Ball Mesh with dynamic canvas texture
+      ballCanvas = document.createElement('canvas');
+      ballCanvas.width = 256;
+      ballCanvas.height = 256;
+      ballTexture = new THREE.CanvasTexture(ballCanvas);
+
+      const ballGeo = new THREE.SphereGeometry(ballRadius, 32, 32);
+      const ballMat = new THREE.MeshStandardMaterial({
+        map: ballTexture,
+        roughness: 0.25,
+        metalness: 0.15
+      });
+      ballMesh = new THREE.Mesh(ballGeo, ballMat);
+      ballMesh.position.set(0, 0.5, 2.3);
+      ballMesh.rotation.y = -Math.PI / 2; // Face pointing outward toward camera
+      ballMesh.castShadow = true;
+      scene.add(ballMesh);
+
+      updateBall3DTexture();
+
+      // Window resize
+      window.addEventListener('resize', onWindowResize);
+
+      // Setup Controls (Drag & Touch & Keyboard)
+      setupInputListeners();
+    }
+
+    function updateBall3DTexture(isDizzy = false) {
+      if (!ballCanvas) return;
+      drawCuteFace(ballCanvas, playerData.color, playerData.face, isBlinking, isDizzy);
+      if (ballTexture) ballTexture.needsUpdate = true;
+    }
+
+    /* Platform Ring Creation */
+    function createHelixRing(ringIndex) {
+      const ringGroup = new THREE.Group();
+      const ringY = -ringIndex * RING_DISTANCE;
+      ringGroup.position.y = ringY;
+
+      const stage = getCurrentStage(ringIndex);
+      const safeColor = stage.color;
+      const dangerColor = 0xef4444;
+
+      // Determine slice types: 0: safe, 1: gap, 2: danger
+      const sliceTypes = new Array(SLICES_PER_RING).fill(0);
+
+      if (ringIndex === 0) {
+        // First ring: ball starts bouncing at slice 3. Gaps placed at 5 and 6!
+        sliceTypes[5] = 1;
+        sliceTypes[6] = 1;
+      } else {
+        // Gaps: for easy stages, make 2 or 3 gap slices so falling through is smooth and intuitive
+        const numGaps = ringIndex < 5 ? 3 : (ringIndex < 12 ? 2 : Math.max(1, stage.gapCount));
+        const gapStart = Math.floor(Math.random() * SLICES_PER_RING);
+        for (let g = 0; g < numGaps; g++) {
+          sliceTypes[(gapStart + g) % SLICES_PER_RING] = 1;
+        }
+
+        // Danger Slices
+        const numDangers = stage.dangerCount;
+        let placed = 0;
+        let tries = 0;
+        while (placed < numDangers && tries < 40) {
+          tries++;
+          const idx = Math.floor(Math.random() * SLICES_PER_RING);
+          if (sliceTypes[idx] === 0) {
+            sliceTypes[idx] = 2;
+            placed++;
+          }
+        }
+      }
+
+      ringGroup.userData = {
+        ringIndex: ringIndex,
+        sliceTypes: sliceTypes,
+        passed: false
+      };
+
+      // Build 3D slices
+      const angleStep = (Math.PI * 2) / SLICES_PER_RING;
+
+      for (let i = 0; i < SLICES_PER_RING; i++) {
+        const type = sliceTypes[i];
+        if (type === 1) continue; // Gap: NO GEOMETRY! Pure open space!
+
+        // Center each slice around i * angleStep
+        const startAngle = i * angleStep - angleStep * 0.5;
+        const sliceShape = new THREE.Shape();
+
+        // 2D arc cross-section for cylinder slice
+        const segments = 8;
+        for (let s = 0; s <= segments; s++) {
+          const a = startAngle + (s / segments) * angleStep;
+          const x = Math.cos(a) * RING_OUTER_RADIUS;
+          const z = Math.sin(a) * RING_OUTER_RADIUS;
+          if (s === 0) sliceShape.moveTo(x, z);
+          else sliceShape.lineTo(x, z);
+        }
+        for (let s = segments; s >= 0; s--) {
+          const a = startAngle + (s / segments) * angleStep;
+          const x = Math.cos(a) * POLE_RADIUS;
+          const z = Math.sin(a) * POLE_RADIUS;
+          sliceShape.lineTo(x, z);
+        }
+        sliceShape.closePath();
+
+        const extrudeSettings = {
+          depth: RING_HEIGHT,
+          bevelEnabled: true,
+          bevelSegments: 2,
+          steps: 1,
+          bevelSize: 0.04,
+          bevelThickness: 0.04
+        };
+
+        const sliceGeo = new THREE.ExtrudeGeometry(sliceShape, extrudeSettings);
+        sliceGeo.rotateX(Math.PI / 2); // align with horizontal plane: Top is at y=0, bottom at y=-RING_HEIGHT
+
+        const isDanger = (type === 2);
+        const mat = new THREE.MeshStandardMaterial({
+          color: isDanger ? dangerColor : safeColor,
+          roughness: isDanger ? 0.35 : 0.4,
+          metalness: isDanger ? 0.3 : 0.1,
+          emissive: isDanger ? 0x991b1b : 0x000000,
+          emissiveIntensity: isDanger ? 0.45 : 0
+        });
+
+        const sliceMesh = new THREE.Mesh(sliceGeo, mat);
+        sliceMesh.receiveShadow = true;
+
+        ringGroup.add(sliceMesh);
+      }
+
+      towerGroup.add(ringGroup);
+      activeRings.push(ringGroup);
+    }
+
+    function createSplash(x, y, z, color) {
+      if (!settings.particles) return;
+      // Paint splash decal on platform ring
+      const splashGeo = new THREE.CircleGeometry(0.38 + Math.random() * 0.15, 12);
+      splashGeo.rotateX(-Math.PI / 2);
+      const splashMat = new THREE.MeshBasicMaterial({
+        color: color,
+        transparent: true,
+        opacity: 0.8,
+        depthWrite: false
+      });
+      const splash = new THREE.Mesh(splashGeo, splashMat);
+      splash.position.set(x, y + 0.02, z);
+      towerGroup.add(splash);
+      splashDecals.push(splash);
+
+      if (splashDecals.length > 25) {
+        const old = splashDecals.shift();
+        towerGroup.remove(old);
+        old.geometry.dispose();
+        old.material.dispose();
+      }
+
+      // 3D particles flying up
+      for (let i = 0; i < 9; i++) {
+        const pGeo = new THREE.SphereGeometry(0.06 + Math.random() * 0.04, 6, 6);
+        const pMat = new THREE.MeshBasicMaterial({ color: color });
+        const pMesh = new THREE.Mesh(pGeo, pMat);
+        pMesh.position.set(x, y + 0.1, z);
+        scene.add(pMesh);
+
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 1.8 + Math.random() * 2.5;
+        particles.push({
+          mesh: pMesh,
+          vx: Math.cos(angle) * speed,
+          vy: 3.5 + Math.random() * 3.5,
+          vz: Math.sin(angle) * speed,
+          life: 1.0
+        });
+      }
+    }
+
+    function createSuperSmashBurst(y) {
+      // Big explosion effect
+      for (let i = 0; i < 24; i++) {
+        const pGeo = new THREE.SphereGeometry(0.12, 6, 6);
+        const pMat = new THREE.MeshBasicMaterial({ color: 0xff3b30 });
+        const pMesh = new THREE.Mesh(pGeo, pMat);
+        pMesh.position.set((Math.random() - 0.5) * 3, y, (Math.random() - 0.5) * 3);
+        scene.add(pMesh);
+
+        const angle = Math.random() * Math.PI * 2;
+        particles.push({
+          mesh: pMesh,
+          vx: Math.cos(angle) * 6.0,
+          vy: 4.0 + Math.random() * 5.0,
+          vz: Math.sin(angle) * 6.0,
+          life: 1.2
+        });
+      }
+    }
+
+    /* Start New Game Session */
+    function startNewGame() {
+      // Reset variables
+      score = 0;
+      comboStreak = 0;
+      isSuperSmash = false;
+      isGameOver = false;
+      gamePaused = false;
+      currentLevelPassed = 0;
+      currentRingIndexPassed = 0;
+
+      ballY = 1.0;
+      ballVY = 0;
+      towerRotation = 0;
+      targetTowerRotation = 0;
+      towerGroup.rotation.y = 0;
+
+      // Clear existing rings & particles
+      activeRings.forEach(r => {
+        towerGroup.remove(r);
+        r.traverse(child => {
+          if (child.geometry) child.geometry.dispose();
+          if (child.material) child.material.dispose();
+        });
+      });
+      activeRings = [];
+
+      splashDecals.forEach(s => {
+        towerGroup.remove(s);
+        s.geometry.dispose();
+        s.material.dispose();
+      });
+      splashDecals = [];
+
+      particles.forEach(p => {
+        scene.remove(p.mesh);
+        p.mesh.geometry.dispose();
+        p.mesh.material.dispose();
+      });
+      particles = [];
+
+      nextRingIndex = 0;
+      // Pre-generate 12 rings
+      for (let i = 0; i < 12; i++) {
+        createHelixRing(nextRingIndex++);
+      }
+
+      // Update UI HUD
+      updateScoreHUD();
+      updateTowerOfHellBar(0);
+      updateBall3DTexture(false);
+
+      showScreen('game');
+    }
+
+    /* Input Handling: Mouse Drag, Touch, & Keys */
+    function setupInputListeners() {
+      let isDragging = false;
+      let prevMouseX = 0;
+
+      window.addEventListener('mousedown', (e) => {
+        if (currentScreen !== 'game' || gamePaused) return;
+        isDragging = true;
+        prevMouseX = e.clientX;
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging || currentScreen !== 'game' || gamePaused) return;
+        const deltaX = e.clientX - prevMouseX;
+        prevMouseX = e.clientX;
+        const sens = settings.sensitivity * 0.0022;
+        targetTowerRotation += deltaX * sens;
+      });
+
+      window.addEventListener('mouseup', () => { isDragging = false; });
+
+      // Touch events
+      window.addEventListener('touchstart', (e) => {
+        if (currentScreen !== 'game' || gamePaused) return;
+        if (e.touches.length > 0) {
+          isDragging = true;
+          prevMouseX = e.touches[0].clientX;
+        }
+      }, { passive: false });
+
+      window.addEventListener('touchmove', (e) => {
+        if (!isDragging || currentScreen !== 'game' || gamePaused) return;
+        if (e.touches.length > 0) {
+          const deltaX = e.touches[0].clientX - prevMouseX;
+          prevMouseX = e.touches[0].clientX;
+          const sens = settings.sensitivity * 0.0028;
+          targetTowerRotation += deltaX * sens;
+        }
+      }, { passive: false });
+
+      window.addEventListener('touchend', () => { isDragging = false; });
+
+      // Keyboard Controls (Left/Right or A/D)
+      window.addEventListener('keydown', (e) => {
+        if (currentScreen !== 'game' || gamePaused) return;
+        const keySpeed = 0.12 * (settings.sensitivity / 5);
+        if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+          targetTowerRotation += keySpeed;
+        } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+          targetTowerRotation -= keySpeed;
+        } else if (e.key === 'Escape' || e.key === 'p' || e.key === 'P') {
+          pauseGame(!gamePaused);
+        }
+      });
+    }
+
+    function triggerGameOver() {
+      if (isGameOver) return;
+      isGameOver = true;
+      playSound('gameover');
+      updateBall3DTexture(true); // Dizzy X_X eyes!
+
+      // Update games played count
+      recordGameFinished();
+      saveLeaderboardScore(playerData.name, score);
+
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem(STORAGE_KEY_HIGH, highScore.toString());
+      }
+
+      document.getElementById('go-final-score').textContent = score;
+      document.getElementById('go-final-level').textContent = currentLevelPassed + 1;
+
+      setTimeout(() => {
+        showScreen('game-over');
+      }, 700);
+    }
+
+    /* Check Collision with Helix Platforms */
+    function checkRingCollisions(prevY, newY) {
+      if (isGameOver) return;
+
+      const TWO_PI = Math.PI * 2;
+      const angleStep = TWO_PI / SLICES_PER_RING;
+
+      // Ball is at X=0, Z=2.3 (angle = PI/2 in world space).
+      // Angle in the tower's local coordinate system:
+      let ballAngleInTower = (Math.PI * 0.5 + towerGroup.rotation.y) % TWO_PI;
+      if (ballAngleInTower < 0) ballAngleInTower += TWO_PI;
+
+      // Which slice is directly under the ball?
+      const sliceIndex = Math.floor((ballAngleInTower + angleStep * 0.5) / angleStep) % SLICES_PER_RING;
+
+      for (let r = 0; r < activeRings.length; r++) {
+        const ring = activeRings[r];
+        const ringTop = ring.position.y;
+
+        const prevBottom = prevY - ballRadius;
+        const newBottom = newY - ballRadius;
+
+        // Check if ball bottom crossed ringTop downward during this step:
+        if (prevBottom >= ringTop && newBottom <= ringTop) {
+          const type = ring.userData.sliceTypes[sliceIndex];
+
+          if (type === 1) {
+            // GAP: The ball passes through cleanly!
+            if (!ring.userData.passed) {
+              ring.userData.passed = true;
+              currentLevelPassed++;
+              comboStreak++;
+
+              playSound('pass');
+              const comboBonus = comboStreak > 1 ? comboStreak * 5 : 0;
+              score += 10 + comboBonus;
+              updateScoreHUD();
+              updateTowerOfHellBar(currentLevelPassed);
+
+              if (comboStreak >= 3 && !isSuperSmash) {
+                isSuperSmash = true;
+                showComboBadge();
+              }
+
+              checkStageBanner(currentLevelPassed);
+            }
+            // Do NOT bounce or stop! Let ball continue falling through the hole!
+          } else {
+            // SOLID SLICE: SAFE or DANGER
+            if (isSuperSmash) {
+              // Super smash breaks this entire platform!
+              playSound('smash');
+              createSuperSmashBurst(ringTop);
+              towerGroup.remove(ring);
+              activeRings.splice(r, 1);
+              r--;
+              score += 35;
+              comboStreak = 0;
+              isSuperSmash = false;
+              updateScoreHUD();
+              return;
+            }
+
+            if (type === 2) {
+              // Hit DANGER sector -> GAME OVER!
+              ballY = ringTop + ballRadius;
+              ballVY = 0;
+              triggerGameOver();
+              return;
+            } else {
+              // Hit SAFE sector -> BOUNCE!
+              ballY = ringTop + ballRadius;
+              ballVY = BOUNCE_VELOCITY;
+              comboStreak = 0;
+              isSuperSmash = false;
+
+              // Squash animation
+              ballMesh.scale.set(1.3, 0.7, 1.3);
+
+              playSound('bounce');
+              createSplash(0, ringTop + 0.05, 2.3, playerData.color);
+              updateScoreHUD();
+              return;
+            }
+          }
+        }
+      }
+    }
+
+    function checkStageBanner(level) {
+      DIFFICULTY_STAGES.forEach(stage => {
+        if (level === stage.depth && stage.depth > 0) {
+          const banner = document.getElementById('stage-banner');
+          banner.textContent = `⚠️ TAHAP: ${stage.name}! ⚠️`;
+          banner.style.background = `linear-gradient(135deg, ${stage.hex}, #f43f5e)`;
+          banner.classList.add('show');
+          setTimeout(() => banner.classList.remove('show'), 2200);
+        }
+      });
+    }
+
+    function showComboBadge() {
+      const badge = document.getElementById('hud-combo-badge');
+      badge.textContent = `🔥 SUPER SMASH x${comboStreak}!`;
+      badge.classList.add('visible');
+      setTimeout(() => {
+        if (!isSuperSmash) badge.classList.remove('visible');
+      }, 1800);
+    }
+
+    function updateScoreHUD() {
+      const scoreElem = document.getElementById('hud-score');
+      scoreElem.textContent = score;
+      scoreElem.classList.add('pop');
+      setTimeout(() => scoreElem.classList.remove('pop'), 150);
+
+      document.getElementById('hud-high-score').textContent = Math.max(score, highScore);
+
+      const stage = getCurrentStage(currentLevelPassed);
+      const stageNameElem = document.getElementById('hud-stage-name');
+      stageNameElem.textContent = stage.name;
+      stageNameElem.style.color = stage.hex;
+
+      const badge = document.getElementById('hud-combo-badge');
+      if (!isSuperSmash) {
+        badge.classList.remove('visible');
+      }
+    }
+
+    /* Update Tower of Hell Progress Bar (Roblox Style) */
+    function updateTowerOfHellBar(level) {
+      const maxLevelsForBar = 40; // Full Hell depth
+      const percent = Math.min(100, (level / maxLevelsForBar) * 100);
+      const indicator = document.getElementById('toh-indicator');
+      const tag = document.getElementById('toh-tag');
+
+      indicator.style.top = `${percent}%`;
+      tag.textContent = `Lantai ${level + 1}`;
+    }
+
+    /* Main Animation Loop */
+    let lastTime = performance.now();
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const now = performance.now();
+      const dt = Math.min((now - lastTime) / 1000, 0.1);
+      lastTime = now;
+
+      // Handle cute blinking eyes
+      blinkTimer += dt;
+      if (blinkTimer > 3.5) {
+        isBlinking = true;
+        updateBall3DTexture(isGameOver);
+        if (blinkTimer > 3.65) {
+          isBlinking = false;
+          updateBall3DTexture(isGameOver);
+          blinkTimer = 0;
+        }
+      }
+
+      if (currentScreen === 'game' && !gamePaused) {
+        // Smooth Tower Rotation
+        towerRotation += (targetTowerRotation - towerRotation) * (18 * dt);
+        towerGroup.rotation.y = towerRotation;
+
+        // Sub-stepping for physics to guarantee zero clipping and smooth gap detection
+        const subSteps = 3;
+        const subDt = dt / subSteps;
+
+        for (let step = 0; step < subSteps; step++) {
+          if (isGameOver) break;
+          const prevY = ballY;
+          ballVY += GRAVITY * subDt;
+          ballY += ballVY * subDt;
+
+          checkRingCollisions(prevY, ballY);
+        }
+
+        // Smooth restitution squash recovery
+        ballMesh.scale.x += (1.0 - ballMesh.scale.x) * (12 * dt);
+        ballMesh.scale.y += (1.0 - ballMesh.scale.y) * (12 * dt);
+        ballMesh.scale.z += (1.0 - ballMesh.scale.z) * (12 * dt);
+
+        // Super smash fiery visual
+        if (isSuperSmash) {
+          ballMesh.material.emissive.setHex(0xff3300);
+          ballMesh.material.emissiveIntensity = 0.8;
+        } else {
+          ballMesh.material.emissive.setHex(0x000000);
+          ballMesh.material.emissiveIntensity = 0;
+        }
+
+        // Endless generation & cleanup of passed rings
+        if (activeRings.length > 0) {
+          const lowestRing = activeRings[activeRings.length - 1];
+          if (ballY < lowestRing.position.y + 20) {
+            createHelixRing(nextRingIndex++);
+          }
+
+          // Clean rings far above
+          if (activeRings[0].position.y > ballY + 16) {
+            const oldRing = activeRings.shift();
+            towerGroup.remove(oldRing);
+            oldRing.traverse(c => {
+              if (c.geometry) c.geometry.dispose();
+              if (c.material) c.material.dispose();
+            });
+          }
+        }
+
+        // Camera smoothly follows ball down
+        const targetCamY = ballY + 2.5;
+        camera.position.y += (targetCamY - camera.position.y) * (7 * dt);
+        camera.lookAt(0, ballY - 0.5, 0);
+
+        // Position Ball
+        ballMesh.position.y = ballY;
+        centralPole.position.y = camera.position.y - 60;
+      }
+
+      // Update particle physics
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.vy += -18 * dt;
+        p.mesh.position.x += p.vx * dt;
+        p.mesh.position.y += p.vy * dt;
+        p.mesh.position.z += p.vz * dt;
+        p.life -= dt * 1.5;
+        p.mesh.scale.setScalar(Math.max(0.01, p.life));
+
+        if (p.life <= 0) {
+          scene.remove(p.mesh);
+          p.mesh.geometry.dispose();
+          p.mesh.material.dispose();
+          particles.splice(i, 1);
+        }
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    // Initialize everything on load
+    window.addEventListener('DOMContentLoaded', () => {
+      init3D();
+      updateLeaderboardLockState();
+      updateBallPreview();
+      animate();
+
+      // Ensure audio context activates on first interaction
+      window.addEventListener('click', initAudio, { once: true });
+      window.addEventListener('touchstart', initAudio, { once: true });
+    });
+  </script>
+</body>
+</html>
