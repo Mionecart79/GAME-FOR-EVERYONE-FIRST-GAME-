@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Kawaii Helix Jump - Tower of Hell Edition</title>
+  <title>Super Ultra Kawai Helix Game Waow</title>
   <!-- Google Fonts: Outfit & Fredoka for playful kawaii style -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,7 +37,7 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: #0f172a;
+      background: #090e17;
       font-family: var(--font-main);
       color: #fff;
     }
@@ -77,29 +77,30 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      transition: opacity 0.28s ease, transform 0.28s ease;
       z-index: 20;
     }
 
     .hidden {
       opacity: 0 !important;
       pointer-events: none !important;
-      transform: scale(0.96);
+      transform: scale(0.95);
     }
 
     /* Glassmorphism Card Box */
     .glass-card {
-      background: rgba(15, 23, 42, 0.82);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      background: rgba(15, 23, 42, 0.86);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.25);
       border-radius: 28px;
-      padding: 32px 28px;
+      padding: 28px 24px;
       text-align: center;
-      max-width: 440px;
+      max-width: 460px;
       width: 90%;
       animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
     }
 
     @keyframes popIn {
@@ -107,39 +108,56 @@
       to { opacity: 1; transform: scale(1); }
     }
 
-    .game-logo {
+    .game-logo-main {
       font-family: var(--font-display);
-      font-size: 2.8rem;
+      font-size: 2.3rem;
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 6px;
-      background: linear-gradient(135deg, #4ade80, #38bdf8, #f43f5e);
+      letter-spacing: 1.5px;
+      line-height: 1.05;
+      background: linear-gradient(135deg, #f43f5e, #38bdf8, #4ade80, #facc15);
+      background-size: 200% 200%;
+      animation: gradientShift 4s ease infinite;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+      filter: drop-shadow(0 4px 14px rgba(0,0,0,0.6));
     }
 
-    .game-subtitle {
-      font-size: 1.05rem;
-      color: #94a3b8;
-      margin-bottom: 28px;
-      font-weight: 600;
+    .game-logo-sub {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #38bdf8;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 4px;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
     }
 
-    /* Menu Buttons Styles strictly matching prompt */
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Menu Buttons Styles */
     .menu-buttons {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
       width: 100%;
     }
 
     .btn {
       font-family: var(--font-main);
-      font-size: 1.25rem;
+      font-size: 1.18rem;
       font-weight: 700;
-      padding: 16px 28px;
+      padding: 15px 24px;
       border-radius: 20px;
       border: none;
       cursor: pointer;
@@ -179,26 +197,13 @@
       box-shadow: 0 8px 28px rgba(107, 114, 128, 0.4);
     }
 
-    .btn-leaderboard.locked {
-      opacity: 0.85;
-      position: relative;
-    }
-
-    .lock-badge {
-      background: rgba(0,0,0,0.35);
-      padding: 2px 8px;
-      border-radius: 10px;
-      font-size: 0.85rem;
-      margin-left: auto;
-    }
-
     /* 3. SETTINGS BUTTON: White, DOES NOT CHANGE COLOR ON HOVER */
     .btn-settings {
       background-color: var(--color-settings) !important;
       color: #1f2937;
     }
     .btn-settings:hover {
-      background-color: var(--color-settings) !important; /* STRICTLY NO COLOR CHANGE */
+      background-color: var(--color-settings) !important;
       color: #1f2937 !important;
       transform: scale(1.02);
       box-shadow: 0 8px 28px rgba(255, 255, 255, 0.4);
@@ -206,12 +211,12 @@
 
     /* Ball Customization Screen */
     .custom-section {
-      margin-bottom: 22px;
+      margin-bottom: 18px;
       text-align: left;
     }
 
     .custom-label {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 700;
       color: #cbd5e1;
       margin-bottom: 8px;
@@ -221,10 +226,10 @@
 
     .name-input {
       width: 100%;
-      background: rgba(30, 41, 59, 0.8);
+      background: rgba(30, 41, 59, 0.85);
       border: 2px solid rgba(255, 255, 255, 0.2);
       border-radius: 16px;
-      padding: 14px 18px;
+      padding: 13px 18px;
       font-family: var(--font-main);
       font-size: 1.15rem;
       font-weight: 600;
@@ -242,12 +247,12 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin: 16px 0 20px;
+      margin: 10px 0 18px;
     }
 
     .preview-canvas-holder {
-      width: 110px;
-      height: 110px;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -261,7 +266,7 @@
 
     @keyframes floatBall {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+      50% { transform: translateY(-7px); }
     }
 
     #preview-face-canvas {
@@ -274,7 +279,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .color-swatches {
@@ -285,8 +290,8 @@
     }
 
     .color-swatch {
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       cursor: pointer;
       border: 2px solid rgba(255,255,255,0.4);
@@ -298,8 +303,8 @@
     }
 
     .native-color-picker {
-      width: 44px;
-      height: 44px;
+      width: 40px;
+      height: 40px;
       border: none;
       border-radius: 12px;
       cursor: pointer;
@@ -326,7 +331,7 @@
       background: rgba(255,255,255,0.1);
       border: 1px solid rgba(255,255,255,0.2);
       color: #fff;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       border-radius: 12px;
       cursor: pointer;
       font-weight: 600;
@@ -339,11 +344,84 @@
       box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
     }
 
+    /* ========================================================
+       GAME MODE SELECTION CARDS
+       ======================================================== */
+    .mode-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 18px 0 10px;
+      width: 100%;
+    }
+
+    .mode-card {
+      background: rgba(30, 41, 59, 0.7);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 16px 12px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mode-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      border-color: #38bdf8;
+      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.25);
+    }
+
+    .mode-card.normal-card:hover {
+      border-color: #22c55e;
+      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.3);
+    }
+
+    .mode-card.endless-card:hover {
+      border-color: #f59e0b;
+      box-shadow: 0 12px 30px rgba(245, 158, 11, 0.3);
+    }
+
+    .mode-card-badge {
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .mode-icon {
+      font-size: 2.6rem;
+      margin-bottom: 6px;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+    }
+
+    .mode-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .mode-desc {
+      font-size: 0.76rem;
+      color: #94a3b8;
+      line-height: 1.35;
+      font-weight: 500;
+    }
+
     /* HUD Top Right Score */
     .hud-top-right {
       position: absolute;
-      top: 24px;
-      right: 24px;
+      top: 20px;
+      right: 20px;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
@@ -352,17 +430,17 @@
     }
 
     .score-card {
-      background: rgba(15, 23, 42, 0.75);
+      background: rgba(15, 23, 42, 0.8);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: 20px;
-      padding: 10px 20px;
+      padding: 10px 18px;
       text-align: right;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.45);
     }
 
     .score-label {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       text-transform: uppercase;
       letter-spacing: 1.5px;
       color: #94a3b8;
@@ -371,7 +449,7 @@
 
     .score-value {
       font-family: var(--font-display);
-      font-size: 2.5rem;
+      font-size: 2.4rem;
       font-weight: 900;
       line-height: 1;
       color: #38bdf8;
@@ -385,7 +463,7 @@
     }
 
     .high-score-small {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: #facc15;
       font-weight: 700;
       margin-top: 4px;
@@ -400,12 +478,12 @@
       color: #fff;
       font-weight: 900;
       font-size: 0.95rem;
-      padding: 4px 14px;
+      padding: 5px 16px;
       border-radius: 20px;
       text-transform: uppercase;
       letter-spacing: 1px;
-      box-shadow: 0 4px 14px rgba(244, 63, 94, 0.5);
-      animation: pulseCombo 0.6s infinite alternate;
+      box-shadow: 0 4px 16px rgba(244, 63, 94, 0.6);
+      animation: pulseCombo 0.5s infinite alternate;
       opacity: 0;
       transform: translateY(-8px);
       transition: all 0.2s ease;
@@ -419,26 +497,49 @@
       to { transform: scale(1.1); }
     }
 
+    /* Floating Combo Text in Middle of Screen */
+    .floating-combo {
+      position: absolute;
+      left: 50%;
+      top: 42%;
+      transform: translate(-50%, -50%) scale(0.6);
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 2.2rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #facc15;
+      text-shadow: 0 4px 18px rgba(244, 63, 94, 0.9), 0 0 30px rgba(250, 204, 21, 0.8);
+      pointer-events: none;
+      z-index: 30;
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .floating-combo.show {
+      opacity: 1;
+      transform: translate(-50%, -75%) scale(1.15);
+    }
+
     /* HUD Top Left: Pause & Level info */
     .hud-top-left {
       position: absolute;
-      top: 24px;
-      left: 24px;
+      top: 20px;
+      left: 20px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       z-index: 15;
     }
 
     .icon-btn {
-      width: 48px;
-      height: 48px;
+      width: 46px;
+      height: 46px;
       border-radius: 16px;
-      background: rgba(15, 23, 42, 0.75);
+      background: rgba(15, 23, 42, 0.8);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.2);
       color: #fff;
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -447,22 +548,32 @@
       box-shadow: 0 6px 18px rgba(0,0,0,0.3);
     }
     .icon-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.25);
       transform: scale(1.08);
     }
 
+    .hud-mode-pill {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
+      padding: 6px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.15);
+      display: flex;
+      flex-direction: column;
+    }
+
     /* ========================================================
-       TOWER OF HELL (ROBLOX) STYLE VERTICAL PROGRESS BAR
+       TOWER PROGRESS BAR
        ======================================================== */
     .toh-progress-container {
       position: absolute;
-      left: 28px;
+      left: 24px;
       top: 50%;
       transform: translateY(-50%);
-      height: 60vh;
-      max-height: 480px;
-      width: 26px;
-      background: rgba(15, 23, 42, 0.65);
+      height: 55vh;
+      max-height: 440px;
+      width: 24px;
+      background: rgba(15, 23, 42, 0.7);
       backdrop-filter: blur(12px);
       border-radius: 30px;
       border: 2px solid rgba(255, 255, 255, 0.2);
@@ -480,14 +591,14 @@
       top: 10px;
       bottom: 10px;
       left: 50%;
-      width: 8px;
+      width: 7px;
       transform: translateX(-50%);
       background: linear-gradient(to bottom, 
-        #22c55e 0%,    /* Start Green */
-        #eab308 25%,   /* Yellow */
-        #f97316 50%,   /* Orange */
-        #ef4444 75%,   /* Red */
-        #a855f7 100%   /* Deep Violet */
+        #22c55e 0%,
+        #eab308 25%,
+        #f97316 50%,
+        #ef4444 75%,
+        #a855f7 100%
       );
       border-radius: 10px;
       box-shadow: 0 0 12px rgba(34, 197, 94, 0.5);
@@ -511,14 +622,13 @@
       background: rgba(255, 255, 255, 0.35);
     }
 
-    /* Player Avatar Icon moving on the bar */
     .toh-player-indicator {
       position: absolute;
       left: 50%;
-      top: 0%; /* Moves 0% to 100% */
+      top: 0%;
       transform: translate(-50%, -50%);
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       background: #38bdf8;
       border: 2.5px solid #ffffff;
@@ -538,14 +648,14 @@
 
     .toh-level-tag {
       position: absolute;
-      left: 42px;
+      left: 38px;
       top: 50%;
       transform: translateY(-50%);
       background: rgba(15, 23, 42, 0.9);
       border: 1px solid rgba(255, 255, 255, 0.25);
-      padding: 3px 10px;
+      padding: 3px 9px;
       border-radius: 12px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 800;
       white-space: nowrap;
       color: #38bdf8;
@@ -554,10 +664,10 @@
 
     .toh-header-label {
       position: absolute;
-      top: -30px;
+      top: -26px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       font-weight: 800;
       color: #94a3b8;
       letter-spacing: 1px;
@@ -567,10 +677,10 @@
 
     .toh-bottom-label {
       position: absolute;
-      bottom: -28px;
+      bottom: -26px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 900;
       color: #ef4444;
       letter-spacing: 1px;
@@ -578,13 +688,73 @@
       white-space: nowrap;
     }
 
-    /* Leaderboard Modal */
-    .leaderboard-table-wrap {
-      max-height: 280px;
-      overflow-y: auto;
-      margin: 18px 0 24px;
+    /* ========================================================
+       LEADERBOARD DUAL TABS & SUB TABS
+       ======================================================== */
+    .lb-main-tabs {
+      display: flex;
+      background: rgba(15, 23, 42, 0.6);
       border-radius: 16px;
-      background: rgba(15, 23, 42, 0.5);
+      padding: 4px;
+      margin: 14px 0 10px;
+      gap: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .lb-main-tab {
+      flex: 1;
+      padding: 9px 8px;
+      font-family: var(--font-main);
+      font-size: 0.88rem;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: #94a3b8;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lb-main-tab.active {
+      background: #38bdf8;
+      color: #0f172a;
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.35);
+    }
+
+    .lb-sub-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .lb-sub-tab {
+      padding: 6px 14px;
+      font-family: var(--font-main);
+      font-size: 0.82rem;
+      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.06);
+      color: #cbd5e1;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+
+    .lb-sub-tab.active {
+      background: rgba(255, 255, 255, 0.22);
+      border-color: #fff;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .leaderboard-table-wrap {
+      max-height: 250px;
+      min-height: 180px;
+      overflow-y: auto;
+      margin: 4px 0 18px;
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.55);
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
@@ -603,19 +773,20 @@
     }
 
     .lb-table th {
-      padding: 12px 14px;
-      font-size: 0.8rem;
+      padding: 10px 12px;
+      font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: #94a3b8;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.35);
       position: sticky;
       top: 0;
+      z-index: 2;
     }
 
     .lb-table td {
-      padding: 12px 14px;
-      font-size: 0.95rem;
+      padding: 10px 12px;
+      font-size: 0.9rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       font-weight: 600;
     }
@@ -626,39 +797,24 @@
 
     .lb-badge {
       display: inline-block;
-      width: 24px;
-      height: 24px;
-      line-height: 24px;
+      width: 22px;
+      height: 22px;
+      line-height: 22px;
       text-align: center;
       border-radius: 50%;
       background: rgba(255,255,255,0.1);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
     }
 
-    /* Toast Notification for Locked Leaderboard */
-    .toast-notice {
-      position: absolute;
-      bottom: 32px;
-      left: 50%;
-      transform: translateX(-50%) translateY(50px);
-      background: rgba(239, 68, 68, 0.92);
-      backdrop-filter: blur(10px);
-      color: #fff;
-      font-size: 0.95rem;
-      font-weight: 700;
-      padding: 14px 24px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      z-index: 100;
-      text-align: center;
-      max-width: 90%;
+    .lb-row-you {
+      background: rgba(56, 189, 248, 0.15) !important;
+      border-left: 3px solid #38bdf8;
     }
-    .toast-notice.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
+
+    .empty-lb-state {
+      padding: 35px 20px;
+      text-align: center;
+      color: #94a3b8;
     }
 
     /* Settings rows */
@@ -666,20 +822,20 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 0;
+      padding: 12px 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
     .setting-label {
       font-weight: 600;
-      font-size: 1.05rem;
+      font-size: 1rem;
       display: flex;
       align-items: center;
       gap: 10px;
     }
     .toggle-switch {
       position: relative;
-      width: 50px;
-      height: 28px;
+      width: 48px;
+      height: 26px;
     }
     .toggle-switch input {
       opacity: 0;
@@ -697,8 +853,8 @@
     .toggle-slider:before {
       position: absolute;
       content: "";
-      height: 20px;
-      width: 20px;
+      height: 18px;
+      width: 18px;
       left: 4px;
       bottom: 4px;
       background-color: white;
@@ -712,34 +868,31 @@
       transform: translateX(22px);
     }
 
-    /* Range slider */
     .range-slider {
-      width: 130px;
+      width: 120px;
       accent-color: #38bdf8;
       cursor: pointer;
     }
 
-    /* Game controls hint */
     .controls-hint {
       position: absolute;
-      bottom: 24px;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(15, 23, 42, 0.7);
+      background: rgba(15, 23, 42, 0.75);
       backdrop-filter: blur(8px);
       padding: 8px 18px;
       border-radius: 30px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: #cbd5e1;
       border: 1px solid rgba(255, 255, 255, 0.1);
       pointer-events: none;
       display: flex;
       align-items: center;
       gap: 8px;
-      transition: opacity 0.5s;
+      white-space: nowrap;
     }
 
-    /* Difficulty theme transition alert banner */
     .stage-up-banner {
       position: absolute;
       top: 28%;
@@ -747,9 +900,9 @@
       transform: translate(-50%, -50%) scale(0.8);
       background: linear-gradient(135deg, rgba(239, 68, 68, 0.95), rgba(249, 115, 22, 0.95));
       border: 2px solid #fff;
-      padding: 12px 28px;
+      padding: 12px 26px;
       border-radius: 30px;
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 2px;
@@ -770,14 +923,17 @@
   <!-- Three.js Canvas Container -->
   <div id="canvas-container"></div>
 
+  <!-- Floating Dynamic Combo Popup -->
+  <div class="floating-combo" id="floating-combo">COMBO 2X! +10</div>
+
   <!-- In-Game UI Layer -->
   <div class="ui-layer" id="game-hud" style="display: none;">
-    <!-- Top Left: Pause & Stage -->
+    <!-- Top Left: Pause, Mode & Stage -->
     <div class="hud-top-left interactive">
       <button class="icon-btn" id="btn-pause-game" title="Pause Game">⏸️</button>
-      <div style="background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); padding: 8px 16px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.15);">
-        <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; display: block;">Tahap</span>
-        <span id="hud-stage-name" style="font-weight: 900; font-size: 1.1rem; color: #4ade80;">1 - Mudah</span>
+      <div class="hud-mode-pill">
+        <span id="hud-mode-tag" style="font-size: 0.68rem; color: #facc15; font-weight: 800; text-transform: uppercase;">🏁 NORMAL</span>
+        <span id="hud-stage-name" style="font-weight: 900; font-size: 0.95rem; color: #4ade80;">Lantai 1</span>
       </div>
     </div>
 
@@ -788,10 +944,10 @@
         <div class="score-value" id="hud-score">0</div>
         <div class="high-score-small">👑 Rekor: <span id="hud-high-score">0</span></div>
       </div>
-      <div class="combo-badge" id="hud-combo-badge">🔥 COMBO x3!</div>
+      <div class="combo-badge" id="hud-combo-badge">🔥 COMBO 2X!</div>
     </div>
 
-    <!-- Tower of Hell (Roblox) Style Progress Bar -->
+    <!-- Vertical Progress Bar -->
     <div class="toh-progress-container" id="toh-bar">
       <div class="toh-header-label">START</div>
       <div class="toh-track"></div>
@@ -802,12 +958,11 @@
         <div class="toh-marker"></div>
         <div class="toh-marker"></div>
       </div>
-      <!-- Moving Player Avatar Indicator -->
       <div class="toh-player-indicator" id="toh-indicator">
         <canvas class="toh-player-mini-face" id="toh-mini-face"></canvas>
         <div class="toh-level-tag" id="toh-tag">Lantai 1</div>
       </div>
-      <div class="toh-bottom-label">HELL 🔥</div>
+      <div class="toh-bottom-label" id="toh-bottom-label">FINISH 🏁</div>
     </div>
 
     <!-- Controls hint -->
@@ -822,24 +977,20 @@
   <!-- 1. MAIN MENU SCREEN -->
   <div class="screen interactive" id="screen-main-menu">
     <div class="glass-card">
-      <div class="game-logo">HELIX JUMP</div>
-      <div class="game-subtitle">Kawaii Tower of Hell Edition</div>
+      <div class="game-logo-main">SUPER ULTRA KAWAI</div>
+      <div class="game-logo-sub">HELIX GAME WAOW! ✨</div>
 
       <div class="menu-buttons">
-        <!-- START: Green, hover grey -->
         <button class="btn btn-start" id="btn-menu-start">
           <span>🚀</span>
           <span>START GAME</span>
         </button>
 
-        <!-- LEADERBOARD: Red, hover grey, locked if played < 1 -->
         <button class="btn btn-leaderboard" id="btn-menu-leaderboard">
           <span>🏆</span>
           <span>LEADERBOARD</span>
-          <span class="lock-badge" id="badge-lb-lock">🔒</span>
         </button>
 
-        <!-- SETTINGS: White, DOES NOT CHANGE COLOR ON HOVER -->
         <button class="btn btn-settings" id="btn-menu-settings">
           <span>⚙️</span>
           <span>SETTINGS</span>
@@ -848,31 +999,28 @@
     </div>
   </div>
 
-  <!-- 2. BALL CUSTOMIZATION MODAL (After clicking Start) -->
+  <!-- 2. BALL CUSTOMIZATION SCREEN -->
   <div class="screen hidden interactive" id="screen-customize">
     <div class="glass-card">
-      <h2 style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; margin-bottom: 4px;">KUSTOMISASI BOLA</h2>
-      <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 18px;">Beri nama dan rias muka imut bolamu!</p>
+      <h2 style="font-family: var(--font-display); font-size: 1.7rem; font-weight: 800; margin-bottom: 2px;">KUSTOMISASI BOLA</h2>
+      <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 14px;">Beri nama dan rias muka imut bolamu!</p>
 
-      <!-- Ball Preview with cute face -->
       <div class="preview-ball-wrapper">
         <div class="preview-canvas-holder" id="preview-holder">
           <canvas id="preview-face-canvas" width="160" height="160"></canvas>
         </div>
       </div>
 
-      <!-- Player Name Input -->
       <div class="custom-section">
         <label class="custom-label" for="input-player-name">Nama Pemain / Bola:</label>
         <input type="text" id="input-player-name" class="name-input" maxlength="15" placeholder="Contoh: Boli Imut" value="Si Bolil">
       </div>
 
-      <!-- Free Color Picker -->
       <div class="custom-section">
         <label class="custom-label">Warna Bola (Bebas Dipilih):</label>
         <div class="color-picker-row">
           <input type="color" id="input-ball-color" class="native-color-picker" value="#38bdf8" title="Pilih Warna Apapun">
-          <span style="font-size: 0.85rem; color: #94a3b8;">Klik kotak untuk palet warna bebas</span>
+          <span style="font-size: 0.82rem; color: #94a3b8;">Klik kotak untuk palet warna bebas</span>
         </div>
         <div class="color-swatches">
           <div class="color-swatch" style="background: #38bdf8;" data-color="#38bdf8"></div>
@@ -886,7 +1034,6 @@
         </div>
       </div>
 
-      <!-- Expression Selector -->
       <div class="custom-section">
         <label class="custom-label">Ekspresi Muka Lucu:</label>
         <div class="face-options">
@@ -897,48 +1044,89 @@
         </div>
       </div>
 
-      <!-- Buttons -->
-      <div style="display: flex; gap: 12px; margin-top: 24px;">
+      <div style="display: flex; gap: 10px; margin-top: 20px;">
         <button class="btn" style="flex: 1; background: rgba(255,255,255,0.15); color: #fff;" id="btn-cancel-custom">Kembali</button>
-        <button class="btn btn-start" style="flex: 2;" id="btn-start-play">
-          <span>🎮</span>
-          <span>MAIN SEKARANG!</span>
+        <button class="btn btn-start" style="flex: 2;" id="btn-next-to-modes">
+          <span>➡️</span>
+          <span>PILIH MODE</span>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- 3. LEADERBOARD SCREEN -->
-  <div class="screen hidden interactive" id="screen-leaderboard">
+  <!-- 3. GAME MODE SELECTION SCREEN -->
+  <div class="screen hidden interactive" id="screen-mode-select">
     <div class="glass-card" style="max-width: 480px;">
-      <h2 style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: #facc15; display: flex; align-items: center; justify-content: center; gap: 10px;">
+      <h2 style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; color: #38bdf8; margin-bottom: 2px;">PILIH GAME MODE</h2>
+      <p style="color: #94a3b8; font-size: 0.88rem; margin-bottom: 12px;">Pilih tipe petualangan yang ingin kamu mainkan!</p>
+
+      <div class="mode-cards-grid">
+        <!-- Normal Mode -->
+        <div class="mode-card normal-card" id="card-mode-normal">
+          <span class="mode-card-badge" style="background: #22c55e; color: #fff;">🏁 ADA AKHIR</span>
+          <div class="mode-icon">🏆</div>
+          <div class="mode-title">Normal Mode</div>
+          <div class="mode-desc">Taklukkan 25 lantai menara menuju garis FINISH untuk menang!</div>
+        </div>
+
+        <!-- Endless Mode -->
+        <div class="mode-card endless-card" id="card-mode-endless">
+          <span class="mode-card-badge" style="background: #f59e0b; color: #fff;">♾️ TANPA BATAS</span>
+          <div class="mode-icon">⚡</div>
+          <div class="mode-title">Endless Mode</div>
+          <div class="mode-desc">Menara tidak ada habisnya! Main terus raih skor tertinggi sampai kalah.</div>
+        </div>
+      </div>
+
+      <button class="btn" style="width: 100%; margin-top: 14px; background: rgba(255,255,255,0.12); color: #fff;" id="btn-back-from-mode">
+        ⬅️ Kembali ke Kustomisasi
+      </button>
+    </div>
+  </div>
+
+  <!-- 4. LEADERBOARD SCREEN (Personal & Player + Normal & Endless) -->
+  <div class="screen hidden interactive" id="screen-leaderboard">
+    <div class="glass-card" style="max-width: 500px; width: 92%;">
+      <h2 style="font-family: var(--font-display); font-size: 1.7rem; font-weight: 800; color: #facc15; display: flex; align-items: center; justify-content: center; gap: 8px;">
         <span>🏆</span> LEADERBOARD
       </h2>
-      <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 4px;">Peringkat Skor Tertinggi Helix Jump</p>
+
+      <!-- Main Tabs: Personal Rankings vs Player Leaderboard -->
+      <div class="lb-main-tabs">
+        <button class="lb-main-tab active" id="tab-lb-personal">👤 Personal Rankings</button>
+        <button class="lb-main-tab" id="tab-lb-player">🌍 Player Leaderboard</button>
+      </div>
+
+      <!-- Mode Sub Tabs: Normal vs Endless -->
+      <div class="lb-sub-tabs">
+        <button class="lb-sub-tab active" id="subtab-mode-normal">🏁 Normal Mode</button>
+        <button class="lb-sub-tab" id="subtab-mode-endless">♾️ Endless Mode</button>
+      </div>
 
       <div class="leaderboard-table-wrap">
         <table class="lb-table">
-          <thead>
-            <tr>
-              <th style="width: 50px;">Rank</th>
-              <th>Nama Pemain</th>
-              <th style="text-align: right;">Skor</th>
-            </tr>
+          <thead id="leaderboard-thead">
+            <!-- Dynamically populated -->
           </thead>
           <tbody id="leaderboard-tbody">
             <!-- Dynamically populated -->
           </tbody>
         </table>
+        <div class="empty-lb-state hidden" id="lb-empty-state">
+          <div style="font-size: 2.8rem; margin-bottom: 6px;">📋</div>
+          <div style="font-weight: 800; font-size: 1.05rem; color: #cbd5e1;">Belum Ada Riwayat!</div>
+          <div style="font-size: 0.82rem; color: #94a3b8; margin-top: 4px;">Mainkan game mode ini untuk mencatat skor personal pertamamu.</div>
+        </div>
       </div>
 
       <button class="btn" style="width: 100%; background: #38bdf8; color: #0f172a;" id="btn-close-leaderboard">Tutup</button>
     </div>
   </div>
 
-  <!-- 4. SETTINGS MODAL -->
+  <!-- 5. SETTINGS SCREEN -->
   <div class="screen hidden interactive" id="screen-settings">
     <div class="glass-card">
-      <h2 style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; margin-bottom: 18px;">PENGATURAN</h2>
+      <h2 style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; margin-bottom: 16px;">PENGATURAN</h2>
 
       <div class="setting-row">
         <span class="setting-label"><span>🔊</span> Efek Suara (SFX)</span>
@@ -969,54 +1157,88 @@
         <input type="range" min="1" max="10" value="5" class="range-slider" id="slider-sensitivity">
       </div>
 
-      <button class="btn" style="width: 100%; margin-top: 24px; background: #ffffff; color: #0f172a;" id="btn-close-settings">Selesai</button>
+      <button class="btn" style="width: 100%; margin-top: 22px; background: #ffffff; color: #0f172a;" id="btn-close-settings">Selesai</button>
     </div>
   </div>
 
-  <!-- 5. PAUSE MODAL -->
+  <!-- 6. PAUSE SCREEN -->
   <div class="screen hidden interactive" id="screen-pause">
     <div class="glass-card">
-      <h2 style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 900; margin-bottom: 20px; color: #38bdf8;">GAME DI-PAUSE</h2>
+      <h2 style="font-family: var(--font-display); font-size: 2.1rem; font-weight: 900; margin-bottom: 18px; color: #38bdf8;">GAME DI-PAUSE</h2>
 
       <div class="menu-buttons">
         <button class="btn" style="background: #22c55e; color: #fff;" id="btn-pause-resume">▶️ Lanjut Main</button>
         <button class="btn" style="background: #f59e0b; color: #fff;" id="btn-pause-restart">🔄 Ulangi Game</button>
-        <button class="btn" style="background: #3b82f6; color: #fff;" id="btn-pause-menu">🏠 Menu Utama</button>
-        <button class="btn" style="background: #ef4444; color: #fff;" id="btn-pause-quit">🚪 Keluar (Quit Game)</button>
+        <button class="btn" style="background: #8b5cf6; color: #fff;" id="btn-pause-mode">🎮 Ganti Mode</button>
+        <button class="btn" style="background: #ef4444; color: #fff;" id="btn-pause-quit">🏠 Menu Utama</button>
       </div>
     </div>
   </div>
 
-  <!-- 6. GAME OVER MODAL -->
+  <!-- 7. GAME OVER SCREEN -->
   <div class="screen hidden interactive" id="screen-game-over">
     <div class="glass-card">
-      <div style="font-size: 3.5rem; margin-bottom: 8px;">💥</div>
-      <h2 style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 900; color: #ef4444; margin-bottom: 6px;">GAME OVER!</h2>
-      <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 18px;" id="game-over-subtitle">Bolamu terkena rintangan merah!</p>
+      <div style="font-size: 3.2rem; margin-bottom: 6px;">💥</div>
+      <h2 style="font-family: var(--font-display); font-size: 2.1rem; font-weight: 900; color: #ef4444; margin-bottom: 4px;">GAME OVER!</h2>
+      <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 16px;" id="game-over-subtitle">Bolamu terkena rintangan merah!</p>
 
-      <div style="background: rgba(0,0,0,0.3); border-radius: 18px; padding: 16px; margin-bottom: 20px; display: flex; justify-content: space-around;">
+      <div style="background: rgba(0,0,0,0.3); border-radius: 18px; padding: 14px; margin-bottom: 18px; display: flex; justify-content: space-around;">
         <div>
-          <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase;">Skor Akhir</div>
-          <div style="font-size: 2rem; font-weight: 900; color: #38bdf8;" id="go-final-score">0</div>
+          <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;">Skor Akhir</div>
+          <div style="font-size: 1.9rem; font-weight: 900; color: #38bdf8;" id="go-final-score">0</div>
         </div>
         <div style="border-right: 1px solid rgba(255,255,255,0.1);"></div>
         <div>
-          <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase;">Lantai Terjauh</div>
-          <div style="font-size: 2rem; font-weight: 900; color: #facc15;" id="go-final-level">1</div>
+          <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;">Lantai Terjauh</div>
+          <div style="font-size: 1.9rem; font-weight: 900; color: #facc15;" id="go-final-level">1</div>
+        </div>
+        <div style="border-right: 1px solid rgba(255,255,255,0.1);"></div>
+        <div>
+          <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;">Max Combo</div>
+          <div style="font-size: 1.9rem; font-weight: 900; color: #f43f5e;" id="go-final-combo">1x</div>
         </div>
       </div>
 
       <div class="menu-buttons">
         <button class="btn btn-start" id="btn-go-restart">🔄 Main Lagi</button>
+        <button class="btn" style="background: #3b82f6; color: #fff;" id="btn-go-mode">🎮 Ganti Mode</button>
         <button class="btn" style="background: #ef4444; color: #fff;" id="btn-go-leaderboard">🏆 Lihat Leaderboard</button>
         <button class="btn" style="background: rgba(255,255,255,0.2); color: #fff;" id="btn-go-menu">🏠 Menu Utama</button>
       </div>
     </div>
   </div>
 
-  <!-- Toast Notification (for locked leaderboard) -->
-  <div class="toast-notice" id="toast-notice">
-    🔒 Mainkan setidaknya 1 kali untuk membuka Leaderboard!
+  <!-- 8. VICTORY SCREEN (NORMAL MODE) -->
+  <div class="screen hidden interactive" id="screen-victory">
+    <div class="glass-card">
+      <div style="font-size: 3.5rem; margin-bottom: 4px;">🏆</div>
+      <h2 style="font-family: var(--font-display); font-size: 2.1rem; font-weight: 900; color: #facc15; margin-bottom: 4px;">VICTORY! MENANG!</h2>
+      <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 16px;">Selamat! Kamu berhasil menaklukkan menara sampai akhir!</p>
+
+      <div style="background: rgba(0,0,0,0.3); border-radius: 18px; padding: 14px; margin-bottom: 18px; display: flex; justify-content: space-around;">
+        <div>
+          <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;">Skor Akhir</div>
+          <div style="font-size: 1.9rem; font-weight: 900; color: #38bdf8;" id="vic-final-score">0</div>
+        </div>
+        <div style="border-right: 1px solid rgba(255,255,255,0.1);"></div>
+        <div>
+          <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;">Lantai Selesai</div>
+          <div style="font-size: 1.9rem; font-weight: 900; color: #22c55e;">25 / 25</div>
+        </div>
+        <div style="border-right: 1px solid rgba(255,255,255,0.1);"></div>
+        <div>
+          <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;">Max Combo</div>
+          <div style="font-size: 1.9rem; font-weight: 900; color: #f43f5e;" id="vic-final-combo">1x</div>
+        </div>
+      </div>
+
+      <div class="menu-buttons">
+        <button class="btn btn-start" id="btn-vic-restart">🔄 Main Lagi</button>
+        <button class="btn" style="background: #3b82f6; color: #fff;" id="btn-vic-mode">🎮 Ganti Mode</button>
+        <button class="btn" style="background: #ef4444; color: #fff;" id="btn-vic-leaderboard">🏆 Lihat Leaderboard</button>
+        <button class="btn" style="background: rgba(255,255,255,0.2); color: #fff;" id="btn-vic-menu">🏠 Menu Utama</button>
+      </div>
+    </div>
   </div>
 
   <!-- Game Logic Script -->
@@ -1024,13 +1246,15 @@
     /* ========================================================
        STATE & STORAGE CONFIGURATION
        ======================================================== */
-    const STORAGE_KEY_GAMES = 'helix_jump_games_played_v1';
-    const STORAGE_KEY_LB = 'helix_jump_leaderboard_v1';
-    const STORAGE_KEY_HIGH = 'helix_jump_highscore_v1';
-    const STORAGE_KEY_PLAYER = 'helix_jump_player_data_v1';
+    const STORAGE_KEY_PERSONAL_NORMAL = 'helix_personal_normal_v2';
+    const STORAGE_KEY_PERSONAL_ENDLESS = 'helix_personal_endless_v2';
+    const STORAGE_KEY_PLAYER_NORMAL = 'helix_global_player_normal_v2';
+    const STORAGE_KEY_PLAYER_ENDLESS = 'helix_global_player_endless_v2';
+    const STORAGE_KEY_PLAYER = 'helix_jump_player_data_v2';
 
-    let gamesPlayed = parseInt(localStorage.getItem(STORAGE_KEY_GAMES) || '0', 10);
-    let highScore = parseInt(localStorage.getItem(STORAGE_KEY_HIGH) || '0', 10);
+    // Game Mode: 'normal' (25 floors to finish) or 'endless' (infinite until loss)
+    let selectedGameMode = 'normal';
+    const NORMAL_MODE_TOTAL_FLOORS = 25;
 
     let playerData = {
       name: 'Si Bolil',
@@ -1050,59 +1274,77 @@
       sensitivity: 5
     };
 
-    // Default mock leaderboard data if none
-    function getLeaderboard() {
+    /* Leaderboard Storage Helpers */
+    function getPersonalRankings(mode) {
+      const key = (mode === 'normal') ? STORAGE_KEY_PERSONAL_NORMAL : STORAGE_KEY_PERSONAL_ENDLESS;
       try {
-        const raw = localStorage.getItem(STORAGE_KEY_LB);
+        const raw = localStorage.getItem(key);
         if (raw) return JSON.parse(raw);
       } catch(e) {}
-      return [
-        { name: "ProJumper", score: 450 },
-        { name: "HelixKing", score: 320 },
-        { name: "TowerMaster", score: 260 },
-        { name: "RobloxFan99", score: 180 },
-        { name: "BouncingCat", score: 110 }
-      ];
+      return []; // Empty initially!
     }
 
-    function saveLeaderboardScore(name, score) {
-      if (score <= 0) return;
-      let lb = getLeaderboard();
-      lb.push({ name: name.trim() || 'Pemain Anonim', score: score });
-      lb.sort((a, b) => b.score - a.score);
-      lb = lb.slice(0, 15); // keep top 15
-      localStorage.setItem(STORAGE_KEY_LB, JSON.stringify(lb));
+    function savePersonalRanking(mode, score, level, maxCombo) {
+      if (score <= 0 && level <= 0) return;
+      const key = (mode === 'normal') ? STORAGE_KEY_PERSONAL_NORMAL : STORAGE_KEY_PERSONAL_ENDLESS;
+      let list = getPersonalRankings(mode);
+      const now = new Date();
+      const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} - ${now.getDate()}/${now.getMonth()+1}`;
+      list.push({
+        score: score,
+        level: level,
+        maxCombo: maxCombo || 1,
+        time: timeStr
+      });
+      list.sort((a, b) => b.score - a.score);
+      list = list.slice(0, 15);
+      localStorage.setItem(key, JSON.stringify(list));
     }
 
-    function recordGameFinished() {
-      gamesPlayed++;
-      localStorage.setItem(STORAGE_KEY_GAMES, gamesPlayed.toString());
-      updateLeaderboardLockState();
-    }
+    function getPlayerLeaderboard(mode) {
+      const key = (mode === 'normal') ? STORAGE_KEY_PLAYER_NORMAL : STORAGE_KEY_PLAYER_ENDLESS;
+      try {
+        const raw = localStorage.getItem(key);
+        if (raw) return JSON.parse(raw);
+      } catch(e) {}
 
-    function updateLeaderboardLockState() {
-      const lockBadge = document.getElementById('badge-lb-lock');
-      const btnLb = document.getElementById('btn-menu-leaderboard');
-      if (gamesPlayed < 1) {
-        lockBadge.style.display = 'inline-block';
-        btnLb.classList.add('locked');
+      // Initial realistic community players if not yet seeded
+      if (mode === 'normal') {
+        return [
+          { name: "SkyMaster_Pro", score: 420, level: 25, isYou: false },
+          { name: "KawaiiNinja", score: 350, level: 25, isYou: false },
+          { name: "BobaJumper", score: 285, level: 22, isYou: false },
+          { name: "SakuraDrop", score: 210, level: 18, isYou: false },
+          { name: "PixelHero99", score: 145, level: 12, isYou: false }
+        ];
       } else {
-        lockBadge.style.display = 'none';
-        btnLb.classList.remove('locked');
+        return [
+          { name: "EndlessGod", score: 980, level: 68, isYou: false },
+          { name: "HelixVortex", score: 740, level: 52, isYou: false },
+          { name: "TowerPhantom", score: 580, level: 41, isYou: false },
+          { name: "BounceCat", score: 430, level: 32, isYou: false },
+          { name: "CyberSphere", score: 290, level: 24, isYou: false }
+        ];
       }
     }
 
-    function showToast(msg) {
-      const toast = document.getElementById('toast-notice');
-      toast.textContent = msg;
-      toast.classList.add('show');
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 2600);
+    function savePlayerLeaderboard(mode, name, score, level) {
+      if (score <= 0) return;
+      const key = (mode === 'normal') ? STORAGE_KEY_PLAYER_NORMAL : STORAGE_KEY_PLAYER_ENDLESS;
+      let list = getPlayerLeaderboard(mode);
+      list.push({
+        name: name.trim() || 'Pemain Anonim',
+        score: score,
+        level: level,
+        isYou: true
+      });
+      list.sort((a, b) => b.score - a.score);
+      list = list.slice(0, 20);
+      localStorage.setItem(key, JSON.stringify(list));
     }
 
     /* ========================================================
-       SYNTHESIZED AUDIO ENGINE (Web Audio API - No 404s!)
+       SYNTHESIZED AUDIO ENGINE (Web Audio API)
        ======================================================== */
     let audioCtx = null;
     function initAudio() {
@@ -1115,7 +1357,7 @@
       }
     }
 
-    function playSound(type) {
+    function playSound(type, param = 1) {
       if (!settings.sfx) return;
       try {
         initAudio();
@@ -1124,14 +1366,13 @@
         const now = audioCtx.currentTime;
 
         if (type === 'bounce') {
-          // Playful boing sound
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
           osc.type = 'sine';
           osc.frequency.setValueAtTime(280, now);
           osc.frequency.exponentialRampToValueAtTime(140, now + 0.12);
 
-          gain.gain.setValueAtTime(0.25, now);
+          gain.gain.setValueAtTime(0.24, now);
           gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
 
           osc.connect(gain);
@@ -1139,26 +1380,26 @@
           osc.start(now);
           osc.stop(now + 0.13);
         } else if (type === 'pass') {
-          // Swoosh level pass
+          // Swoosh pitch scales with combo multiplier!
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
           osc.type = 'triangle';
-          osc.frequency.setValueAtTime(420, now);
-          osc.frequency.exponentialRampToValueAtTime(860, now + 0.15);
+          const baseFreq = 420 * Math.pow(1.12, Math.min(param - 1, 8));
+          osc.frequency.setValueAtTime(baseFreq, now);
+          osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.8, now + 0.14);
 
-          gain.gain.setValueAtTime(0.2, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+          gain.gain.setValueAtTime(0.22, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.14);
 
           osc.connect(gain);
           gain.connect(audioCtx.destination);
           osc.start(now);
-          osc.stop(now + 0.16);
+          osc.stop(now + 0.15);
         } else if (type === 'smash') {
-          // Heavy super combo smash
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
           osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(180, now);
+          osc.frequency.setValueAtTime(190, now);
           osc.frequency.exponentialRampToValueAtTime(40, now + 0.25);
 
           gain.gain.setValueAtTime(0.35, now);
@@ -1168,13 +1409,28 @@
           gain.connect(audioCtx.destination);
           osc.start(now);
           osc.stop(now + 0.26);
+        } else if (type === 'victory') {
+          // Uplifting victory fanfare
+          const notes = [523.25, 659.25, 783.99, 1046.50];
+          notes.forEach((freq, idx) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            const startTime = now + idx * 0.12;
+            osc.frequency.setValueAtTime(freq, startTime);
+            gain.gain.setValueAtTime(0.28, startTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, startTime + 0.35);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(startTime);
+            osc.stop(startTime + 0.36);
+          });
         } else if (type === 'gameover') {
-          // Sad descending tone
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
           osc.type = 'sawtooth';
           osc.frequency.setValueAtTime(320, now);
-          osc.frequency.exponentialRampToValueAtTime(80, now + 0.5);
+          osc.frequency.exponentialRampToValueAtTime(70, now + 0.5);
 
           gain.gain.setValueAtTime(0.3, now);
           gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
@@ -1187,7 +1443,7 @@
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(600, now);
+          osc.frequency.setValueAtTime(620, now);
           gain.gain.setValueAtTime(0.12, now);
           gain.gain.exponentialRampToValueAtTime(0.01, now + 0.04);
           osc.connect(gain);
@@ -1198,7 +1454,7 @@
       } catch(e) {}
     }
 
-    // Procedural cute ambient BGM
+    // Cute ambient BGM
     let bgmInterval = null;
     const bgmNotes = [261.63, 329.63, 392.00, 523.25, 440.00, 392.00, 329.63, 293.66];
     let noteIdx = 0;
@@ -1241,7 +1497,7 @@
 
       ctx.clearRect(0, 0, w, h);
 
-      // 1. Base Ball Color
+      // Base Ball Color
       ctx.fillStyle = ballColor;
       ctx.beginPath();
       ctx.arc(cx, cy, w * 0.48, 0, Math.PI * 2);
@@ -1257,7 +1513,7 @@
       ctx.arc(cx, cy, w * 0.48, 0, Math.PI * 2);
       ctx.fill();
 
-      // 2. Cute Rosy Cheek Blushes
+      // Cute Rosy Cheek Blushes
       ctx.fillStyle = 'rgba(255, 107, 129, 0.55)';
       ctx.beginPath();
       ctx.ellipse(cx - w * 0.26, cy + h * 0.07, w * 0.08, h * 0.05, 0, 0, Math.PI * 2);
@@ -1267,29 +1523,26 @@
       ctx.ellipse(cx + w * 0.26, cy + h * 0.07, w * 0.08, h * 0.05, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // 3. Eyes
+      // Eyes
       const eyeY = cy - h * 0.04;
       const eyeLeftX = cx - w * 0.18;
       const eyeRightX = cx + w * 0.18;
 
       if (isDizzy) {
-        // Dizzy X_X eyes for Game Over
         ctx.strokeStyle = '#1e293b';
         ctx.lineWidth = w * 0.04;
         ctx.lineCap = 'round';
         const d = w * 0.06;
-        // Left X
         ctx.beginPath();
         ctx.moveTo(eyeLeftX - d, eyeY - d); ctx.lineTo(eyeLeftX + d, eyeY + d);
         ctx.moveTo(eyeLeftX + d, eyeY - d); ctx.lineTo(eyeLeftX - d, eyeY + d);
         ctx.stroke();
-        // Right X
+
         ctx.beginPath();
         ctx.moveTo(eyeRightX - d, eyeY - d); ctx.lineTo(eyeRightX + d, eyeY + d);
         ctx.moveTo(eyeRightX + d, eyeY - d); ctx.lineTo(eyeRightX - d, eyeY + d);
         ctx.stroke();
 
-        // Dizzy mouth
         ctx.beginPath();
         ctx.arc(cx, cy + h * 0.18, w * 0.08, 0, Math.PI * 2);
         ctx.fillStyle = '#1e293b';
@@ -1298,7 +1551,6 @@
       }
 
       if (isBlinking) {
-        // Closed happy curved line eyes
         ctx.strokeStyle = '#0f172a';
         ctx.lineWidth = w * 0.035;
         ctx.lineCap = 'round';
@@ -1309,7 +1561,6 @@
         ctx.arc(eyeRightX, eyeY + 4, w * 0.07, Math.PI * 1.1, Math.PI * 1.9);
         ctx.stroke();
       } else if (expression === 'wink') {
-        // Left eye open, Right eye winking line
         drawBigAnimeEye(ctx, eyeLeftX, eyeY, w * 0.08);
         ctx.strokeStyle = '#0f172a';
         ctx.lineWidth = w * 0.04;
@@ -1318,7 +1569,6 @@
         ctx.arc(eyeRightX, eyeY + 2, w * 0.07, Math.PI * 1.1, Math.PI * 1.9);
         ctx.stroke();
       } else if (expression === 'uwu') {
-        // > < or closed ^ ^ kawaii lines
         ctx.strokeStyle = '#0f172a';
         ctx.lineWidth = w * 0.038;
         ctx.lineCap = 'round';
@@ -1329,12 +1579,11 @@
         ctx.arc(eyeRightX, eyeY + 3, w * 0.075, Math.PI * 1.15, Math.PI * 1.85);
         ctx.stroke();
       } else {
-        // Happy Anime Big Sparkle Eyes
         drawBigAnimeEye(ctx, eyeLeftX, eyeY, w * 0.085);
         drawBigAnimeEye(ctx, eyeRightX, eyeY, w * 0.085);
       }
 
-      // 4. Mouth
+      // Mouth
       const mouthY = cy + h * 0.12;
       ctx.lineWidth = w * 0.032;
       ctx.strokeStyle = '#0f172a';
@@ -1342,18 +1591,15 @@
       ctx.lineCap = 'round';
 
       if (expression === 'derp') {
-        // Tongue sticking out!
         ctx.beginPath();
         ctx.arc(cx, mouthY, w * 0.09, 0, Math.PI);
         ctx.stroke();
-        // Tongue
         ctx.beginPath();
         ctx.arc(cx + w * 0.03, mouthY + h * 0.05, w * 0.05, 0, Math.PI);
         ctx.fillStyle = '#ff6b81';
         ctx.fill();
         ctx.stroke();
       } else if (expression === 'uwu') {
-        // :3 cat curve mouth
         ctx.beginPath();
         ctx.arc(cx - w * 0.04, mouthY, w * 0.045, 0, Math.PI);
         ctx.stroke();
@@ -1361,7 +1607,6 @@
         ctx.arc(cx + w * 0.04, mouthY, w * 0.045, 0, Math.PI);
         ctx.stroke();
       } else {
-        // Big happy open smile
         ctx.beginPath();
         ctx.arc(cx, mouthY - 2, w * 0.085, 0.1 * Math.PI, 0.9 * Math.PI, false);
         ctx.lineTo(cx, mouthY - 2);
@@ -1372,25 +1617,21 @@
     }
 
     function drawBigAnimeEye(ctx, x, y, r) {
-      // Dark eye base
       ctx.fillStyle = '#0f172a';
       ctx.beginPath();
       ctx.ellipse(x, y, r * 0.9, r * 1.15, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // Big bright sparkle
       ctx.fillStyle = '#ffffff';
       ctx.beginPath();
       ctx.arc(x - r * 0.3, y - r * 0.35, r * 0.42, 0, Math.PI * 2);
       ctx.fill();
 
-      // Small secondary sparkle
       ctx.beginPath();
       ctx.arc(x + r * 0.3, y + r * 0.35, r * 0.22, 0, Math.PI * 2);
       ctx.fill();
     }
 
-    // Interactive Preview updating
     const previewCanvas = document.getElementById('preview-face-canvas');
     const miniFaceCanvas = document.getElementById('toh-mini-face');
     function updateBallPreview() {
@@ -1410,14 +1651,16 @@
     let currentScreen = 'main-menu';
     const screenMainMenu = document.getElementById('screen-main-menu');
     const screenCustomize = document.getElementById('screen-customize');
+    const screenModeSelect = document.getElementById('screen-mode-select');
     const screenLeaderboard = document.getElementById('screen-leaderboard');
     const screenSettings = document.getElementById('screen-settings');
     const screenPause = document.getElementById('screen-pause');
     const screenGameOver = document.getElementById('screen-game-over');
+    const screenVictory = document.getElementById('screen-victory');
     const gameHud = document.getElementById('game-hud');
 
     function showScreen(screenId) {
-      [screenMainMenu, screenCustomize, screenLeaderboard, screenSettings, screenPause, screenGameOver].forEach(s => {
+      [screenMainMenu, screenCustomize, screenModeSelect, screenLeaderboard, screenSettings, screenPause, screenGameOver, screenVictory].forEach(s => {
         s.classList.add('hidden');
       });
 
@@ -1430,7 +1673,6 @@
         const target = document.getElementById(`screen-${screenId}`);
         if (target) target.classList.remove('hidden');
         if (screenId !== 'pause') {
-          // If in menu screens, hide HUD
           gameHud.style.display = 'none';
         }
       }
@@ -1445,11 +1687,6 @@
 
     document.getElementById('btn-menu-leaderboard').addEventListener('click', () => {
       playSound('click');
-      // Rule: must play at least 1 game to open leaderboard!
-      if (gamesPlayed < 1) {
-        showToast("🔒 Mainkan setidaknya 1 kali untuk membuka Leaderboard!");
-        return;
-      }
       populateLeaderboardUI();
       showScreen('leaderboard');
     });
@@ -1464,13 +1701,68 @@
       showScreen('main-menu');
     });
 
-    document.getElementById('btn-start-play').addEventListener('click', () => {
+    // Customization -> Mode Selection
+    document.getElementById('btn-next-to-modes').addEventListener('click', () => {
       playSound('click');
       const nameVal = document.getElementById('input-player-name').value.trim();
       playerData.name = nameVal || 'Si Bolil';
       localStorage.setItem(STORAGE_KEY_PLAYER, JSON.stringify(playerData));
       updateBall3DTexture();
+      showScreen('mode-select');
+    });
+
+    document.getElementById('btn-back-from-mode').addEventListener('click', () => {
+      playSound('click');
+      showScreen('customize');
+    });
+
+    // Mode Card Selection
+    document.getElementById('card-mode-normal').addEventListener('click', () => {
+      playSound('click');
+      selectedGameMode = 'normal';
       startNewGame();
+    });
+
+    document.getElementById('card-mode-endless').addEventListener('click', () => {
+      playSound('click');
+      selectedGameMode = 'endless';
+      startNewGame();
+    });
+
+    // Leaderboard Tabs Handling
+    let currentLbTab = 'personal'; // 'personal' or 'player'
+    let currentLbSubTab = 'normal'; // 'normal' or 'endless'
+
+    document.getElementById('tab-lb-personal').addEventListener('click', () => {
+      playSound('click');
+      currentLbTab = 'personal';
+      document.getElementById('tab-lb-personal').classList.add('active');
+      document.getElementById('tab-lb-player').classList.remove('active');
+      populateLeaderboardUI();
+    });
+
+    document.getElementById('tab-lb-player').addEventListener('click', () => {
+      playSound('click');
+      currentLbTab = 'player';
+      document.getElementById('tab-lb-player').classList.add('active');
+      document.getElementById('tab-lb-personal').classList.remove('active');
+      populateLeaderboardUI();
+    });
+
+    document.getElementById('subtab-mode-normal').addEventListener('click', () => {
+      playSound('click');
+      currentLbSubTab = 'normal';
+      document.getElementById('subtab-mode-normal').classList.add('active');
+      document.getElementById('subtab-mode-endless').classList.remove('active');
+      populateLeaderboardUI();
+    });
+
+    document.getElementById('subtab-mode-endless').addEventListener('click', () => {
+      playSound('click');
+      currentLbSubTab = 'endless';
+      document.getElementById('subtab-mode-endless').classList.add('active');
+      document.getElementById('subtab-mode-normal').classList.remove('active');
+      populateLeaderboardUI();
     });
 
     document.getElementById('btn-close-leaderboard').addEventListener('click', () => {
@@ -1523,7 +1815,7 @@
       settings.sensitivity = parseInt(e.target.value, 10);
     });
 
-    // Pause & Game Over Controls
+    // Pause Controls
     let gamePaused = false;
     document.getElementById('btn-pause-game').addEventListener('click', () => {
       playSound('click');
@@ -1538,10 +1830,10 @@
       pauseGame(false);
       startNewGame();
     });
-    document.getElementById('btn-pause-menu').addEventListener('click', () => {
+    document.getElementById('btn-pause-mode').addEventListener('click', () => {
       playSound('click');
       pauseGame(false);
-      showScreen('main-menu');
+      showScreen('mode-select');
     });
     document.getElementById('btn-pause-quit').addEventListener('click', () => {
       playSound('click');
@@ -1549,9 +1841,14 @@
       showScreen('main-menu');
     });
 
+    // Game Over buttons
     document.getElementById('btn-go-restart').addEventListener('click', () => {
       playSound('click');
       startNewGame();
+    });
+    document.getElementById('btn-go-mode').addEventListener('click', () => {
+      playSound('click');
+      showScreen('mode-select');
     });
     document.getElementById('btn-go-leaderboard').addEventListener('click', () => {
       playSound('click');
@@ -1559,6 +1856,25 @@
       showScreen('leaderboard');
     });
     document.getElementById('btn-go-menu').addEventListener('click', () => {
+      playSound('click');
+      showScreen('main-menu');
+    });
+
+    // Victory buttons
+    document.getElementById('btn-vic-restart').addEventListener('click', () => {
+      playSound('click');
+      startNewGame();
+    });
+    document.getElementById('btn-vic-mode').addEventListener('click', () => {
+      playSound('click');
+      showScreen('mode-select');
+    });
+    document.getElementById('btn-vic-leaderboard').addEventListener('click', () => {
+      playSound('click');
+      populateLeaderboardUI();
+      showScreen('leaderboard');
+    });
+    document.getElementById('btn-vic-menu').addEventListener('click', () => {
       playSound('click');
       showScreen('main-menu');
     });
@@ -1572,26 +1888,84 @@
       }
     }
 
+    /* Render Leaderboard */
     function populateLeaderboardUI() {
+      const thead = document.getElementById('leaderboard-thead');
       const tbody = document.getElementById('leaderboard-tbody');
+      const emptyState = document.getElementById('lb-empty-state');
       tbody.innerHTML = '';
-      const list = getLeaderboard();
-      list.forEach((item, index) => {
-        const rank = index + 1;
-        const tr = document.createElement('tr');
-        let rankClass = '';
-        let rankBadge = rank;
-        if (rank === 1) { rankClass = 'lb-rank-1'; rankBadge = '🥇 1'; }
-        else if (rank === 2) { rankClass = 'lb-rank-2'; rankBadge = '🥈 2'; }
-        else if (rank === 3) { rankClass = 'lb-rank-3'; rankBadge = '🥉 3'; }
 
-        tr.innerHTML = `
-          <td class="${rankClass}"><span class="lb-badge">${rankBadge}</span></td>
-          <td style="font-weight: 700;">${item.name}</td>
-          <td style="text-align: right; color: #38bdf8; font-weight: 800;">${item.score}</td>
+      if (currentLbTab === 'personal') {
+        // Personal Rankings
+        thead.innerHTML = `
+          <tr>
+            <th style="width: 48px;">Rank</th>
+            <th>Skor</th>
+            <th>Lantai</th>
+            <th>Max Combo</th>
+            <th style="text-align: right;">Waktu</th>
+          </tr>
         `;
-        tbody.appendChild(tr);
-      });
+        const list = getPersonalRankings(currentLbSubTab);
+        if (list.length === 0) {
+          emptyState.classList.remove('hidden');
+          return;
+        }
+        emptyState.classList.add('hidden');
+        list.forEach((item, index) => {
+          const rank = index + 1;
+          const tr = document.createElement('tr');
+          let rankBadge = rank;
+          let rankClass = '';
+          if (rank === 1) { rankClass = 'lb-rank-1'; rankBadge = '🥇 1'; }
+          else if (rank === 2) { rankClass = 'lb-rank-2'; rankBadge = '🥈 2'; }
+          else if (rank === 3) { rankClass = 'lb-rank-3'; rankBadge = '🥉 3'; }
+
+          tr.innerHTML = `
+            <td class="${rankClass}"><span class="lb-badge">${rankBadge}</span></td>
+            <td style="color: #38bdf8; font-weight: 800; font-size: 1.05rem;">${item.score}</td>
+            <td style="color: #facc15; font-weight: 700;">Lantai ${item.level}</td>
+            <td style="color: #f43f5e; font-weight: 700;">${item.maxCombo}x</td>
+            <td style="text-align: right; color: #94a3b8; font-size: 0.78rem;">${item.time}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } else {
+        // Player Community Leaderboard
+        thead.innerHTML = `
+          <tr>
+            <th style="width: 48px;">Rank</th>
+            <th>Pemain</th>
+            <th>Lantai</th>
+            <th style="text-align: right;">Skor</th>
+          </tr>
+        `;
+        const list = getPlayerLeaderboard(currentLbSubTab);
+        if (list.length === 0) {
+          emptyState.classList.remove('hidden');
+          return;
+        }
+        emptyState.classList.add('hidden');
+        list.forEach((item, index) => {
+          const rank = index + 1;
+          const tr = document.createElement('tr');
+          if (item.isYou) tr.classList.add('lb-row-you');
+
+          let rankBadge = rank;
+          let rankClass = '';
+          if (rank === 1) { rankClass = 'lb-rank-1'; rankBadge = '🥇 1'; }
+          else if (rank === 2) { rankClass = 'lb-rank-2'; rankBadge = '🥈 2'; }
+          else if (rank === 3) { rankClass = 'lb-rank-3'; rankBadge = '🥉 3'; }
+
+          tr.innerHTML = `
+            <td class="${rankClass}"><span class="lb-badge">${rankBadge}</span></td>
+            <td style="font-weight: 700;">${item.name} ${item.isYou ? '<span style="font-size: 0.7rem; color: #38bdf8; background: rgba(56,189,248,0.2); padding: 1px 6px; border-radius: 6px; margin-left: 4px;">KAMU</span>' : ''}</td>
+            <td style="color: #facc15; font-weight: 600;">Lantai ${item.level}</td>
+            <td style="text-align: right; color: #38bdf8; font-weight: 800; font-size: 1.05rem;">${item.score}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
     }
 
     /* ========================================================
@@ -1605,7 +1979,7 @@
     let particles = [];
     let splashDecals = [];
 
-    // Game Physics & Loop Variables
+    // Game Physics & Loop Constants
     const SLICES_PER_RING = 12;
     const RING_DISTANCE = 4.2;
     const POLE_RADIUS = 0.9;
@@ -1619,28 +1993,29 @@
     let ballRadius = 0.38;
     let currentLevelPassed = 0;
     let score = 0;
-    let comboStreak = 0;
+
+    // COMBO SYSTEM VARIABLES
+    let consecutiveHolesPassed = 0; // Number of holes dropped through continuously without landing!
+    let maxComboStreak = 1;
     let isSuperSmash = false;
     let towerRotation = 0;
     let targetTowerRotation = 0;
 
     let activeRings = [];
     let nextRingIndex = 0;
-    let currentRingIndexPassed = 0;
     let isGameOver = false;
+    let isVictory = false;
 
-    // Blink timer for cute face
     let blinkTimer = 0;
     let isBlinking = false;
 
-    // Difficulty and Theme Color Stages
-    // Green (Easy) -> Yellow (Medium) -> Orange (Hard) -> Red (Hell) -> Violet (Extreme)
+    // Difficulty Stages
     const DIFFICULTY_STAGES = [
-      { depth: 0, name: "1 - Mudah", color: 0x22c55e, hex: "#22c55e", dangerCount: 1, gapCount: 2 },
+      { depth: 0, name: "1 - Santai", color: 0x22c55e, hex: "#22c55e", dangerCount: 1, gapCount: 2 },
       { depth: 5, name: "2 - Sedang", color: 0xeab308, hex: "#eab308", dangerCount: 2, gapCount: 2 },
       { depth: 12, name: "3 - Bahaya", color: 0xf97316, hex: "#f97316", dangerCount: 3, gapCount: 1 },
-      { depth: 22, name: "4 - Api Neraka", color: 0xef4444, hex: "#ef4444", dangerCount: 4, gapCount: 1 },
-      { depth: 35, name: "5 - Ekstrem Hell", color: 0xa855f7, hex: "#a855f7", dangerCount: 5, gapCount: 1 }
+      { depth: 19, name: "4 - Api Neraka", color: 0xef4444, hex: "#ef4444", dangerCount: 4, gapCount: 1 },
+      { depth: 28, name: "5 - Ekstrem Hell", color: 0xa855f7, hex: "#a855f7", dangerCount: 5, gapCount: 1 }
     ];
 
     function getCurrentStage(level) {
@@ -1654,15 +2029,14 @@
     }
 
     function init3D() {
-      // Scene
       scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x0c1322);
-      scene.fog = new THREE.FogExp2(0x0c1322, 0.022);
+      scene.background = new THREE.Color(0x0a101d);
+      scene.fog = new THREE.FogExp2(0x0a101d, 0.02);
 
-      // Camera
-      camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
-      camera.position.set(0, 4.0, 9.8);
-      camera.lookAt(0, 0, 0);
+      // Camera: Comfortable top-down tilted angle (hadap bawah dikit)
+      camera = new THREE.PerspectiveCamera(46, window.innerWidth / window.innerHeight, 0.1, 100);
+      camera.position.set(0, 5.2, 6.8);
+      camera.lookAt(0, -1.2, 0.6);
 
       // Renderer
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
@@ -1673,17 +2047,17 @@
       container.appendChild(renderer.domElement);
 
       // Lighting
-      const hemiLight = new THREE.HemisphereLight(0xffffff, 0x1e293b, 0.85);
+      const hemiLight = new THREE.HemisphereLight(0xffffff, 0x1e293b, 0.9);
       scene.add(hemiLight);
 
-      const dirLight = new THREE.DirectionalLight(0xffffff, 0.95);
-      dirLight.position.set(6, 15, 10);
+      const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+      dirLight.position.set(6, 16, 10);
       dirLight.castShadow = true;
       dirLight.shadow.mapSize.width = 1024;
       dirLight.shadow.mapSize.height = 1024;
       scene.add(dirLight);
 
-      const pointLight = new THREE.PointLight(0x38bdf8, 0.7, 15);
+      const pointLight = new THREE.PointLight(0x38bdf8, 0.7, 18);
       pointLight.position.set(-4, 4, 4);
       scene.add(pointLight);
 
@@ -1692,14 +2066,14 @@
       scene.add(towerGroup);
 
       // Central Pole
-      const poleGeo = new THREE.CylinderGeometry(POLE_RADIUS, POLE_RADIUS, 200, 32);
+      const poleGeo = new THREE.CylinderGeometry(POLE_RADIUS, POLE_RADIUS, 240, 32);
       const poleMat = new THREE.MeshStandardMaterial({
         color: 0x1e293b,
         roughness: 0.35,
         metalness: 0.45
       });
       centralPole = new THREE.Mesh(poleGeo, poleMat);
-      centralPole.position.y = -70;
+      centralPole.position.y = -80;
       towerGroup.add(centralPole);
 
       // Cute Ball Mesh with dynamic canvas texture
@@ -1716,16 +2090,13 @@
       });
       ballMesh = new THREE.Mesh(ballGeo, ballMat);
       ballMesh.position.set(0, 0.5, 2.3);
-      ballMesh.rotation.y = -Math.PI / 2; // Face pointing outward toward camera
+      ballMesh.rotation.y = -Math.PI / 2;
       ballMesh.castShadow = true;
       scene.add(ballMesh);
 
       updateBall3DTexture();
 
-      // Window resize
       window.addEventListener('resize', onWindowResize);
-
-      // Setup Controls (Drag & Touch & Keyboard)
       setupInputListeners();
     }
 
@@ -1735,32 +2106,36 @@
       if (ballTexture) ballTexture.needsUpdate = true;
     }
 
-    /* Platform Ring Creation */
+    /* Platform Ring Creation (Supports Normal Finish Ring & Endless Generation) */
     function createHelixRing(ringIndex) {
       const ringGroup = new THREE.Group();
       const ringY = -ringIndex * RING_DISTANCE;
       ringGroup.position.y = ringY;
 
+      const isNormalMode = (selectedGameMode === 'normal');
+      const isFinishRing = (isNormalMode && ringIndex === NORMAL_MODE_TOTAL_FLOORS);
+
       const stage = getCurrentStage(ringIndex);
-      const safeColor = stage.color;
+      let safeColor = stage.color;
       const dangerColor = 0xef4444;
 
-      // Determine slice types: 0: safe, 1: gap, 2: danger
       const sliceTypes = new Array(SLICES_PER_RING).fill(0);
 
-      if (ringIndex === 0) {
+      if (isFinishRing) {
+        // FINISH FLOOR: Completely solid golden victory platform!
+        safeColor = 0xfacc15;
+        // No gaps, no dangers: all slices safe (0)
+      } else if (ringIndex === 0) {
         // First ring: ball starts bouncing at slice 3. Gaps placed at 5 and 6!
         sliceTypes[5] = 1;
         sliceTypes[6] = 1;
       } else {
-        // Gaps: for easy stages, make 2 or 3 gap slices so falling through is smooth and intuitive
-        const numGaps = ringIndex < 5 ? 3 : (ringIndex < 12 ? 2 : Math.max(1, stage.gapCount));
+        const numGaps = ringIndex < 5 ? 3 : (ringIndex < 14 ? 2 : Math.max(1, stage.gapCount));
         const gapStart = Math.floor(Math.random() * SLICES_PER_RING);
         for (let g = 0; g < numGaps; g++) {
           sliceTypes[(gapStart + g) % SLICES_PER_RING] = 1;
         }
 
-        // Danger Slices
         const numDangers = stage.dangerCount;
         let placed = 0;
         let tries = 0;
@@ -1777,21 +2152,19 @@
       ringGroup.userData = {
         ringIndex: ringIndex,
         sliceTypes: sliceTypes,
-        passed: false
+        passed: false,
+        isFinish: isFinishRing
       };
 
-      // Build 3D slices
       const angleStep = (Math.PI * 2) / SLICES_PER_RING;
 
       for (let i = 0; i < SLICES_PER_RING; i++) {
         const type = sliceTypes[i];
-        if (type === 1) continue; // Gap: NO GEOMETRY! Pure open space!
+        if (type === 1) continue; // Gap: pure open space
 
-        // Center each slice around i * angleStep
         const startAngle = i * angleStep - angleStep * 0.5;
         const sliceShape = new THREE.Shape();
 
-        // 2D arc cross-section for cylinder slice
         const segments = 8;
         for (let s = 0; s <= segments; s++) {
           const a = startAngle + (s / segments) * angleStep;
@@ -1809,7 +2182,7 @@
         sliceShape.closePath();
 
         const extrudeSettings = {
-          depth: RING_HEIGHT,
+          depth: isFinishRing ? RING_HEIGHT * 1.3 : RING_HEIGHT,
           bevelEnabled: true,
           bevelSegments: 2,
           steps: 1,
@@ -1818,20 +2191,19 @@
         };
 
         const sliceGeo = new THREE.ExtrudeGeometry(sliceShape, extrudeSettings);
-        sliceGeo.rotateX(Math.PI / 2); // align with horizontal plane: Top is at y=0, bottom at y=-RING_HEIGHT
+        sliceGeo.rotateX(Math.PI / 2);
 
         const isDanger = (type === 2);
         const mat = new THREE.MeshStandardMaterial({
-          color: isDanger ? dangerColor : safeColor,
-          roughness: isDanger ? 0.35 : 0.4,
-          metalness: isDanger ? 0.3 : 0.1,
-          emissive: isDanger ? 0x991b1b : 0x000000,
-          emissiveIntensity: isDanger ? 0.45 : 0
+          color: isFinishRing ? (i % 2 === 0 ? 0xfacc15 : 0xf59e0b) : (isDanger ? dangerColor : safeColor),
+          roughness: isFinishRing ? 0.2 : (isDanger ? 0.35 : 0.4),
+          metalness: isFinishRing ? 0.4 : (isDanger ? 0.3 : 0.1),
+          emissive: isFinishRing ? 0xd97706 : (isDanger ? 0x991b1b : 0x000000),
+          emissiveIntensity: isFinishRing ? 0.4 : (isDanger ? 0.45 : 0)
         });
 
         const sliceMesh = new THREE.Mesh(sliceGeo, mat);
         sliceMesh.receiveShadow = true;
-
         ringGroup.add(sliceMesh);
       }
 
@@ -1841,7 +2213,6 @@
 
     function createSplash(x, y, z, color) {
       if (!settings.particles) return;
-      // Paint splash decal on platform ring
       const splashGeo = new THREE.CircleGeometry(0.38 + Math.random() * 0.15, 12);
       splashGeo.rotateX(-Math.PI / 2);
       const splashMat = new THREE.MeshBasicMaterial({
@@ -1862,7 +2233,6 @@
         old.material.dispose();
       }
 
-      // 3D particles flying up
       for (let i = 0; i < 9; i++) {
         const pGeo = new THREE.SphereGeometry(0.06 + Math.random() * 0.04, 6, 6);
         const pMat = new THREE.MeshBasicMaterial({ color: color });
@@ -1882,8 +2252,29 @@
       }
     }
 
+    function createVictoryFirework(y) {
+      const colors = [0xfacc15, 0x38bdf8, 0xf43f5e, 0x4ade80, 0xa855f7];
+      for (let i = 0; i < 40; i++) {
+        const col = colors[Math.floor(Math.random() * colors.length)];
+        const pGeo = new THREE.SphereGeometry(0.1 + Math.random() * 0.08, 6, 6);
+        const pMat = new THREE.MeshBasicMaterial({ color: col });
+        const pMesh = new THREE.Mesh(pGeo, pMat);
+        pMesh.position.set((Math.random() - 0.5) * 3, y + Math.random() * 2, (Math.random() - 0.5) * 3);
+        scene.add(pMesh);
+
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 3.0 + Math.random() * 5.0;
+        particles.push({
+          mesh: pMesh,
+          vx: Math.cos(angle) * speed,
+          vy: 5.0 + Math.random() * 6.0,
+          vz: Math.sin(angle) * speed,
+          life: 1.6
+        });
+      }
+    }
+
     function createSuperSmashBurst(y) {
-      // Big explosion effect
       for (let i = 0; i < 24; i++) {
         const pGeo = new THREE.SphereGeometry(0.12, 6, 6);
         const pMat = new THREE.MeshBasicMaterial({ color: 0xff3b30 });
@@ -1904,14 +2295,14 @@
 
     /* Start New Game Session */
     function startNewGame() {
-      // Reset variables
       score = 0;
-      comboStreak = 0;
+      consecutiveHolesPassed = 0;
+      maxComboStreak = 1;
       isSuperSmash = false;
       isGameOver = false;
+      isVictory = false;
       gamePaused = false;
       currentLevelPassed = 0;
-      currentRingIndexPassed = 0;
 
       ballY = 1.0;
       ballVY = 0;
@@ -1944,20 +2335,38 @@
       particles = [];
 
       nextRingIndex = 0;
-      // Pre-generate 12 rings
-      for (let i = 0; i < 12; i++) {
+      // Pre-generate rings
+      const ringsToBuild = (selectedGameMode === 'normal') 
+        ? Math.min(12, NORMAL_MODE_TOTAL_FLOORS + 1)
+        : 12;
+
+      for (let i = 0; i < ringsToBuild; i++) {
         createHelixRing(nextRingIndex++);
       }
 
-      // Update UI HUD
+      // Update Mode Labels in HUD
+      const modeTag = document.getElementById('hud-mode-tag');
+      const bottomLabel = document.getElementById('toh-bottom-label');
+      if (selectedGameMode === 'normal') {
+        modeTag.textContent = '🏁 NORMAL';
+        modeTag.style.color = '#4ade80';
+        bottomLabel.textContent = 'FINISH 🏁';
+        bottomLabel.style.color = '#22c55e';
+      } else {
+        modeTag.textContent = '♾️ ENDLESS';
+        modeTag.style.color = '#f59e0b';
+        bottomLabel.textContent = 'HELL 🔥';
+        bottomLabel.style.color = '#ef4444';
+      }
+
       updateScoreHUD();
-      updateTowerOfHellBar(0);
+      updateTowerProgressBar(0);
       updateBall3DTexture(false);
 
       showScreen('game');
     }
 
-    /* Input Handling: Mouse Drag, Touch, & Keys */
+    /* Input Handling */
     function setupInputListeners() {
       let isDragging = false;
       let prevMouseX = 0;
@@ -1978,7 +2387,6 @@
 
       window.addEventListener('mouseup', () => { isDragging = false; });
 
-      // Touch events
       window.addEventListener('touchstart', (e) => {
         if (currentScreen !== 'game' || gamePaused) return;
         if (e.touches.length > 0) {
@@ -1999,7 +2407,6 @@
 
       window.addEventListener('touchend', () => { isDragging = false; });
 
-      // Keyboard Controls (Left/Right or A/D)
       window.addEventListener('keydown', (e) => {
         if (currentScreen !== 'game' || gamePaused) return;
         const keySpeed = 0.12 * (settings.sensitivity / 5);
@@ -2014,41 +2421,64 @@
     }
 
     function triggerGameOver() {
-      if (isGameOver) return;
+      if (isGameOver || isVictory) return;
       isGameOver = true;
       playSound('gameover');
-      updateBall3DTexture(true); // Dizzy X_X eyes!
+      updateBall3DTexture(true);
 
-      // Update games played count
-      recordGameFinished();
-      saveLeaderboardScore(playerData.name, score);
-
-      if (score > highScore) {
-        highScore = score;
-        localStorage.setItem(STORAGE_KEY_HIGH, highScore.toString());
-      }
+      // Save to personal & community player leaderboards
+      savePersonalRanking(selectedGameMode, score, currentLevelPassed + 1, maxComboStreak);
+      savePlayerLeaderboard(selectedGameMode, playerData.name, score, currentLevelPassed + 1);
 
       document.getElementById('go-final-score').textContent = score;
       document.getElementById('go-final-level').textContent = currentLevelPassed + 1;
+      document.getElementById('go-final-combo').textContent = `${maxComboStreak}x`;
 
       setTimeout(() => {
         showScreen('game-over');
       }, 700);
     }
 
-    /* Check Collision with Helix Platforms */
+    function triggerVictory() {
+      if (isGameOver || isVictory) return;
+      isVictory = true;
+      playSound('victory');
+      createVictoryFirework(ballY);
+
+      // Save victory run
+      savePersonalRanking('normal', score, NORMAL_MODE_TOTAL_FLOORS, maxComboStreak);
+      savePlayerLeaderboard('normal', playerData.name, score, NORMAL_MODE_TOTAL_FLOORS);
+
+      document.getElementById('vic-final-score').textContent = score;
+      document.getElementById('vic-final-combo').textContent = `${maxComboStreak}x`;
+
+      setTimeout(() => {
+        showScreen('victory');
+      }, 1000);
+    }
+
+    /* Floating Combo Text Trigger */
+    let comboTimeout = null;
+    function triggerComboPopup(comboCount, pointsAdded) {
+      const banner = document.getElementById('floating-combo');
+      banner.textContent = `🔥 COMBO ${comboCount}X! (+${pointsAdded})`;
+      banner.classList.add('show');
+      if (comboTimeout) clearTimeout(comboTimeout);
+      comboTimeout = setTimeout(() => {
+        banner.classList.remove('show');
+      }, 850);
+    }
+
+    /* Collision Engine with Realistic Combo Progression */
     function checkRingCollisions(prevY, newY) {
-      if (isGameOver) return;
+      if (isGameOver || isVictory) return;
 
       const TWO_PI = Math.PI * 2;
       const angleStep = TWO_PI / SLICES_PER_RING;
 
-      // Ball is at X=0, Z=2.3 (angle = PI/2 in world space).
-      // Angle in the tower's local coordinate system:
       let ballAngleInTower = (Math.PI * 0.5 + towerGroup.rotation.y) % TWO_PI;
       if (ballAngleInTower < 0) ballAngleInTower += TWO_PI;
 
-      // Which slice is directly under the ball?
       const sliceIndex = Math.floor((ballAngleInTower + angleStep * 0.5) / angleStep) % SLICES_PER_RING;
 
       for (let r = 0; r < activeRings.length; r++) {
@@ -2058,8 +2488,17 @@
         const prevBottom = prevY - ballRadius;
         const newBottom = newY - ballRadius;
 
-        // Check if ball bottom crossed ringTop downward during this step:
         if (prevBottom >= ringTop && newBottom <= ringTop) {
+          // Check if this is the Finish Platform in Normal Mode
+          if (ring.userData.isFinish) {
+            ballY = ringTop + ballRadius;
+            ballVY = 0;
+            score += 100; // Big bonus for completing the tower!
+            updateScoreHUD();
+            triggerVictory();
+            return;
+          }
+
           const type = ring.userData.sliceTypes[sliceIndex];
 
           if (type === 1) {
@@ -2067,49 +2506,64 @@
             if (!ring.userData.passed) {
               ring.userData.passed = true;
               currentLevelPassed++;
-              comboStreak++;
+              consecutiveHolesPassed++;
 
-              playSound('pass');
-              const comboBonus = comboStreak > 1 ? comboStreak * 5 : 0;
-              score += 10 + comboBonus;
-              updateScoreHUD();
-              updateTowerOfHellBar(currentLevelPassed);
-
-              if (comboStreak >= 3 && !isSuperSmash) {
-                isSuperSmash = true;
-                showComboBadge();
+              if (consecutiveHolesPassed > maxComboStreak) {
+                maxComboStreak = consecutiveHolesPassed;
               }
 
+              // COMBO CALCULATION:
+              // Base points = 5.
+              // 1 hole: 5 pts (combo 1x)
+              // 2 holes without landing: 10 pts (combo 2x)
+              // 3 holes without landing: 15 pts (combo 3x)
+              // 4 holes without landing: 20 pts (combo 4x), etc.
+              const earnedPoints = 5 * consecutiveHolesPassed;
+              score += earnedPoints;
+
+              playSound('pass', consecutiveHolesPassed);
+
+              if (consecutiveHolesPassed >= 2) {
+                triggerComboPopup(consecutiveHolesPassed, earnedPoints);
+                showComboBadge(consecutiveHolesPassed);
+              }
+
+              if (consecutiveHolesPassed >= 3 && !isSuperSmash) {
+                isSuperSmash = true;
+              }
+
+              updateScoreHUD();
+              updateTowerProgressBar(currentLevelPassed);
               checkStageBanner(currentLevelPassed);
             }
-            // Do NOT bounce or stop! Let ball continue falling through the hole!
           } else {
-            // SOLID SLICE: SAFE or DANGER
+            // SOLID PLATFORM: LANDING OR HIT
             if (isSuperSmash) {
-              // Super smash breaks this entire platform!
+              // Super smash breaks this platform!
               playSound('smash');
               createSuperSmashBurst(ringTop);
               towerGroup.remove(ring);
               activeRings.splice(r, 1);
               r--;
-              score += 35;
-              comboStreak = 0;
+              score += 30;
+              consecutiveHolesPassed = 0;
               isSuperSmash = false;
               updateScoreHUD();
               return;
             }
 
             if (type === 2) {
-              // Hit DANGER sector -> GAME OVER!
+              // Hit DANGER zone
               ballY = ringTop + ballRadius;
               ballVY = 0;
+              consecutiveHolesPassed = 0;
               triggerGameOver();
               return;
             } else {
-              // Hit SAFE sector -> BOUNCE!
+              // Safe landing: COMBO FINISHES/RESETS!
               ballY = ringTop + ballRadius;
               ballVY = BOUNCE_VELOCITY;
-              comboStreak = 0;
+              consecutiveHolesPassed = 0;
               isSuperSmash = false;
 
               // Squash animation
@@ -2137,38 +2591,41 @@
       });
     }
 
-    function showComboBadge() {
+    function showComboBadge(streak) {
       const badge = document.getElementById('hud-combo-badge');
-      badge.textContent = `🔥 SUPER SMASH x${comboStreak}!`;
+      badge.textContent = `🔥 COMBO ${streak}X!`;
       badge.classList.add('visible');
-      setTimeout(() => {
-        if (!isSuperSmash) badge.classList.remove('visible');
-      }, 1800);
     }
 
     function updateScoreHUD() {
       const scoreElem = document.getElementById('hud-score');
       scoreElem.textContent = score;
       scoreElem.classList.add('pop');
-      setTimeout(() => scoreElem.classList.remove('pop'), 150);
+      setTimeout(() => scoreElem.classList.remove('pop'), 140);
 
-      document.getElementById('hud-high-score').textContent = Math.max(score, highScore);
+      // Best score for current mode
+      const personalList = getPersonalRankings(selectedGameMode);
+      const personalBest = personalList.length > 0 ? personalList[0].score : 0;
+      document.getElementById('hud-high-score').textContent = Math.max(score, personalBest);
 
       const stage = getCurrentStage(currentLevelPassed);
       const stageNameElem = document.getElementById('hud-stage-name');
-      stageNameElem.textContent = stage.name;
+      if (selectedGameMode === 'normal') {
+        stageNameElem.textContent = `Lantai ${currentLevelPassed + 1}/${NORMAL_MODE_TOTAL_FLOORS}`;
+      } else {
+        stageNameElem.textContent = `Lantai ${currentLevelPassed + 1} (${stage.name})`;
+      }
       stageNameElem.style.color = stage.hex;
 
       const badge = document.getElementById('hud-combo-badge');
-      if (!isSuperSmash) {
+      if (consecutiveHolesPassed < 2 && !isSuperSmash) {
         badge.classList.remove('visible');
       }
     }
 
-    /* Update Tower of Hell Progress Bar (Roblox Style) */
-    function updateTowerOfHellBar(level) {
-      const maxLevelsForBar = 40; // Full Hell depth
-      const percent = Math.min(100, (level / maxLevelsForBar) * 100);
+    function updateTowerProgressBar(level) {
+      const maxLevels = (selectedGameMode === 'normal') ? NORMAL_MODE_TOTAL_FLOORS : 40;
+      const percent = Math.min(100, (level / maxLevels) * 100);
       const indicator = document.getElementById('toh-indicator');
       const tag = document.getElementById('toh-tag');
 
@@ -2185,12 +2642,12 @@
       const dt = Math.min((now - lastTime) / 1000, 0.1);
       lastTime = now;
 
-      // Handle cute blinking eyes
+      // Blinking animation
       blinkTimer += dt;
-      if (blinkTimer > 3.5) {
+      if (blinkTimer > 3.4) {
         isBlinking = true;
         updateBall3DTexture(isGameOver);
-        if (blinkTimer > 3.65) {
+        if (blinkTimer > 3.55) {
           isBlinking = false;
           updateBall3DTexture(isGameOver);
           blinkTimer = 0;
@@ -2202,12 +2659,12 @@
         towerRotation += (targetTowerRotation - towerRotation) * (18 * dt);
         towerGroup.rotation.y = towerRotation;
 
-        // Sub-stepping for physics to guarantee zero clipping and smooth gap detection
+        // Sub-stepping for physics accuracy
         const subSteps = 3;
         const subDt = dt / subSteps;
 
         for (let step = 0; step < subSteps; step++) {
-          if (isGameOver) break;
+          if (isGameOver || isVictory) break;
           const prevY = ballY;
           ballVY += GRAVITY * subDt;
           ballY += ballVY * subDt;
@@ -2215,24 +2672,25 @@
           checkRingCollisions(prevY, ballY);
         }
 
-        // Smooth restitution squash recovery
+        // Squash recovery
         ballMesh.scale.x += (1.0 - ballMesh.scale.x) * (12 * dt);
         ballMesh.scale.y += (1.0 - ballMesh.scale.y) * (12 * dt);
         ballMesh.scale.z += (1.0 - ballMesh.scale.z) * (12 * dt);
 
-        // Super smash fiery visual
         if (isSuperSmash) {
           ballMesh.material.emissive.setHex(0xff3300);
-          ballMesh.material.emissiveIntensity = 0.8;
+          ballMesh.material.emissiveIntensity = 0.85;
         } else {
           ballMesh.material.emissive.setHex(0x000000);
           ballMesh.material.emissiveIntensity = 0;
         }
 
-        // Endless generation & cleanup of passed rings
+        // Procedural generation of rings
         if (activeRings.length > 0) {
           const lowestRing = activeRings[activeRings.length - 1];
-          if (ballY < lowestRing.position.y + 20) {
+          const shouldSpawnMore = (selectedGameMode === 'endless') || (nextRingIndex <= NORMAL_MODE_TOTAL_FLOORS);
+
+          if (shouldSpawnMore && ballY < lowestRing.position.y + 22) {
             createHelixRing(nextRingIndex++);
           }
 
@@ -2247,14 +2705,19 @@
           }
         }
 
-        // Camera smoothly follows ball down
-        const targetCamY = ballY + 2.5;
-        camera.position.y += (targetCamY - camera.position.y) * (7 * dt);
-        camera.lookAt(0, ballY - 0.5, 0);
+        // ========================================================
+        // CAMERA: Elevated comfortable downward perspective (hadap bawah)
+        // Allows clear view of lower rings and gaps!
+        // ========================================================
+        const targetCamY = ballY + 5.2;
+        const targetCamZ = 6.8;
+        camera.position.y += (targetCamY - camera.position.y) * (10 * dt);
+        camera.position.z = targetCamZ;
+        camera.lookAt(0, ballY - 1.2, 0.6);
 
-        // Position Ball
+        // Position Ball & Pole
         ballMesh.position.y = ballY;
-        centralPole.position.y = camera.position.y - 60;
+        centralPole.position.y = camera.position.y - 70;
       }
 
       // Update particle physics
@@ -2264,7 +2727,7 @@
         p.mesh.position.x += p.vx * dt;
         p.mesh.position.y += p.vy * dt;
         p.mesh.position.z += p.vz * dt;
-        p.life -= dt * 1.5;
+        p.life -= dt * 1.4;
         p.mesh.scale.setScalar(Math.max(0.01, p.life));
 
         if (p.life <= 0) {
@@ -2284,14 +2747,12 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
-    // Initialize everything on load
+    // Initialize on load
     window.addEventListener('DOMContentLoaded', () => {
       init3D();
-      updateLeaderboardLockState();
       updateBallPreview();
       animate();
 
-      // Ensure audio context activates on first interaction
       window.addEventListener('click', initAudio, { once: true });
       window.addEventListener('touchstart', initAudio, { once: true });
     });
