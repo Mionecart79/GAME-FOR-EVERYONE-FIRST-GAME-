@@ -10,6 +10,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
   <!-- Three.js CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Firebase SDKs (Universal Compatibility) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
   <style>
     :root {
@@ -748,6 +751,53 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
 
+    /* Firebase Status Indicators */
+    .firebase-status-pill {
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      font-size: 0.78rem;
+      color: #cbd5e1;
+      backdrop-filter: blur(8px);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+      animation: pulse-dot 2s infinite ease-in-out;
+    }
+    .status-dot.syncing {
+      background: #facc15;
+      box-shadow: 0 0 8px #facc15;
+    }
+    .status-dot.offline {
+      background: #f97316;
+      box-shadow: 0 0 8px #f97316;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.85); }
+    }
+
+    .firebase-sync-note {
+      font-size: 0.75rem;
+      color: #38bdf8;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
     .leaderboard-table-wrap {
       max-height: 250px;
       min-height: 180px;
@@ -996,6 +1046,12 @@
           <span>SETTINGS</span>
         </button>
       </div>
+
+      <!-- Firebase Cloud Status Badge -->
+      <div class="firebase-status-pill" id="menu-firebase-badge" title="Status koneksi Firebase Cloud Firestore">
+        <span class="status-dot" id="menu-firebase-dot"></span>
+        <span id="menu-firebase-text">🔥 Firebase Cloud Terhubung</span>
+      </div>
     </div>
   </div>
 
@@ -1101,6 +1157,12 @@
       <div class="lb-sub-tabs">
         <button class="lb-sub-tab active" id="subtab-mode-normal">🏁 Normal Mode</button>
         <button class="lb-sub-tab" id="subtab-mode-endless">♾️ Endless Mode</button>
+      </div>
+
+      <!-- Firebase Cloud Sync Status Note -->
+      <div class="firebase-sync-note" id="lb-sync-status">
+        <span class="sync-icon">☁️</span>
+        <span id="lb-sync-text">Tersinkronisasi Realtime dengan Firebase Firestore</span>
       </div>
 
       <div class="leaderboard-table-wrap">
@@ -1244,6 +1306,122 @@
   <!-- Game Logic Script -->
   <script>
     /* ========================================================
+       FIREBASE CONFIGURATION & REALTIME CLOUD INTEGRATION
+       ======================================================== */
+    // Firebase Configuration from user
+    const firebaseConfig = {
+      apiKey: "AIzaSyBH4IBuZyo0fpbEM0K-mwnmbjRN2VWx31U",
+      authDomain: "game-for-everyone-1a93e.firebaseapp.com",
+      projectId: "game-for-everyone-1a93e",
+      storageBucket: "game-for-everyone-1a93e.firebasestorage.app",
+      messagingSenderId: "679469745511",
+      appId: "1:679469745511:web:d7dde27545e102381a9bc2"
+    };
+
+    let firebaseApp = null;
+    let firebaseDb = null;
+    let isFirebaseReady = false;
+
+    function initFirebase() {
+      try {
+        if (typeof firebase !== 'undefined') {
+          if (!firebase.apps || !firebase.apps.length) {
+            firebaseApp = firebase.initializeApp(firebaseConfig);
+          } else {
+            firebaseApp = firebase.app();
+          }
+          firebaseDb = firebase.firestore();
+          isFirebaseReady = true;
+          console.log("🔥 Firebase initialized successfully! Project:", firebaseConfig.projectId);
+          updateFirebaseStatusUI('online', '🔥 Firebase Cloud Terhubung');
+        } else {
+          console.warn("Firebase SDK tidak terdeteksi, berjalan dalam mode penyimpanan lokal.");
+          updateFirebaseStatusUI('offline', '⚠️ Mode Offline (Tersimpan Lokal)');
+        }
+      } catch (err) {
+        console.warn("Catatan inisialisasi Firebase:", err);
+        updateFirebaseStatusUI('warning', '⚠️ Mode Offline (Tersimpan Lokal)');
+      }
+    }
+
+    function updateFirebaseStatusUI(status, text) {
+      const menuDot = document.getElementById('menu-firebase-dot');
+      const menuText = document.getElementById('menu-firebase-text');
+      const lbSyncText = document.getElementById('lb-sync-text');
+
+      if (menuDot && menuText) {
+        menuDot.className = 'status-dot';
+        if (status === 'syncing') menuDot.classList.add('syncing');
+        else if (status === 'offline' || status === 'warning') menuDot.classList.add('offline');
+        menuText.textContent = text;
+      }
+
+      if (lbSyncText) {
+        if (status === 'online') {
+          lbSyncText.textContent = '🟢 Tersinkronisasi Realtime dengan Firebase Firestore';
+        } else if (status === 'syncing') {
+          lbSyncText.textContent = '🔄 Menyinkronkan data dengan Firebase...';
+        } else if (status === 'offline' || status === 'warning') {
+          lbSyncText.textContent = '☁️ Menggunakan Penyimpanan Lokal (Offline)';
+        }
+      }
+    }
+
+    // Simpan skor pemain ke Firebase Firestore
+    async function saveScoreToFirebase(mode, name, score, level) {
+      if (!firebaseDb || score <= 0) return;
+      try {
+        updateFirebaseStatusUI('syncing', '🔄 Menyinkronkan ke Cloud...');
+        const colName = (mode === 'normal') ? 'leaderboard_normal' : 'leaderboard_endless';
+        await firebaseDb.collection(colName).add({
+          name: name.trim() || 'Pemain Anonim',
+          score: Number(score),
+          level: Number(level),
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          createdDate: new Date().toISOString()
+        });
+        console.log(`[Firebase] Skor berhasil disimpan ke Firestore [${colName}]!`);
+        updateFirebaseStatusUI('online', '🔥 Firebase Cloud Terhubung');
+      } catch (err) {
+        console.warn("[Firebase] Gagal simpan ke cloud (tetap aman di lokal):", err);
+        updateFirebaseStatusUI('warning', '⚠️ Mode Offline (Tersimpan Lokal)');
+      }
+    }
+
+    // Ambil daftar skor tertinggi dari Firebase Firestore
+    async function fetchPlayerLeaderboardFromFirebase(mode) {
+      if (!firebaseDb) return null;
+      try {
+        const colName = (mode === 'normal') ? 'leaderboard_normal' : 'leaderboard_endless';
+        const snapshot = await firebaseDb.collection(colName)
+          .orderBy('score', 'desc')
+          .limit(20)
+          .get();
+
+        if (snapshot.empty) return [];
+
+        const results = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          results.push({
+            name: data.name || 'Pemain Anonim',
+            score: data.score || 0,
+            level: data.level || 1,
+            isYou: data.name === playerData.name
+          });
+        });
+        return results;
+      } catch (err) {
+        console.warn("[Firebase] Gagal mengambil skor dari Firestore:", err);
+        return null;
+      }
+    }
+
+    // Expose global window variables
+    window.firebaseApp = firebaseApp;
+    window.firebaseDb = firebaseDb;
+
+    /* ========================================================
        STATE & STORAGE CONFIGURATION
        ======================================================== */
     const STORAGE_KEY_PERSONAL_NORMAL = 'helix_personal_normal_v2';
@@ -1341,6 +1519,9 @@
       list.sort((a, b) => b.score - a.score);
       list = list.slice(0, 20);
       localStorage.setItem(key, JSON.stringify(list));
+
+      // Otomatis kirim & sinkronkan ke Firebase Cloud Firestore
+      saveScoreToFirebase(mode, name, score, level);
     }
 
     /* ========================================================
@@ -1906,6 +2087,9 @@
             <th style="text-align: right;">Waktu</th>
           </tr>
         `;
+        const lbSyncText = document.getElementById('lb-sync-text');
+        if (lbSyncText) lbSyncText.textContent = '👤 Riwayat Rekor Pribadi Tersimpan di Perangkat Ini';
+
         const list = getPersonalRankings(currentLbSubTab);
         if (list.length === 0) {
           emptyState.classList.remove('hidden');
@@ -1931,7 +2115,7 @@
           tbody.appendChild(tr);
         });
       } else {
-        // Player Community Leaderboard
+        // Player Community Leaderboard (Cloud Firestore)
         thead.innerHTML = `
           <tr>
             <th style="width: 48px;">Rank</th>
@@ -1940,31 +2124,59 @@
             <th style="text-align: right;">Skor</th>
           </tr>
         `;
-        const list = getPlayerLeaderboard(currentLbSubTab);
-        if (list.length === 0) {
-          emptyState.classList.remove('hidden');
-          return;
+
+        function renderPlayerRows(items) {
+          tbody.innerHTML = '';
+          if (!items || items.length === 0) {
+            emptyState.classList.remove('hidden');
+            return;
+          }
+          emptyState.classList.add('hidden');
+          items.forEach((item, index) => {
+            const rank = index + 1;
+            const tr = document.createElement('tr');
+            if (item.isYou) tr.classList.add('lb-row-you');
+
+            let rankBadge = rank;
+            let rankClass = '';
+            if (rank === 1) { rankClass = 'lb-rank-1'; rankBadge = '🥇 1'; }
+            else if (rank === 2) { rankClass = 'lb-rank-2'; rankBadge = '🥈 2'; }
+            else if (rank === 3) { rankClass = 'lb-rank-3'; rankBadge = '🥉 3'; }
+
+            tr.innerHTML = `
+              <td class="${rankClass}"><span class="lb-badge">${rankBadge}</span></td>
+              <td style="font-weight: 700;">${item.name} ${item.isYou ? '<span style="font-size: 0.7rem; color: #38bdf8; background: rgba(56,189,248,0.2); padding: 1px 6px; border-radius: 6px; margin-left: 4px;">KAMU</span>' : ''}</td>
+              <td style="color: #facc15; font-weight: 600;">Lantai ${item.level}</td>
+              <td style="text-align: right; color: #38bdf8; font-weight: 800; font-size: 1.05rem;">${item.score}</td>
+            `;
+            tbody.appendChild(tr);
+          });
         }
-        emptyState.classList.add('hidden');
-        list.forEach((item, index) => {
-          const rank = index + 1;
-          const tr = document.createElement('tr');
-          if (item.isYou) tr.classList.add('lb-row-you');
 
-          let rankBadge = rank;
-          let rankClass = '';
-          if (rank === 1) { rankClass = 'lb-rank-1'; rankBadge = '🥇 1'; }
-          else if (rank === 2) { rankClass = 'lb-rank-2'; rankBadge = '🥈 2'; }
-          else if (rank === 3) { rankClass = 'lb-rank-3'; rankBadge = '🥉 3'; }
+        // Tampilkan data lokal terlebih dahulu untuk kecepatan instan
+        const localList = getPlayerLeaderboard(currentLbSubTab);
+        renderPlayerRows(localList);
 
-          tr.innerHTML = `
-            <td class="${rankClass}"><span class="lb-badge">${rankBadge}</span></td>
-            <td style="font-weight: 700;">${item.name} ${item.isYou ? '<span style="font-size: 0.7rem; color: #38bdf8; background: rgba(56,189,248,0.2); padding: 1px 6px; border-radius: 6px; margin-left: 4px;">KAMU</span>' : ''}</td>
-            <td style="color: #facc15; font-weight: 600;">Lantai ${item.level}</td>
-            <td style="text-align: right; color: #38bdf8; font-weight: 800; font-size: 1.05rem;">${item.score}</td>
-          `;
-          tbody.appendChild(tr);
-        });
+        // Jika Firebase aktif, sinkronkan data langsung dari Firebase Firestore
+        const lbSyncText = document.getElementById('lb-sync-text');
+        if (firebaseDb) {
+          if (lbSyncText) lbSyncText.textContent = '🔄 Mengambil data realtime dari Firebase Firestore...';
+          const activeSub = currentLbSubTab;
+          fetchPlayerLeaderboardFromFirebase(activeSub).then(cloudList => {
+            if (currentLbTab === 'player' && currentLbSubTab === activeSub) {
+              if (cloudList && cloudList.length > 0) {
+                renderPlayerRows(cloudList);
+                if (lbSyncText) lbSyncText.textContent = '🟢 Live Cloud Leaderboard (Firebase Firestore)';
+              } else {
+                if (lbSyncText) lbSyncText.textContent = '☁️ Firebase Cloud Siap (Jadilah yang pertama mencetak rekor!)';
+              }
+            }
+          }).catch(err => {
+            if (lbSyncText) lbSyncText.textContent = '☁️ Mode Offline (Menggunakan skor lokal)';
+          });
+        } else {
+          if (lbSyncText) lbSyncText.textContent = '☁️ Menggunakan Skor Lokal (Firebase offline)';
+        }
       }
     }
 
@@ -2749,6 +2961,7 @@
 
     // Initialize on load
     window.addEventListener('DOMContentLoaded', () => {
+      initFirebase();
       init3D();
       updateBallPreview();
       animate();
