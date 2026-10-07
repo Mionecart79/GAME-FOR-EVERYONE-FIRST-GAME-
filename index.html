@@ -13,6 +13,7 @@
   <!-- Firebase SDKs (Universal Compatibility) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 
   <style>
     :root {
@@ -418,6 +419,214 @@
       color: #94a3b8;
       line-height: 1.35;
       font-weight: 500;
+    }
+
+    /* ========================================================
+       USER BADGE & AUTHENTICATION STYLES
+       ======================================================== */
+    .user-badge-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 18px;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    }
+    .user-badge-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+      overflow: hidden;
+    }
+    .user-mini-canvas {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.08);
+    }
+    .user-badge-info {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .user-badge-name {
+      font-weight: 800;
+      font-size: 0.96rem;
+      color: #fff;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .user-badge-status {
+      font-size: 0.72rem;
+      color: #94a3b8;
+    }
+    .btn-badge-action {
+      background: rgba(56, 189, 248, 0.18);
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      color: #38bdf8;
+      border-radius: 12px;
+      padding: 6px 12px;
+      font-family: var(--font-main);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .btn-badge-action:hover {
+      background: #38bdf8;
+      color: #0f172a;
+      transform: translateY(-1px);
+    }
+
+    .btn-auth {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #fff;
+    }
+    .btn-auth:hover {
+      background: linear-gradient(135deg, #0369a1, #1d4ed8) !important;
+      color: #fff;
+    }
+
+    /* Auth Modal / Screen */
+    .auth-tabs {
+      display: flex;
+      background: rgba(15, 23, 42, 0.65);
+      border-radius: 14px;
+      padding: 4px;
+      gap: 6px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .auth-tab {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: none;
+      background: transparent;
+      color: #94a3b8;
+      font-family: var(--font-main);
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .auth-tab.active {
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.35);
+    }
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: left;
+    }
+    .auth-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .auth-label {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #cbd5e1;
+    }
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      margin: 16px 0 12px;
+      color: #64748b;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+    .auth-divider span {
+      padding: 0 10px;
+    }
+    .social-auth-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    .btn-social {
+      flex: 1;
+      padding: 11px 14px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-social:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+    .auth-alert {
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      text-align: center;
+      line-height: 1.4;
+      transition: all 0.25s;
+    }
+    .auth-alert.error {
+      background: rgba(239, 68, 68, 0.22);
+      border: 1px solid #ef4444;
+      color: #fca5a5;
+    }
+    .auth-alert.success {
+      background: rgba(34, 197, 94, 0.22);
+      border: 1px solid #22c55e;
+      color: #86efac;
+    }
+    .auth-logged-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 16px;
+      border-radius: 18px;
+      text-align: left;
+    }
+    .name-status-note {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 5px;
+      display: none;
+    }
+    .name-status-note.error {
+      display: block;
+      color: #ef4444;
+    }
+    .name-status-note.success {
+      display: block;
+      color: #22c55e;
     }
 
     /* HUD Top Right Score */
@@ -1027,6 +1236,18 @@
   <!-- 1. MAIN MENU SCREEN -->
   <div class="screen interactive" id="screen-main-menu">
     <div class="glass-card">
+      <!-- User Profile & Cloud Sync Bar -->
+      <div class="user-badge-bar" id="menu-user-badge">
+        <div class="user-badge-left">
+          <canvas id="menu-avatar-mini" width="36" height="36" class="user-mini-canvas"></canvas>
+          <div class="user-badge-info">
+            <span class="user-badge-name" id="menu-user-name">Si Bolil</span>
+            <span class="user-badge-status" id="menu-user-status">Tamu (Belum Login)</span>
+          </div>
+        </div>
+        <button class="btn-badge-action" id="btn-user-badge-action">Masuk / Daftar</button>
+      </div>
+
       <div class="game-logo-main">SUPER ULTRA KAWAI</div>
       <div class="game-logo-sub">HELIX GAME WAOW! ✨</div>
 
@@ -1034,6 +1255,11 @@
         <button class="btn btn-start" id="btn-menu-start">
           <span>🚀</span>
           <span>START GAME</span>
+        </button>
+
+        <button class="btn btn-auth" id="btn-menu-account">
+          <span>🔐</span>
+          <span id="btn-menu-account-text">AKUN SAYA & CLOUD</span>
         </button>
 
         <button class="btn btn-leaderboard" id="btn-menu-leaderboard">
@@ -1055,11 +1281,111 @@
     </div>
   </div>
 
+  <!-- 1.5. AUTHENTICATION & CLOUD ACCOUNT SCREEN -->
+  <div class="screen hidden interactive" id="screen-auth">
+    <div class="glass-card" style="max-width: 460px; width: 92%;">
+      <div style="font-size: 2.6rem; margin-bottom: 2px;">🔐</div>
+      <h2 style="font-family: var(--font-display); font-size: 1.75rem; font-weight: 800; color: #38bdf8; margin-bottom: 2px;" id="auth-title">
+        AKUN PEMAIN & CLOUD
+      </h2>
+      <p style="color: #94a3b8; font-size: 0.84rem; margin-bottom: 14px;" id="auth-subtitle">
+        Kunci nama pemainmu agar tidak diambil orang lain & sinkronkan bola ke cloud!
+      </p>
+
+      <!-- Alert Box for Auth Messages -->
+      <div id="auth-alert-box" class="auth-alert hidden"></div>
+
+      <!-- View When Already Logged In -->
+      <div id="auth-view-logged-in" class="hidden">
+        <div class="auth-logged-card">
+          <canvas id="auth-avatar-preview" width="56" height="56" class="user-mini-canvas" style="width: 56px; height: 56px;"></canvas>
+          <div style="overflow: hidden;">
+            <div style="font-weight: 800; font-size: 1.15rem; color: #fff;" id="auth-display-player-name">Si Bolil</div>
+            <div style="font-size: 0.8rem; color: #94a3b8; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" id="auth-display-player-email">pemain@email.com</div>
+            <div style="font-size: 0.76rem; color: #22c55e; margin-top: 4px; font-weight: 700;">🟢 Profil Bola Tersinkronisasi di Firestore</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 16px;">
+          <button class="btn" style="flex: 1; background: #ef4444; color: #fff;" id="btn-auth-logout">🚪 Keluar</button>
+          <button class="btn" style="flex: 1; background: rgba(255,255,255,0.18); color: #fff;" id="btn-auth-close-logged">Tutup</button>
+        </div>
+      </div>
+
+      <!-- View When NOT Logged In (Tabs for Login & Register) -->
+      <div id="auth-view-forms">
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="tab-auth-login">Masuk (Login)</button>
+          <button class="auth-tab" id="tab-auth-register">Daftar Akun Baru</button>
+        </div>
+
+        <!-- Form Login -->
+        <form id="form-auth-login" class="auth-form" onsubmit="return false;">
+          <div class="auth-field">
+            <label class="auth-label" for="login-email">Email:</label>
+            <input type="email" id="login-email" class="name-input" placeholder="kamu@contoh.com" required autocomplete="email">
+          </div>
+          <div class="auth-field">
+            <label class="auth-label" for="login-password">Password:</label>
+            <input type="password" id="login-password" class="name-input" placeholder="Masukkan passwordmu" required autocomplete="current-password">
+          </div>
+          <button type="submit" class="btn" style="width: 100%; margin-top: 6px; background: #3b82f6; color: #fff;" id="btn-do-login">
+            <span>🔑</span> <span>Masuk ke Akun</span>
+          </button>
+        </form>
+
+        <!-- Form Register -->
+        <form id="form-auth-register" class="auth-form hidden" onsubmit="return false;">
+          <div class="auth-field">
+            <label class="auth-label" for="reg-player-name">Nama Pemain (Unik):</label>
+            <input type="text" id="reg-player-name" class="name-input" maxlength="15" placeholder="Contoh: Boli Sakti" required autocomplete="nickname">
+            <span style="font-size: 0.74rem; color: #94a3b8;">*Nama ini otomatis dikunci dan tidak bisa dipakai pemain lain!</span>
+          </div>
+          <div class="auth-field">
+            <label class="auth-label" for="reg-email">Email:</label>
+            <input type="email" id="reg-email" class="name-input" placeholder="kamu@contoh.com" required autocomplete="email">
+          </div>
+          <div class="auth-field">
+            <label class="auth-label" for="reg-password">Password:</label>
+            <input type="password" id="reg-password" class="name-input" placeholder="Minimal 6 karakter" minlength="6" required autocomplete="new-password">
+          </div>
+          <button type="submit" class="btn btn-start" style="width: 100%; margin-top: 6px;" id="btn-do-register">
+            <span>🚀</span> <span>Daftar & Kunci Nama</span>
+          </button>
+        </form>
+
+        <!-- Social Login Separator -->
+        <div class="auth-divider">
+          <span>ATAU MASUK MELALUI</span>
+        </div>
+
+        <div class="social-auth-buttons">
+          <button class="btn btn-social" id="btn-auth-google" type="button" title="Masuk dengan Google">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.4l3.7 2.9C6.5 7.4 9 5 12 5z"/><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/><path fill="#FBBC05" d="M5.6 14.7c-.2-.7-.4-1.5-.4-2.3 0-.8.2-1.6.4-2.3L1.9 7.2C.7 9.6 0 12.3 0 15.2c0 2.9.7 5.6 1.9 8l3.7-2.9z"/><path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2-6.4-4.8L1.9 16.9C3.7 20.7 7.5 23.5 12 23.5z"/></svg>
+            <span>Google</span>
+          </button>
+          <button class="btn btn-social" id="btn-auth-facebook" type="button" title="Masuk dengan Facebook">
+            <svg width="18" height="18" fill="#1877F2" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <span>Facebook</span>
+          </button>
+        </div>
+
+        <button class="btn" style="width: 100%; margin-top: 14px; background: rgba(255,255,255,0.12); color: #fff;" id="btn-close-auth">
+          Main sebagai Tamu (Tutup)
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- 2. BALL CUSTOMIZATION SCREEN -->
   <div class="screen hidden interactive" id="screen-customize">
     <div class="glass-card">
       <h2 style="font-family: var(--font-display); font-size: 1.7rem; font-weight: 800; margin-bottom: 2px;">KUSTOMISASI BOLA</h2>
-      <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 14px;">Beri nama dan rias muka imut bolamu!</p>
+      <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 6px;">Beri nama dan rias muka imut bolamu!</p>
+
+      <!-- Cloud Sync & Account Note -->
+      <div id="custom-cloud-badge" style="font-size: 0.78rem; color: #38bdf8; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <span>☁️</span> <span id="custom-cloud-badge-text">Masuk akun untuk mengunci nama & simpan profil ke Cloud</span>
+      </div>
 
       <div class="preview-ball-wrapper">
         <div class="preview-canvas-holder" id="preview-holder">
@@ -1070,6 +1396,7 @@
       <div class="custom-section">
         <label class="custom-label" for="input-player-name">Nama Pemain / Bola:</label>
         <input type="text" id="input-player-name" class="name-input" maxlength="15" placeholder="Contoh: Boli Imut" value="Si Bolil">
+        <div class="name-status-note" id="custom-name-feedback"></div>
       </div>
 
       <div class="custom-section">
@@ -1320,6 +1647,8 @@
 
     let firebaseApp = null;
     let firebaseDb = null;
+    let firebaseAuth = null;
+    let currentUser = null;
     let isFirebaseReady = false;
 
     function initFirebase() {
@@ -1331,6 +1660,22 @@
             firebaseApp = firebase.app();
           }
           firebaseDb = firebase.firestore();
+          if (firebase.auth) {
+            firebaseAuth = firebase.auth();
+            // Listen to auth state changes
+            firebaseAuth.onAuthStateChanged(async (user) => {
+              currentUser = user;
+              if (user) {
+                console.log("🔥 [Firebase Auth] Logged in as:", user.email || user.displayName, user.uid);
+                await loadPlayerProfileFromFirestore(user.uid);
+              } else {
+                console.log("👤 [Firebase Auth] Guest mode / Signed out");
+              }
+              updateUserBadgeUI();
+              updateBallPreview();
+              updateBall3DTexture();
+            });
+          }
           isFirebaseReady = true;
           console.log("🔥 Firebase initialized successfully! Project:", firebaseConfig.projectId);
           updateFirebaseStatusUI('online', '🔥 Firebase Cloud Terhubung');
@@ -1367,8 +1712,129 @@
       }
     }
 
+    // Update UI Tampilan Badge Profil Pemain di Menu Utama
+    function updateUserBadgeUI() {
+      const nameElem = document.getElementById('menu-user-name');
+      const statusElem = document.getElementById('menu-user-status');
+      const actionBtn = document.getElementById('btn-user-badge-action');
+      const accountBtnText = document.getElementById('btn-menu-account-text');
+      const customCloudBadgeText = document.getElementById('custom-cloud-badge-text');
+
+      const authViewLoggedIn = document.getElementById('auth-view-logged-in');
+      const authViewForms = document.getElementById('auth-view-forms');
+      const authDisplayName = document.getElementById('auth-display-player-name');
+      const authDisplayEmail = document.getElementById('auth-display-player-email');
+
+      if (currentUser) {
+        const displayName = playerData.name || currentUser.displayName || 'Pemain';
+        if (nameElem) nameElem.textContent = displayName;
+        if (statusElem) statusElem.textContent = '🟢 Terhubung (Cloud Sync)';
+        if (actionBtn) actionBtn.textContent = 'Akun Saya';
+        if (accountBtnText) accountBtnText.textContent = `AKUN (${displayName.slice(0, 10)})`;
+        if (customCloudBadgeText) customCloudBadgeText.textContent = '🟢 Profil & bola otomatis tersinkronisasi ke Cloud';
+
+        if (authViewLoggedIn) authViewLoggedIn.classList.remove('hidden');
+        if (authViewForms) authViewForms.classList.add('hidden');
+        if (authDisplayName) authDisplayName.textContent = displayName;
+        if (authDisplayEmail) authDisplayEmail.textContent = currentUser.email || '(Masuk via Akun)';
+
+        const authPreviewCanvas = document.getElementById('auth-avatar-preview');
+        if (authPreviewCanvas) {
+          drawCuteFace(authPreviewCanvas, playerData.color, playerData.face, false);
+        }
+      } else {
+        if (nameElem) nameElem.textContent = playerData.name || 'Si Bolil';
+        if (statusElem) statusElem.textContent = 'Tamu (Belum Login)';
+        if (actionBtn) actionBtn.textContent = 'Masuk / Daftar';
+        if (accountBtnText) accountBtnText.textContent = 'AKUN SAYA & CLOUD';
+        if (customCloudBadgeText) customCloudBadgeText.textContent = '💡 Masuk akun untuk mengunci nama & simpan profil ke Cloud';
+
+        if (authViewLoggedIn) authViewLoggedIn.classList.add('hidden');
+        if (authViewForms) authViewForms.classList.remove('hidden');
+      }
+
+      // Gambar mini avatar di Menu Utama
+      const menuMiniCanvas = document.getElementById('menu-avatar-mini');
+      if (menuMiniCanvas) {
+        drawCuteFace(menuMiniCanvas, playerData.color, playerData.face, false);
+      }
+    }
+
+    // Periksa apakah nama pemain sudah digunakan oleh pemain lain di Firestore
+    async function checkUsernameAvailability(rawName, currentUid) {
+      const clean = (rawName || '').trim().toLowerCase();
+      if (!clean || clean.length < 2) {
+        return { available: false, message: 'Nama pemain minimal 2 karakter!' };
+      }
+      if (!firebaseDb) {
+        return { available: true }; // offline fallback
+      }
+      try {
+        const doc = await firebaseDb.collection('usernames').doc(clean).get();
+        if (doc.exists) {
+          const data = doc.data();
+          if (currentUid && data.uid === currentUid) {
+            return { available: true };
+          }
+          return {
+            available: false,
+            message: `Nama "${rawName.trim()}" sudah digunakan oleh pemain lain! Silakan pilih nama lain.`
+          };
+        }
+        return { available: true };
+      } catch (err) {
+        console.warn("[Firebase] Gagal memeriksa keunikan nama:", err);
+        return { available: true };
+      }
+    }
+
+    // Simpan profil kustomisasi bola (nama, warna, ekspresi muka) ke Firestore
+    async function savePlayerProfileToFirestore(uid) {
+      if (!firebaseDb || !uid) return;
+      try {
+        const cleanName = (playerData.name || 'Si Bolil').trim().toLowerCase();
+        await firebaseDb.collection('users').doc(uid).set({
+          name: playerData.name,
+          color: playerData.color,
+          face: playerData.face,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        await firebaseDb.collection('usernames').doc(cleanName).set({
+          uid: uid,
+          displayName: playerData.name,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        console.log("[Firebase] Profil bola berhasil disimpan ke Cloud Firestore!");
+      } catch (err) {
+        console.warn("[Firebase] Gagal menyimpan profil ke Firestore:", err);
+      }
+    }
+
+    // Ambil profil kustomisasi bola dari Firestore
+    async function loadPlayerProfileFromFirestore(uid) {
+      if (!firebaseDb || !uid) return;
+      try {
+        const doc = await firebaseDb.collection('users').doc(uid).get();
+        if (doc.exists) {
+          const data = doc.data();
+          if (data.name) playerData.name = data.name;
+          if (data.color) playerData.color = data.color;
+          if (data.face) playerData.face = data.face;
+          localStorage.setItem(STORAGE_KEY_PLAYER, JSON.stringify(playerData));
+          const inputName = document.getElementById('input-player-name');
+          if (inputName) inputName.value = playerData.name;
+          console.log("[Firebase] Profil bola berhasil dimuat dari Cloud:", playerData);
+        } else {
+          await savePlayerProfileToFirestore(uid);
+        }
+      } catch (err) {
+        console.warn("[Firebase] Gagal memuat profil dari Firestore:", err);
+      }
+    }
+
     // Simpan skor pemain ke Firebase Firestore
-    async function saveScoreToFirebase(mode, name, score, level) {
+    async function saveScoreToFirebase(mode, name, score, level, maxCombo) {
       if (!firebaseDb || score <= 0) return;
       try {
         updateFirebaseStatusUI('syncing', '🔄 Menyinkronkan ke Cloud...');
@@ -1377,6 +1843,10 @@
           name: name.trim() || 'Pemain Anonim',
           score: Number(score),
           level: Number(level),
+          maxCombo: Number(maxCombo || 1),
+          ballColor: playerData.color || '#38bdf8',
+          ballFace: playerData.face || 'happy',
+          uid: currentUser ? currentUser.uid : null,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
           createdDate: new Date().toISOString()
         });
@@ -1388,7 +1858,7 @@
       }
     }
 
-    // Ambil daftar skor tertinggi dari Firebase Firestore
+    // Ambil daftar skor tertinggi dari Firebase Firestore (realtime pemain asli)
     async function fetchPlayerLeaderboardFromFirebase(mode) {
       if (!firebaseDb) return null;
       try {
@@ -1403,11 +1873,15 @@
         const results = [];
         snapshot.forEach(doc => {
           const data = doc.data();
+          const isYou = (currentUser && data.uid && data.uid === currentUser.uid) || (data.name === playerData.name);
           results.push({
             name: data.name || 'Pemain Anonim',
             score: data.score || 0,
             level: data.level || 1,
-            isYou: data.name === playerData.name
+            maxCombo: data.maxCombo || 1,
+            ballColor: data.ballColor || '#38bdf8',
+            ballFace: data.ballFace || 'happy',
+            isYou: isYou
           });
         });
         return results;
@@ -1424,11 +1898,11 @@
     /* ========================================================
        STATE & STORAGE CONFIGURATION
        ======================================================== */
-    const STORAGE_KEY_PERSONAL_NORMAL = 'helix_personal_normal_v2';
-    const STORAGE_KEY_PERSONAL_ENDLESS = 'helix_personal_endless_v2';
-    const STORAGE_KEY_PLAYER_NORMAL = 'helix_global_player_normal_v2';
-    const STORAGE_KEY_PLAYER_ENDLESS = 'helix_global_player_endless_v2';
-    const STORAGE_KEY_PLAYER = 'helix_jump_player_data_v2';
+    const STORAGE_KEY_PERSONAL_NORMAL = 'helix_personal_normal_v3';
+    const STORAGE_KEY_PERSONAL_ENDLESS = 'helix_personal_endless_v3';
+    const STORAGE_KEY_PLAYER_NORMAL = 'helix_global_player_normal_v3';
+    const STORAGE_KEY_PLAYER_ENDLESS = 'helix_global_player_endless_v3';
+    const STORAGE_KEY_PLAYER = 'helix_jump_player_data_v3';
 
     // Game Mode: 'normal' (25 floors to finish) or 'endless' (infinite until loss)
     let selectedGameMode = 'normal';
@@ -1459,7 +1933,7 @@
         const raw = localStorage.getItem(key);
         if (raw) return JSON.parse(raw);
       } catch(e) {}
-      return []; // Empty initially!
+      return []; // Mulai kosong
     }
 
     function savePersonalRanking(mode, score, level, maxCombo) {
@@ -1479,34 +1953,17 @@
       localStorage.setItem(key, JSON.stringify(list));
     }
 
+    // Leaderboard Global: Mulai KOSONG (0 pemain) sesuai permintaan! Terisi saat ada pemain yang bermain.
     function getPlayerLeaderboard(mode) {
       const key = (mode === 'normal') ? STORAGE_KEY_PLAYER_NORMAL : STORAGE_KEY_PLAYER_ENDLESS;
       try {
         const raw = localStorage.getItem(key);
         if (raw) return JSON.parse(raw);
       } catch(e) {}
-
-      // Initial realistic community players if not yet seeded
-      if (mode === 'normal') {
-        return [
-          { name: "SkyMaster_Pro", score: 420, level: 25, isYou: false },
-          { name: "KawaiiNinja", score: 350, level: 25, isYou: false },
-          { name: "BobaJumper", score: 285, level: 22, isYou: false },
-          { name: "SakuraDrop", score: 210, level: 18, isYou: false },
-          { name: "PixelHero99", score: 145, level: 12, isYou: false }
-        ];
-      } else {
-        return [
-          { name: "EndlessGod", score: 980, level: 68, isYou: false },
-          { name: "HelixVortex", score: 740, level: 52, isYou: false },
-          { name: "TowerPhantom", score: 580, level: 41, isYou: false },
-          { name: "BounceCat", score: 430, level: 32, isYou: false },
-          { name: "CyberSphere", score: 290, level: 24, isYou: false }
-        ];
-      }
+      return []; // Benar-benar kosong pada awal!
     }
 
-    function savePlayerLeaderboard(mode, name, score, level) {
+    function savePlayerLeaderboard(mode, name, score, level, maxCombo) {
       if (score <= 0) return;
       const key = (mode === 'normal') ? STORAGE_KEY_PLAYER_NORMAL : STORAGE_KEY_PLAYER_ENDLESS;
       let list = getPlayerLeaderboard(mode);
@@ -1514,6 +1971,9 @@
         name: name.trim() || 'Pemain Anonim',
         score: score,
         level: level,
+        maxCombo: maxCombo || 1,
+        ballColor: playerData.color || '#38bdf8',
+        ballFace: playerData.face || 'happy',
         isYou: true
       });
       list.sort((a, b) => b.score - a.score);
@@ -1521,7 +1981,7 @@
       localStorage.setItem(key, JSON.stringify(list));
 
       // Otomatis kirim & sinkronkan ke Firebase Cloud Firestore
-      saveScoreToFirebase(mode, name, score, level);
+      saveScoreToFirebase(mode, name, score, level, maxCombo);
     }
 
     /* ========================================================
@@ -1831,6 +2291,7 @@
        ======================================================== */
     let currentScreen = 'main-menu';
     const screenMainMenu = document.getElementById('screen-main-menu');
+    const screenAuth = document.getElementById('screen-auth');
     const screenCustomize = document.getElementById('screen-customize');
     const screenModeSelect = document.getElementById('screen-mode-select');
     const screenLeaderboard = document.getElementById('screen-leaderboard');
@@ -1841,8 +2302,8 @@
     const gameHud = document.getElementById('game-hud');
 
     function showScreen(screenId) {
-      [screenMainMenu, screenCustomize, screenModeSelect, screenLeaderboard, screenSettings, screenPause, screenGameOver, screenVictory].forEach(s => {
-        s.classList.add('hidden');
+      [screenMainMenu, screenAuth, screenCustomize, screenModeSelect, screenLeaderboard, screenSettings, screenPause, screenGameOver, screenVictory].forEach(s => {
+        if (s) s.classList.add('hidden');
       });
 
       if (screenId === 'game') {
@@ -1866,6 +2327,31 @@
       showScreen('customize');
     });
 
+    // Buka Layar Akun & Cloud Sync
+    document.getElementById('btn-menu-account').addEventListener('click', () => {
+      playSound('click');
+      hideAuthAlert();
+      updateUserBadgeUI();
+      showScreen('auth');
+    });
+
+    document.getElementById('btn-user-badge-action').addEventListener('click', () => {
+      playSound('click');
+      hideAuthAlert();
+      updateUserBadgeUI();
+      showScreen('auth');
+    });
+
+    document.getElementById('btn-close-auth').addEventListener('click', () => {
+      playSound('click');
+      showScreen('main-menu');
+    });
+
+    document.getElementById('btn-auth-close-logged').addEventListener('click', () => {
+      playSound('click');
+      showScreen('main-menu');
+    });
+
     document.getElementById('btn-menu-leaderboard').addEventListener('click', () => {
       playSound('click');
       populateLeaderboardUI();
@@ -1882,13 +2368,253 @@
       showScreen('main-menu');
     });
 
-    // Customization -> Mode Selection
-    document.getElementById('btn-next-to-modes').addEventListener('click', () => {
+    /* ========================================================
+       AUTHENTICATION UI & HANDLERS
+       ======================================================== */
+    function showAuthAlert(type, message) {
+      const box = document.getElementById('auth-alert-box');
+      if (!box) return;
+      box.className = `auth-alert ${type}`;
+      box.textContent = message;
+      box.classList.remove('hidden');
+    }
+    function hideAuthAlert() {
+      const box = document.getElementById('auth-alert-box');
+      if (box) box.classList.add('hidden');
+    }
+
+    // Switch Tab Login / Register
+    const tabAuthLogin = document.getElementById('tab-auth-login');
+    const tabAuthRegister = document.getElementById('tab-auth-register');
+    const formAuthLogin = document.getElementById('form-auth-login');
+    const formAuthRegister = document.getElementById('form-auth-register');
+
+    tabAuthLogin.addEventListener('click', () => {
       playSound('click');
-      const nameVal = document.getElementById('input-player-name').value.trim();
-      playerData.name = nameVal || 'Si Bolil';
+      hideAuthAlert();
+      tabAuthLogin.classList.add('active');
+      tabAuthRegister.classList.remove('active');
+      formAuthLogin.classList.remove('hidden');
+      formAuthRegister.classList.add('hidden');
+    });
+
+    tabAuthRegister.addEventListener('click', () => {
+      playSound('click');
+      hideAuthAlert();
+      tabAuthRegister.classList.add('active');
+      tabAuthLogin.classList.remove('active');
+      formAuthRegister.classList.remove('hidden');
+      formAuthLogin.classList.add('hidden');
+      // Isi nama default jika field masih kosong
+      const regName = document.getElementById('reg-player-name');
+      if (regName && !regName.value) regName.value = playerData.name;
+    });
+
+    // Form Register: Email + Password + Unik Nama
+    formAuthRegister.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      playSound('click');
+      hideAuthAlert();
+      const username = document.getElementById('reg-player-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const password = document.getElementById('reg-password').value;
+
+      if (!username || username.length < 2) {
+        showAuthAlert('error', 'Nama pemain minimal 2 karakter!');
+        return;
+      }
+      if (!email || !password || password.length < 6) {
+        showAuthAlert('error', 'Password minimal 6 karakter!');
+        return;
+      }
+
+      // Validasi keunikan nama di Firestore
+      showAuthAlert('success', 'Memeriksa ketersediaan nama pemain...');
+      const check = await checkUsernameAvailability(username, null);
+      if (!check.available) {
+        showAuthAlert('error', check.message);
+        return;
+      }
+
+      try {
+        showAuthAlert('success', 'Sedang mendaftarkan akun ke Firebase...');
+        const cred = await firebaseAuth.createUserWithEmailAndPassword(email, password);
+        await cred.user.updateProfile({ displayName: username });
+        playerData.name = username;
+        localStorage.setItem(STORAGE_KEY_PLAYER, JSON.stringify(playerData));
+        await savePlayerProfileToFirestore(cred.user.uid);
+
+        showAuthAlert('success', `🎉 Berhasil mendaftar! Nama "${username}" kini resmi milikmu.`);
+        updateUserBadgeUI();
+        updateBallPreview();
+        updateBall3DTexture();
+        setTimeout(() => {
+          showScreen('main-menu');
+        }, 1200);
+      } catch (err) {
+        let msg = err.message;
+        if (err.code === 'auth/email-already-in-use') msg = 'Email ini sudah terdaftar. Silakan pilih tab Masuk (Login).';
+        else if (err.code === 'auth/invalid-email') msg = 'Format email tidak valid.';
+        else if (err.code === 'auth/weak-password') msg = 'Password terlalu lemah (minimal 6 karakter).';
+        else if (err.code === 'auth/operation-not-allowed') msg = 'Email/Password sign-in belum diaktifkan di Firebase Console Authentication.';
+        showAuthAlert('error', '❌ Gagal mendaftar: ' + msg);
+      }
+    });
+
+    // Form Login: Email + Password
+    formAuthLogin.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      playSound('click');
+      hideAuthAlert();
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      if (!email || !password) {
+        showAuthAlert('error', 'Mohon isi email dan password!');
+        return;
+      }
+
+      try {
+        showAuthAlert('success', 'Sedang masuk ke akun...');
+        await firebaseAuth.signInWithEmailAndPassword(email, password);
+        showAuthAlert('success', '🎉 Berhasil masuk!');
+        updateUserBadgeUI();
+        setTimeout(() => {
+          showScreen('main-menu');
+        }, 900);
+      } catch (err) {
+        let msg = err.message;
+        if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+          msg = 'Email atau password salah.';
+        } else if (err.code === 'auth/operation-not-allowed') {
+          msg = 'Email/Password sign-in belum diaktifkan di Firebase Console Authentication.';
+        }
+        showAuthAlert('error', '❌ Gagal masuk: ' + msg);
+      }
+    });
+
+    // Google Login
+    document.getElementById('btn-auth-google').addEventListener('click', async () => {
+      playSound('click');
+      hideAuthAlert();
+      if (!firebaseAuth) {
+        showAuthAlert('error', 'Firebase Auth belum siap.');
+        return;
+      }
+      try {
+        showAuthAlert('success', 'Membuka login Google...');
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const cred = await firebaseAuth.signInWithPopup(provider);
+        showAuthAlert('success', `🎉 Berhasil masuk dengan Google! Halo, ${cred.user.displayName || 'Pemain'}.`);
+        updateUserBadgeUI();
+        setTimeout(() => {
+          showScreen('main-menu');
+        }, 1000);
+      } catch (err) {
+        let msg = err.message;
+        if (err.code === 'auth/popup-closed-by-user') msg = 'Jendela login ditutup.';
+        else if (err.code === 'auth/operation-not-allowed') msg = 'Provider Google belum diaktifkan di Firebase Console (Build > Authentication > Sign-in method).';
+        showAuthAlert('error', '❌ Google Sign-In: ' + msg);
+      }
+    });
+
+    // Facebook Login
+    document.getElementById('btn-auth-facebook').addEventListener('click', async () => {
+      playSound('click');
+      hideAuthAlert();
+      if (!firebaseAuth) {
+        showAuthAlert('error', 'Firebase Auth belum siap.');
+        return;
+      }
+      try {
+        showAuthAlert('success', 'Membuka login Facebook...');
+        const provider = new firebase.auth.FacebookAuthProvider();
+        const cred = await firebaseAuth.signInWithPopup(provider);
+        showAuthAlert('success', `🎉 Berhasil masuk dengan Facebook! Halo, ${cred.user.displayName || 'Pemain'}.`);
+        updateUserBadgeUI();
+        setTimeout(() => {
+          showScreen('main-menu');
+        }, 1000);
+      } catch (err) {
+        let msg = err.message;
+        if (err.code === 'auth/popup-closed-by-user') msg = 'Jendela login ditutup.';
+        else if (err.code === 'auth/operation-not-allowed') msg = 'Provider Facebook belum diaktifkan di Firebase Console (Build > Authentication > Sign-in method).';
+        showAuthAlert('error', '❌ Facebook Sign-In: ' + msg);
+      }
+    });
+
+    // Logout
+    document.getElementById('btn-auth-logout').addEventListener('click', async () => {
+      playSound('click');
+      try {
+        if (firebaseAuth) await firebaseAuth.signOut();
+        currentUser = null;
+        updateUserBadgeUI();
+        showAuthAlert('success', 'Berhasil keluar akun.');
+        setTimeout(() => {
+          showScreen('main-menu');
+        }, 600);
+      } catch (err) {
+        console.warn("Gagal logout:", err);
+      }
+    });
+
+    // Realtime Check Keunikan Nama di Layar Kustomisasi Bola
+    let nameCheckDebounce = null;
+    const inputPlayerName = document.getElementById('input-player-name');
+    const customNameFeedback = document.getElementById('custom-name-feedback');
+
+    if (inputPlayerName && customNameFeedback) {
+      inputPlayerName.addEventListener('input', () => {
+        clearTimeout(nameCheckDebounce);
+        customNameFeedback.className = 'name-status-note';
+        customNameFeedback.style.display = 'none';
+
+        const val = inputPlayerName.value.trim();
+        if (val.length < 2) return;
+
+        nameCheckDebounce = setTimeout(async () => {
+          const check = await checkUsernameAvailability(val, currentUser ? currentUser.uid : null);
+          if (!check.available) {
+            customNameFeedback.className = 'name-status-note error';
+            customNameFeedback.textContent = '⚠️ ' + check.message;
+            customNameFeedback.style.display = 'block';
+          } else {
+            customNameFeedback.className = 'name-status-note success';
+            customNameFeedback.textContent = '✅ Nama ini tersedia!';
+            customNameFeedback.style.display = 'block';
+          }
+        }, 450);
+      });
+    }
+
+    // Customization -> Mode Selection (dengan pengecekan nama & cloud sync)
+    document.getElementById('btn-next-to-modes').addEventListener('click', async () => {
+      playSound('click');
+      const nameVal = document.getElementById('input-player-name').value.trim() || 'Si Bolil';
+
+      // Pastikan nama unik dan tidak dipakai pemain lain
+      const check = await checkUsernameAvailability(nameVal, currentUser ? currentUser.uid : null);
+      if (!check.available) {
+        if (customNameFeedback) {
+          customNameFeedback.className = 'name-status-note error';
+          customNameFeedback.textContent = '⚠️ ' + check.message;
+          customNameFeedback.style.display = 'block';
+        }
+        alert(check.message);
+        return;
+      }
+
+      playerData.name = nameVal;
       localStorage.setItem(STORAGE_KEY_PLAYER, JSON.stringify(playerData));
+
+      // Jika user sudah login, sinkronkan profil kustomisasi ke Firebase Firestore
+      if (currentUser) {
+        await savePlayerProfileToFirestore(currentUser.uid);
+      }
+
       updateBall3DTexture();
+      updateUserBadgeUI();
       showScreen('mode-select');
     });
 
@@ -1956,10 +2682,11 @@
       showScreen('main-menu');
     });
 
-    // Customization inputs
+    // Customization inputs (sinkronisasi warna & ekspresi langsung ke Firestore jika sudah login)
     document.getElementById('input-ball-color').addEventListener('input', (e) => {
       playerData.color = e.target.value;
       updateBallPreview();
+      if (currentUser) savePlayerProfileToFirestore(currentUser.uid);
     });
 
     document.querySelectorAll('.color-swatch').forEach(swatch => {
@@ -1967,6 +2694,7 @@
         playSound('click');
         playerData.color = swatch.dataset.color;
         updateBallPreview();
+        if (currentUser) savePlayerProfileToFirestore(currentUser.uid);
       });
     });
 
@@ -1977,6 +2705,7 @@
         btn.classList.add('active');
         playerData.face = btn.dataset.face;
         updateBallPreview();
+        if (currentUser) savePlayerProfileToFirestore(currentUser.uid);
       });
     });
 
@@ -2640,7 +3369,7 @@
 
       // Save to personal & community player leaderboards
       savePersonalRanking(selectedGameMode, score, currentLevelPassed + 1, maxComboStreak);
-      savePlayerLeaderboard(selectedGameMode, playerData.name, score, currentLevelPassed + 1);
+      savePlayerLeaderboard(selectedGameMode, playerData.name, score, currentLevelPassed + 1, maxComboStreak);
 
       document.getElementById('go-final-score').textContent = score;
       document.getElementById('go-final-level').textContent = currentLevelPassed + 1;
@@ -2659,7 +3388,7 @@
 
       // Save victory run
       savePersonalRanking('normal', score, NORMAL_MODE_TOTAL_FLOORS, maxComboStreak);
-      savePlayerLeaderboard('normal', playerData.name, score, NORMAL_MODE_TOTAL_FLOORS);
+      savePlayerLeaderboard('normal', playerData.name, score, NORMAL_MODE_TOTAL_FLOORS, maxComboStreak);
 
       document.getElementById('vic-final-score').textContent = score;
       document.getElementById('vic-final-combo').textContent = `${maxComboStreak}x`;
@@ -2964,6 +3693,7 @@
       initFirebase();
       init3D();
       updateBallPreview();
+      updateUserBadgeUI();
       animate();
 
       window.addEventListener('click', initAudio, { once: true });
