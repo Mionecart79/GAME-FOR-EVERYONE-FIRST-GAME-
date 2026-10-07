@@ -21,12 +21,16 @@ const firebaseConfig = {
 
 ## 2. Fitur Firebase yang Telah Terpasang
 
-### A. Sistem Akun & Keunikan Nama Pemain (Unique Username)
-1. **Pendaftaran & Login Akun**:
+### A. Sistem Akun, Akun Tamu & Keunikan Nama Pemain
+1. **Pendaftaran & Login Akun Tetap**:
    - **Email & Password**: Pemain dapat mendaftarkan akun baru dengan password mereka sendiri.
    - **Google Sign-In**: Masuk cepat sekali klik menggunakan akun Google.
    - **Facebook Sign-In**: Masuk cepat sekali klik menggunakan akun Facebook.
-2. **Paten Nama Pemain (Tidak Bisa Ditiru)**:
+2. **Akun Tamu (Tidak Tetap / Sementara)**:
+   - Pemain dapat memilih **🎮 Main Tamu (Tidak Tetap)** kapan saja tanpa perlu mendaftar atau memasukkan email/password.
+   - Terdapat tombol **⬅️ Kembali ke Menu Utama** yang jelas di bagian atas dan bawah layar akun sehingga pemain bisa kembali ke menu utama kapan saja.
+   - Pemain yang sedang login juga dapat beralih ke Akun Tamu secara instan dengan tombol **⚡ Beralih ke Akun Tamu**.
+3. **Paten Nama Pemain (Tidak Bisa Ditiru)**:
    - Nama pemain otomatis diverifikasi di Firestore collection `usernames`.
    - Jika nama sudah pernah didaftarkan oleh pemain lain, game akan menampilkan peringatan dan mencegah pemain lain menggunakan nama tersebut.
    - Pengecekan nama juga terjadi secara *real-time* saat pemain mengetik di layar **Kustomisasi Bola**.

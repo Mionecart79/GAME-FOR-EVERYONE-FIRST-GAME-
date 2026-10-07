@@ -1283,13 +1283,21 @@
 
   <!-- 1.5. AUTHENTICATION & CLOUD ACCOUNT SCREEN -->
   <div class="screen hidden interactive" id="screen-auth">
-    <div class="glass-card" style="max-width: 460px; width: 92%;">
+    <div class="glass-card" style="max-width: 470px; width: 92%;">
+      <!-- Top Header Navigation -->
+      <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 12px;">
+        <button class="btn" style="background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.22); color: #fff; padding: 7px 14px; font-size: 0.85rem; border-radius: 14px;" id="btn-auth-back-top">
+          ⬅️ Kembali ke Menu
+        </button>
+        <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 700;">Pengaturan Akun</span>
+      </div>
+
       <div style="font-size: 2.6rem; margin-bottom: 2px;">🔐</div>
       <h2 style="font-family: var(--font-display); font-size: 1.75rem; font-weight: 800; color: #38bdf8; margin-bottom: 2px;" id="auth-title">
         AKUN PEMAIN & CLOUD
       </h2>
       <p style="color: #94a3b8; font-size: 0.84rem; margin-bottom: 14px;" id="auth-subtitle">
-        Kunci nama pemainmu agar tidak diambil orang lain & sinkronkan bola ke cloud!
+        Pilih akun tetap untuk mengunci nama & simpan profil ke cloud, atau gunakan akun tamu!
       </p>
 
       <!-- Alert Box for Auth Messages -->
@@ -1302,16 +1310,23 @@
           <div style="overflow: hidden;">
             <div style="font-weight: 800; font-size: 1.15rem; color: #fff;" id="auth-display-player-name">Si Bolil</div>
             <div style="font-size: 0.8rem; color: #94a3b8; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" id="auth-display-player-email">pemain@email.com</div>
-            <div style="font-size: 0.76rem; color: #22c55e; margin-top: 4px; font-weight: 700;">🟢 Profil Bola Tersinkronisasi di Firestore</div>
+            <div style="font-size: 0.76rem; color: #22c55e; margin-top: 4px; font-weight: 700;">🟢 Akun Tetap Terhubung (Cloud Sync Aktif)</div>
           </div>
         </div>
-        <div style="display: flex; gap: 10px; margin-top: 16px;">
-          <button class="btn" style="flex: 1; background: #ef4444; color: #fff;" id="btn-auth-logout">🚪 Keluar</button>
-          <button class="btn" style="flex: 1; background: rgba(255,255,255,0.18); color: #fff;" id="btn-auth-close-logged">Tutup</button>
+        <div style="display: flex; flex-direction: column; gap: 9px; margin-top: 16px;">
+          <button class="btn btn-start" style="width: 100%;" id="btn-auth-close-logged">
+            ⬅️ Kembali ke Menu Utama
+          </button>
+          <button class="btn" style="width: 100%; background: #eab308; color: #0f172a; font-weight: 800;" id="btn-switch-to-guest">
+            ⚡ Beralih ke Akun Tamu (Tidak Tetap)
+          </button>
+          <button class="btn" style="width: 100%; background: #ef4444; color: #fff;" id="btn-auth-logout">
+            🚪 Keluar Akun (Logout)
+          </button>
         </div>
       </div>
 
-      <!-- View When NOT Logged In (Tabs for Login & Register) -->
+      <!-- View When NOT Logged In (Tabs for Login & Register + Guest Option) -->
       <div id="auth-view-forms">
         <div class="auth-tabs">
           <button class="auth-tab active" id="tab-auth-login">Masuk (Login)</button>
@@ -1369,8 +1384,26 @@
           </button>
         </div>
 
-        <button class="btn" style="width: 100%; margin-top: 14px; background: rgba(255,255,255,0.12); color: #fff;" id="btn-close-auth">
-          Main sebagai Tamu (Tutup)
+        <!-- Dedicated Guest Account Card (Akun Tamu Tidak Tetap) -->
+        <div style="background: rgba(30, 41, 59, 0.7); border: 2px dashed rgba(234, 179, 8, 0.45); border-radius: 18px; padding: 14px; margin-top: 14px; text-align: left;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+            <div>
+              <div style="font-size: 0.95rem; font-weight: 800; color: #facc15; display: flex; align-items: center; gap: 6px;">
+                <span>⚡</span> <span>Akun Tamu (Tidak Tetap)</span>
+              </div>
+              <div style="font-size: 0.76rem; color: #94a3b8; margin-top: 3px; line-height: 1.35;">
+                Main langsung tanpa email/password! Data skor & kustomisasi disimpan sementara di browser ini.
+              </div>
+            </div>
+            <button class="btn" style="padding: 10px 16px; font-size: 0.88rem; background: #eab308; color: #0f172a; border-radius: 14px; font-weight: 800; white-space: nowrap; flex-shrink: 0;" id="btn-choose-guest">
+              🎮 Main Tamu
+            </button>
+          </div>
+        </div>
+
+        <!-- Back to Main Menu Button -->
+        <button class="btn" style="width: 100%; margin-top: 12px; background: rgba(255,255,255,0.14); color: #fff;" id="btn-close-auth">
+          ⬅️ Kembali ke Menu Utama
         </button>
       </div>
     </div>
@@ -1743,11 +1776,11 @@
           drawCuteFace(authPreviewCanvas, playerData.color, playerData.face, false);
         }
       } else {
-        if (nameElem) nameElem.textContent = playerData.name || 'Si Bolil';
-        if (statusElem) statusElem.textContent = 'Tamu (Belum Login)';
+        if (nameElem) nameElem.textContent = (playerData.name || 'Si Bolil') + ' (Tamu)';
+        if (statusElem) statusElem.textContent = '⚡ Akun Tamu (Tidak Tetap)';
         if (actionBtn) actionBtn.textContent = 'Masuk / Daftar';
         if (accountBtnText) accountBtnText.textContent = 'AKUN SAYA & CLOUD';
-        if (customCloudBadgeText) customCloudBadgeText.textContent = '💡 Masuk akun untuk mengunci nama & simpan profil ke Cloud';
+        if (customCloudBadgeText) customCloudBadgeText.textContent = '⚡ Akun Tamu (Tidak Tetap) — Kustomisasi tersimpan sementara di browser ini';
 
         if (authViewLoggedIn) authViewLoggedIn.classList.add('hidden');
         if (authViewForms) authViewForms.classList.remove('hidden');
@@ -2347,10 +2380,52 @@
       showScreen('main-menu');
     });
 
+    // Tombol Back di Header Layar Akun
+    const btnAuthBackTop = document.getElementById('btn-auth-back-top');
+    if (btnAuthBackTop) {
+      btnAuthBackTop.addEventListener('click', () => {
+        playSound('click');
+        showScreen('main-menu');
+      });
+    }
+
     document.getElementById('btn-auth-close-logged').addEventListener('click', () => {
       playSound('click');
       showScreen('main-menu');
     });
+
+    // Pilihan Menggunakan Akun Tamu (Tidak Tetap)
+    const btnChooseGuest = document.getElementById('btn-choose-guest');
+    if (btnChooseGuest) {
+      btnChooseGuest.addEventListener('click', () => {
+        playSound('click');
+        currentUser = null;
+        updateUserBadgeUI();
+        showAuthAlert('success', '⚡ Bermain sebagai Akun Tamu (Tidak Tetap)! Data tersimpan di browser ini.');
+        setTimeout(() => {
+          showScreen('main-menu');
+        }, 500);
+      });
+    }
+
+    // Beralih dari Akun Login ke Akun Tamu
+    const btnSwitchToGuest = document.getElementById('btn-switch-to-guest');
+    if (btnSwitchToGuest) {
+      btnSwitchToGuest.addEventListener('click', async () => {
+        playSound('click');
+        try {
+          if (firebaseAuth && currentUser) {
+            await firebaseAuth.signOut();
+          }
+        } catch (e) {}
+        currentUser = null;
+        updateUserBadgeUI();
+        showAuthAlert('success', '⚡ Berhasil beralih ke Akun Tamu (Tidak Tetap).');
+        setTimeout(() => {
+          showScreen('main-menu');
+        }, 500);
+      });
+    }
 
     document.getElementById('btn-menu-leaderboard').addEventListener('click', () => {
       playSound('click');
