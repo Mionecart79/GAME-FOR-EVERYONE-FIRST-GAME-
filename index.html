@@ -424,6 +424,38 @@
     /* ========================================================
        USER BADGE & AUTHENTICATION STYLES
        ======================================================== */
+    .top-left-back-btn {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 20px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #fff;
+      font-family: var(--font-main);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 30;
+    }
+    .top-left-back-btn:hover {
+      background: rgba(56, 189, 248, 0.25);
+      border-color: #38bdf8;
+      color: #38bdf8;
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 12px 28px rgba(56, 189, 248, 0.35);
+    }
+    .top-left-back-btn:active {
+      transform: scale(0.96);
+    }
+
     .user-badge-bar {
       display: flex;
       align-items: center;
@@ -1283,6 +1315,12 @@
 
   <!-- 1.5. AUTHENTICATION & CLOUD ACCOUNT SCREEN -->
   <div class="screen hidden interactive" id="screen-auth">
+    <!-- Tombol Back di Ujung Kiri Atas Layar -->
+    <button class="top-left-back-btn" id="btn-auth-corner-back" title="Kembali ke Menu Utama">
+      <span>⬅️</span>
+      <span>Menu Utama</span>
+    </button>
+
     <div class="glass-card" style="max-width: 470px; width: 92%;">
       <!-- Top Header Navigation -->
       <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 12px;">
@@ -2380,10 +2418,18 @@
       showScreen('main-menu');
     });
 
-    // Tombol Back di Header Layar Akun
+    // Tombol Back di Header & Ujung Kiri Atas Layar Akun
     const btnAuthBackTop = document.getElementById('btn-auth-back-top');
     if (btnAuthBackTop) {
       btnAuthBackTop.addEventListener('click', () => {
+        playSound('click');
+        showScreen('main-menu');
+      });
+    }
+
+    const btnAuthCornerBack = document.getElementById('btn-auth-corner-back');
+    if (btnAuthCornerBack) {
+      btnAuthCornerBack.addEventListener('click', () => {
         playSound('click');
         showScreen('main-menu');
       });
